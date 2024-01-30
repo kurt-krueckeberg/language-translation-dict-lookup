@@ -9,12 +9,12 @@ abstract class AbstractDefinitionsIterator extends \ArrayIterator {
       parent::__construct($targets);
    }
 
-   abstract protected function get_current(array $target) : DefinitionInterface | false;
+   abstract protected function get_current(array $target) : DefinitionInterface;
 
-   function current() : DefinitionInterface | false
+   function current() : DefinitionInterface
    {
       $ele =  parent::current();
 
-      return ($ele === false) ? $ele : $this->get_current($ele);
+      return $this->get_current($ele);
    }
 }

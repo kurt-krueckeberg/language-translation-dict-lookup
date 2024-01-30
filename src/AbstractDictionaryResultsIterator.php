@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-abstract class AbstractDictionaryResultsIterator implements \Iterator {
+abstract class AbstractDictionaryResultsIterator implements \Iterator, \SeekableIterator {
 
     protected \ArrayIterator $iter;
 
@@ -20,7 +20,7 @@ abstract class AbstractDictionaryResultsIterator implements \Iterator {
         return ($current === false) ? $current : $this->get_current($current);
     }
 
-    protected function seek(int $i)
+    public function seek(int $i)
     {
        $this->iter->seek($i);  
     }

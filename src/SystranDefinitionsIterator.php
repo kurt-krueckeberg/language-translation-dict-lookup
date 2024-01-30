@@ -18,7 +18,7 @@ class SystranDefinitionsIterator extends AbstractDefinitionsIterator {
        return preg_replace('/[^A-ZÖÄÜa-zaöü ]/', '', $target['source']['lemma']); 
     }
 
-    protected function get_current(mixed $target) : DefinitionInterface
+    protected function get_current(array $target) : DefinitionInterface | false
     {
        return new SystranDefinition($target); 
     }
