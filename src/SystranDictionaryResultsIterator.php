@@ -66,20 +66,19 @@ class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator
  
     /*
      Determine if the verb looked up, whose index in $matches is $this->lookedup_index, has other related verbs:
-      1. Is count($matches) > 1, and was
-      2. word looked up a verb. If so, is the verb looked up...
+      1. count($matches) > 1 && word looked up is a verb. If so, is the verb looked up...
 
-      3. contained in the other match results--though we only need check one other match
-         To do this, we determine if the loooked up result was $matches[0]. If  it was, we compare  
+      2. contained in the other match results? We only need check one other match.
+
+         If the loooked up result was $matches[0], we compare:  
 
          $pos = strpos($matches[1], $matches[0]) 
 
-         If the verb looked up's results are not in $matches[0], we compare $matches[$lookedup_index] with 
-         $matches[0]: 
+         If the verb looked up's results are not in $matches[0], we compare:
 
          $pops strpos($matches[0], $matches[$lookedup_index])
      
-         Then we check that $pos !== false AND $pos !== 0.  
+         Finally, we check that $pos !== false AND $pos !== 0.  
     */ 
     private function isPrefixVerbFamily(array $matches, int $lookedup_index, string $word_lookedup) : bool
     {  
@@ -123,8 +122,6 @@ class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator
            // If none found, save the tilde version in results[] 
            if ($same != 0) {
                
-               //echo "Error: Non-tilde verb not found for {$matches[$i]['source']['lemma']} was not next verb in matches[$i].\n";
-               
                $results[] = $matches[$i];
 
            } else {
@@ -142,7 +139,8 @@ class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator
               $i = $j;
            }           
        }       
-             return $results;
+
+       return $results;
     }
  
     /*
