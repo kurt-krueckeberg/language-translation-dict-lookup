@@ -1,0 +1,9 @@
+.*.swp
+*.html
+error.log
+config.xml
+config.php
+vendor/
+*.html
+.vscode/
+nbproject/

@@ -1,0 +1,26 @@
+{
+    "name": "kurt-krueckeberg/vocab-german",
+    "description": "PHP library for building database of new German words and from this webpage", 
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Vocab\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.2", 
+        "guzzlehttp/guzzle": "^7.5.0",
+        "ext-intl": "^8.2",
+        "ext-simplexml": "^8.2",
+        "ext-curl": "^8.2",
+        "ext-json": "^8.2",
+        "ext-tidy": "^8.2"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kurt Krueckeberg",
+            "email": "kurt.krueckeberg@gmail.com"
+        }
+    ]
+}

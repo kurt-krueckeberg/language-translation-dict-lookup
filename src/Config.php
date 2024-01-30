@@ -1,0 +1,48 @@
+<?php
+declare(strict_types=1);
+namespace Vocab;
+
+//use Vocab\XmlConfig;
+/*
+  Provides access to config.xml through static method, get_config(string provider)
+ */
+class Config {
+
+   private static $config = [ 'database' => ['dsn' => 'mysql:dbname=vocab;host=127.0.0.1', 'user' => 'kurt', 'password' => 'kk0457'],
+                     'providers' => [ 'leipzig'  => [ 'endpoint' => 'https://api.wortschatz-leipzig.de/ws/sentences/deu_news_2012_1M/sentences/'],
+                                       "deepl"   => [ 'endpoint' => 'https://api-free.deepl.com/v2',   'header' => ["Authorization" => 'DeepL-Auth-Key 7482c761-0429-6c34-766e-fddd88c247f9:fx']],
+                                      "systran"  => [ 'endpoint' => 'https://api-translate.systran.net', 'header' => ["Authorization" => 'Key bf31a6fd-f202-4eef-bc0e-1236f7e33be4']]],
+                     'language' =>   [ 'source'   => "English", 'destination' => 'Deutsch', 'locale' => 'de_DE']
+                    ];
+
+   public function __construct()
+   {   
+   }
+
+   public function get_config(ProviderID $id) : array
+   {
+    $provider_name = $id->get_provider();
+  
+    $r = [];
+    $r['base_uri'] = self::$config['providers'][$provider_name]['endpoint'];
+    
+    $r['headers'] = $array = self::$config['providers'][$provider_name]['header'];
+
+     return $r;
+   }
+ 
+   public function get_db_credentials() : array // returns: array('dsn' =>, 'user' => . 'password' =>);
+   {
+     return self::$config['database'];
+   }
+
+   public function get_locale()
+   {
+       return self::$config['language']['locale'];
+   }
+
+   public function getCollator() : \Collator
+   {
+       return new \Collator($this->get_locale()); 
+   }
+}
