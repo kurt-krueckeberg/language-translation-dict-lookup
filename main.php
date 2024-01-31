@@ -7,27 +7,17 @@ use Vocab\{Database, SystranTranslator, LeipzigSentenceFetcher, DbTablesMediator
 
 include 'vendor/autoload.php';
 
-/*
-if ($argc != 2) {
 
-  echo "Enter the vocabulary words input file.\n";
-  return;
-
-} else if (! file_exists($argv[1]))  {
-
-  echo "Input file does not exist.\n";
-  return;
-}
-*/
 try {
     
-/*
-    $fwords = $argv[1];
- */
     $c = new Config();
 
-    if (!file_exists($c->lookup_file())
-        die ($c->lookup_file() . " not found.\n");
+    if (file_exists($c->lookup_file())) {
+        
+        $error = $c->lookup_file();
+        
+        die( $c->lookup_file() . " not found.\n");
+    }
 
     $file = new FileReader($c->lookup_file());
     

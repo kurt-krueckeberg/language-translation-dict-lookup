@@ -55,7 +55,7 @@ class Config {
       return self::$lookup_file_name;
    }
  
-   public sentence_count() : string
+   function sentence_count() : string
    {
       return self::$sentence_count;
    }

@@ -132,7 +132,7 @@ class Database extends DatabaseBase implements InserterInterface {
 
       foreach ($iter as $sentence) {
           
-        $rc =??  $samplesTbl->insert($sentence, $prim_key);  
+        $rc = $samplesTbl->insert($sentence, $prim_key);  
       }
    }
 }
