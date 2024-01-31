@@ -11,6 +11,8 @@ class Database extends DatabaseBase implements InserterInterface {
    private InserterInterface $inserter;
 
    private array $tables;
+
+   private $prim_keys = []; // maps words to primary keys
    
    public function __construct(Config $config)
    {
@@ -85,6 +87,8 @@ class Database extends DatabaseBase implements InserterInterface {
      $expr_tbl = $this->get_table('ExpressionsTable');
 
      $word_id = $word_tbl->insert($wrface); 
+
+     $this->prim_keys[$wrface->word_defined()] = $word_id;
      
      foreach($wrface->definitions() as $defn) {
 
@@ -118,5 +122,10 @@ class Database extends DatabaseBase implements InserterInterface {
      } 
 
       return $this->tables[$className];
+   }
+
+   function insert_samples(string $word, array $sample_sents) : bool
+   {
+
    }
 }
