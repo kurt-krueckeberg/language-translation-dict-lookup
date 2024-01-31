@@ -12,7 +12,7 @@ try {
     
     $c = new Config();
 
-    if (file_exists($c->lookup_file())) {
+    if (!file_exists($c->lookup_file())) {
         
         $error = $c->lookup_file();
         
