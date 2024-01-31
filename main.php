@@ -7,6 +7,7 @@ use Vocab\{Database, SystranTranslator, LeipzigSentenceFetcher, DbTablesMediator
 
 include 'vendor/autoload.php';
 
+/*
 if ($argc != 2) {
 
   echo "Enter the vocabulary words input file.\n";
@@ -17,14 +18,18 @@ if ($argc != 2) {
   echo "Input file does not exist.\n";
   return;
 }
-
+*/
 try {
     
+/*
     $fwords = $argv[1];
- 
-    $file = new FileReader($fwords);
-    
+ */
     $c = new Config();
+
+    if (!file_exists($c->lookup_file())
+        die ($c->lookup_file . " not found.\n");
+
+    $file = new FileReader($c->lookup_file());
     
     $sys = new SystranTranslator($c);
    
@@ -51,13 +56,15 @@ try {
                
             if (!$db->word_exists($word)) {
                   
-                $db->save($result);
+                $db->save_lookup($result);
 
                 echo "$word saved to database.\n";
             }
 
             // Fetch sample sentences for the word
-            $sentFetcher->fetch($word, // configured sample count.
+            $sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
+
+            $db->save_examples($word, $sent_iter);  
         }       
     }
 

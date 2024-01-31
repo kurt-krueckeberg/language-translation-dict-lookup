@@ -1,8 +1,9 @@
 # Issues
 
-- The RelatedVerbsIterator is returning the main verb, too!
+Make the design configuration driven by:
 
-- The Database
+* Add file name of words to lookup 
+* Add the number of example sentences
 
 ## Summary of prefix verb issues:
 

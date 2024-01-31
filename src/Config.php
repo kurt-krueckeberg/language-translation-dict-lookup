@@ -8,6 +8,10 @@ namespace Vocab;
  */
 class Config {
 
+   private static $lookup_file_name = "y.txt";
+
+   private static $sentence_count = 5;
+
    private static $config = [ 'database' => ['dsn' => 'mysql:dbname=vocab;host=127.0.0.1', 'user' => 'kurt', 'password' => 'kk0457'],
                      'providers' => [ 'leipzig'  => [ 'endpoint' => 'https://api.wortschatz-leipzig.de/ws/sentences/deu_news_2012_1M/sentences/'],
                                        "deepl"   => [ 'endpoint' => 'https://api-free.deepl.com/v2',   'header' => ["Authorization" => 'DeepL-Auth-Key 7482c761-0429-6c34-766e-fddd88c247f9:fx']],
@@ -44,5 +48,15 @@ class Config {
    public function getCollator() : \Collator
    {
        return new \Collator($this->get_locale()); 
+   }
+
+   public lookup_file() : string
+   {
+      return self::$lookup_file_name;
+   }
+ 
+   public sentence_count() : string
+   {
+      return self::$sentence_count;
    }
 }

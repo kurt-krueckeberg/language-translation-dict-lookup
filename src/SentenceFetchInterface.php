@@ -4,5 +4,5 @@ namespace Vocab;
 
 interface SentenceFetchInterface  { 
 
-   public function fetch_samples(string $word, int $count=3) : \Iterator; 
+   public function fetch(string $word, int $count=3) : \Iterator; 
 }

@@ -103,7 +103,7 @@ class Database extends DatabaseBase implements InserterInterface {
     return $word_id; 
    }
 
-   public function save(WordResultInterface $wdResultFace)   
+   public function save_lookup(WordResultInterface $wdResultFace)   
    {
       $wdResultFace->accept($this->inserter); 
      
@@ -124,7 +124,7 @@ class Database extends DatabaseBase implements InserterInterface {
       return $this->tables[$className];
    }
 
-   function insert_samples(string $word, SentencesIterator $iter) : bool
+   function insert_examples(string $word, SentencesIterator $iter) : bool
    {
       $samplesTbl = new SampleTable($this->pdo);
 
