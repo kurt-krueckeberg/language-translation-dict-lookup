@@ -25,9 +25,9 @@ try {
     $fwords = $argv[1];
  */
     $c = new Config();
-
-    if (!file_exists($c->lookup_file())
-        die ($c->lookup_file() . " not found.\n");
+        
+    if ($c->lookup_file())
+        die($c->lookup_file() . " not found.\n");
 
     $file = new FileReader($c->lookup_file());
     
