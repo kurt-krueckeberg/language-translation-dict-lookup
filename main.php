@@ -50,11 +50,17 @@ try {
             if (!$db->word_exists($word)) {
                   
                 $db->save($result);
+
+                echo "$word saved to database.\n";
             }
         }       
     }
 
-} catch (Exception $e) {
+} catch (PDOException $e) {
 
       echo "Exception: message = " . $e->getMessage() . "\nError Code = " . $e->getCode() . "\n";
-  } 
+}
+catch (Exception $e) {
+
+      echo "Exception: message = {$e->getMessage()}.\nError Code = {$e->getCode()}.\nException code = {$e->getCode()}.\n";
+} 
