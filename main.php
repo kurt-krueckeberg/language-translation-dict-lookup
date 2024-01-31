@@ -29,6 +29,8 @@ try {
     $sys = new SystranTranslator($c);
    
     $db = new Database($c); 
+
+    $sentFetcher = new LeipzigSentenceFetcher();
     
     foreach ($file as $word) {
        
@@ -53,6 +55,9 @@ try {
 
                 echo "$word saved to database.\n";
             }
+
+            // Fetch sample sentences for the word
+            $sentFetcher->fetch($word, // configured sample count.
         }       
     }
 
