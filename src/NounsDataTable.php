@@ -29,7 +29,7 @@ class NounsDataTable implements TableInsertInterface {
 
    public function insert(WordResultInterface $deface, int $word_id = -1) : int
    {
-       $this->gender = $deface->get_gender()->value;
+       $this->gender = $deface->gender()->value;
        
        $this->plural = $deface->get_plural();
 
