@@ -27,7 +27,7 @@ class NounsDataTable implements TableInsertInterface {
       $this->insert->bindParam(':word_id', $this->word_id, \PDO::PARAM_INT); 
    }
 
-   public function insert(WordResultInterface $deface, int $word_id)
+   public function insert(WordResultInterface $deface, int $word_id) : int
    {
        $this->gender = $deface->get_gender()->value;
        
