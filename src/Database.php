@@ -124,8 +124,15 @@ class Database extends DatabaseBase implements InserterInterface {
       return $this->tables[$className];
    }
 
-   function insert_samples(string $word, array $sample_sents) : bool
+   function insert_samples(string $word, SentencesIterator $iter) : bool
    {
+      $samplesTbl = new SampleTable($this->pdo);
 
+      $prim_key = $this->prim_keys[$word];
+
+      foreach ($iter as $sentence) {
+          
+        $rc =??  $samplesTbl->insert($sentence, $prim_key);  
+      }
    }
 }

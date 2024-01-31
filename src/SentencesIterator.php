@@ -4,15 +4,16 @@ namespace Vocab;
 
 class SentencesIterator extends \ArrayIterator {
     
-    private $func;
+   private $func;
    
-    public function __construct(array $results, callable $func)
-    {
-       parent::__construct($results);
-       $this->func = $func;
-    }
+   public function __construct(array $results, callable $func)
+   {
+      parent::__construct($results);
+
+      $this->func = $func;
+   }
     
-   public function current() : mixed
+   public function current() : string // | false?
    {
        return ($this->func)(parent::current());
    }
