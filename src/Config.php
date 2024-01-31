@@ -50,7 +50,7 @@ class Config {
        return new \Collator($this->get_locale()); 
    }
 
-   public lookup_file() : string
+   function lookup_file() : string
    {
       return self::$lookup_file_name;
    }
