@@ -16,41 +16,35 @@ class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator
     {
        $this->word_lookedup = $word_lookedup;
 
-       if (count($matches) > 1) {
-          // Sort the array using German collation sequence
-          $cmp = function (array $left, array $right) use($collator) { 
-   
-              return $collator->compare($left['source']['lemma'], $right['source']['lemma']);
-          };
-   
-          usort($matches, $cmp);
-          
-          $this->lookedup_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { 
-                        
-              return $collator->compare($left['source']['lemma'], $key);
-          });
+       // Sort the array using German collation sequence
+       $cmp = function (array $left, array $right) use($collator) { 
 
-       } else {
+           return $collator->compare($left['source']['lemma'], $right['source']['lemma']);
+       };
 
-          $this->lookedup_index = 1;
-       }
-   
-          /*
-            Determine whether we have a prefix-verbs family result; otherwise, we have individual lookup results returned.
-           */
-   
-       $this->is_verb_family = $this->isPrefixVerbFamily($matches, $this->lookedup_index, $word_lookedup);
+       usort($matches, $cmp);
+       
+       $main_verb_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { 
+                     
+           return $collator->compare($left['source']['lemma'], $key);
+       });
 
+       /*
+         Determine whether we have a prefix-verbs family result; otherwise, we have individual lookup results returned.
+        */
+
+       $this->is_verb_family = $this->isPrefixVerbFamily($matches, $main_verb_index, $word_lookedup);
+       
        if ($this->is_verb_family) { 
 
            $matches = $this->merge_verbs($matches);           
-
-           $this->lookedup_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { //($GermanCollator)
-                     
-              return $collator->compare($left['source']['lemma'], $key);
-           });
        }
-              
+       
+       $this->lookedup_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { //($GermanCollator)
+                     
+           return $collator->compare($left['source']['lemma'], $key);
+       });
+       
        // Set this iterator class to the end of results, to one beyond last element.
        $single_match = new SystranVerbFamilyResult($matches, $this->lookedup_index);
 

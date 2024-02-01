@@ -4,7 +4,7 @@ namespace Vocab;
 
 class NounsDataTable implements TableInsertInterface { 
      
-   private \PDOStatement $insert_stmt; 
+   private \PDOStatement $insert; 
 
    private static string $insert_sql = "insert into nouns_data(gender, plural, word_id) values(:gender, :plural, :word_id)"; 
 
@@ -31,12 +31,12 @@ class NounsDataTable implements TableInsertInterface {
    {
        $this->gender = $deface->gender()->value;
        
-       $this->plural = $deface->get_plural();
+       $this->plural = $deface->plural();
 
        $this->word_id = $word_id;
        
-       $this->insert_stmt->execute();
+       $this->insert->execute();
       
-       return (int) $this->pdo->lastIsertId();
+       return (int) $this->pdo->lastInsertId();
    }
 }
