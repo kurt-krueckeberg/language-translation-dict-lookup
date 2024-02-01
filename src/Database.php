@@ -126,7 +126,7 @@ class Database extends DatabaseBase implements InserterInterface {
 
    function save_samples(string $word, SentencesIterator $iter) : bool
    {
-      $samplesTbl = new SampleTable($this->pdo);
+      $samplesTbl = new SamplesTable($this->pdo);
 
       $prim_key = $this->prim_keys[$word];
 
