@@ -17,6 +17,7 @@ class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator
            return; 
        }  
 
+       // Remainder of code is to determine if we have a family of prefix vebs (and one main verb),
        // To determine main_verb_index, first sort the array using German collation sequence
        $cmp = function (array $left, array $right) use($collator) { 
 
