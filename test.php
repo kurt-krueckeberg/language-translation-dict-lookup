@@ -67,7 +67,7 @@ try {
             // Fetch sample sentences for the word
             $sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
 
-            //++$db->save_examples($word, $sent_iter);  
+            $db->save_examples($word, $sent_iter);  
         }       
     }
 
