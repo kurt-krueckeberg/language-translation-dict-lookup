@@ -25,6 +25,9 @@ try {
     $fwords = $argv[1];
  */
     $c = new Config();
+    
+    print_r($c::$config);
+    return;
         
     if (!file_exists($c->lookup_file())) {
         
