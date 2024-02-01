@@ -1,9 +1,8 @@
 # Issues
 
-Make the design configuration driven by:
+Bug in current y.txt
 
-* Add file name of words to lookup 
-* Add the number of example sentences
+Try to rework logic of SystranDictionaryResultsIterator ctor.
 
 ## Summary of prefix verb issues:
 
