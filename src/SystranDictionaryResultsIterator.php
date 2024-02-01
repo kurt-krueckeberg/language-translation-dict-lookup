@@ -25,20 +25,21 @@ class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator
    
           usort($matches, $cmp);
           
-          $main_verb_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { 
+          $this->lookedup_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { 
                         
               return $collator->compare($left['source']['lemma'], $key);
           });
 
-       } else 
+       } else {
 
-          $main_verb_index = 1;
+          $this->lookedup_index = 1;
+       }
    
           /*
             Determine whether we have a prefix-verbs family result; otherwise, we have individual lookup results returned.
            */
    
-       $this->is_verb_family = $this->isPrefixVerbFamily($matches, $main_verb_index, $word_lookedup);
+       $this->is_verb_family = $this->isPrefixVerbFamily($matches, $this->lookedup_index, $word_lookedup);
 
        if ($this->is_verb_family) { 
 
