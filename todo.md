@@ -1,6 +1,6 @@
 # Issues
 
-Fix bugs.
+Fix bugs. Try to remove `SystranDictionaryResultsIterator::lookedup_index`
 
 ## Summary of prefix verb issues:
 
