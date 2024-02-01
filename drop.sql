@@ -35,7 +35,7 @@ create table if not exists nouns_data (
 # --  
 create table if not exists conjugated_tenses (
   id int not null auto_increment primary key,
-  conjugation varchar(95) not null
+  conjugation varchar(75) not null
 );
 
 # -- Note: We are not remembering, not directly anyway, which verbs are prefix versions
@@ -75,7 +75,7 @@ create table if not exists exprs (
 # -- Example sentences for a particular word
 create table if not exists samples (
   id int not null auto_increment primary key,
-  sample varchar(45),
+  sample text not null,
   word_id int not null,
   foreign key(word_id) references words(id) on delete cascade
 );

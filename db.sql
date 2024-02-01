@@ -74,7 +74,7 @@ create table if not exists exprs (
 # -- Example sentences for a particular word
 create table if not exists samples (
   id int not null auto_increment primary key,
-  sample varchar(45),
+  sample text not null,
   word_id int not null,
   foreign key(word_id) references words(id) on delete cascade
 );
