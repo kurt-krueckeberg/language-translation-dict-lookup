@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class SamplesTable ??? implements TableInsertInterface ?? {  
+class SamplesTable  {  
    
    //private \PDO $pdo;
    private \PDOStatement $insert_stmt; 
@@ -28,7 +28,7 @@ class SamplesTable ??? implements TableInsertInterface ?? {
    {
       $this->samp= $sample;
       
-      $this->word_id  = $word_id
+      $this->word_id  = $word_id;
       
       $rc = $this->insert_stmt->execute();
 
