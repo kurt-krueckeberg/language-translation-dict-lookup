@@ -26,7 +26,7 @@ class SamplesTable  {
 
    public function insert(string $sample, int $word_id) : int
    {
-      $this->samp= $sample;
+      $this->sample = $sample;
       
       $this->word_id  = $word_id;
       
