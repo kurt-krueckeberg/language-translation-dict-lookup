@@ -5,20 +5,16 @@ namespace Vocab;
 // More recent version
 class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator implements \Countable { 
     
-   // public readonly int $lookedup_index;  
-   // public readonly string $word_lookedup;
+    public readonly int $lookedup_index;  // <-- TODO: Of what use is this?
+    public readonly string $word_lookedup;
 
-   // public readonly bool $is_verb_family;
+    public readonly bool $is_verb_family;
     
-   // public readonly SystranVerbFamilyResult $verbFamilyResult;
+    public readonly SystranVerbFamilyResult $verbFamilyResult;
     
     public function __construct(string $word_lookedup, array $matches, \Collator $collator) 
     {
-       if (count($matches) == 1) {
-
-           parent::__construct($matches);       
-           return; 
-       }  
+       $this->word_lookedup = $word_lookedup;
 
        // Sort the array using German collation sequence
        $cmp = function (array $left, array $right) use($collator) { 
@@ -37,23 +33,30 @@ class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator
          Determine whether we have a prefix-verbs family result; otherwise, we have individual lookup results returned.
         */
 
-       if ($this->isPrefixVerbFamily($matches, $main_verb_index, $word_lookedup)) {
+       $this->is_verb_family = $this->isPrefixVerbFamily($matches, $main_verb_index, $word_lookedup);
        
+       if ($this->is_verb_family) { 
 
            $matches = $this->merge_verbs($matches);           
  
-           $lookedup_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { //($GermanCollator)
+           $this->lookedup_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { //($GermanCollator)
                      
                                           return $collator->compare($left['source']['lemma'], $key);
                                          });
        
            // Set this iterator class to the end of results, to one beyond last element.
-           $single_match = new SystranVerbFamilyResult($matches, $lookedup_index);
+           $single_match = new SystranVerbFamilyResult($matches, $this->lookedup_index);
            
            parent::__construct(array($single_match));
-       } 
-    }
 
+       } else {
+
+           $this->lookedup_index = $main_verb_index;
+
+           parent::__construct($matches);       
+       }
+    } 
+    
     function count() : int
     {
         return $this->iter->count();
