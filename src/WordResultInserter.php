@@ -11,6 +11,11 @@ class WordResultInserter implements InserterInterface {
        $this->db = $database;
     }
 
+    function insert_examples(string $word, SentencesIterator $iter) : bool
+    {
+       return $this->db->insert_examples($word, $iter);
+    }
+
     function insert_word(WordResultInterface $wrface) : int
     {
         return $this->db->insert_word($wrface);
