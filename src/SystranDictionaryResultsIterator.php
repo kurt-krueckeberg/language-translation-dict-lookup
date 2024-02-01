@@ -8,14 +8,16 @@ class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator
    // public readonly int $lookedup_index;  
    // public readonly string $word_lookedup;
 
-   // public readonly bool $is_verb_family;
+    private bool $is_verb_family;
     
    // public readonly SystranVerbFamilyResult $verbFamilyResult;
     
     public function __construct(string $word_lookedup, array $matches, \Collator $collator) 
     {
+        $this->is_verb_family = false; // We start by assuming it is false.
+        
        if (count($matches) == 1) {
-
+           
            parent::__construct($matches);       
            return; 
        }  
@@ -36,9 +38,9 @@ class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator
        /*
          Determine whether we have a prefix-verbs family result; otherwise, we have individual lookup results returned.
         */
-
-       if ($this->isPrefixVerbFamily($matches, $main_verb_index, $word_lookedup)) {
+       $this->is_verb_family = $this->isPrefixVerbFamily($matches, $main_verb_index, $word_lookedup);
        
+       if ($this->is_verb_family) {       
 
            $matches = $this->merge_verbs($matches);           
  
