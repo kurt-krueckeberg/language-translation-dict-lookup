@@ -5,7 +5,7 @@ namespace Vocab;
 // More recent version
 class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator implements \Countable { 
     
-    public readonly int $lookedup_index;
+    public readonly int $lookedup_index;  // <-- TODO: Of what use is this?
     public readonly string $word_lookedup;
 
     public readonly bool $is_verb_family;
@@ -38,24 +38,22 @@ class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator
        if ($this->is_verb_family) { 
 
            $matches = $this->merge_verbs($matches);           
-       }
-       
-       $this->lookedup_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { //($GermanCollator)
+ 
+           $this->lookedup_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { //($GermanCollator)
                      
-           return $collator->compare($left['source']['lemma'], $key);
-       });
+                                          return $collator->compare($left['source']['lemma'], $key);
+                                         });
        
-       // Set this iterator class to the end of results, to one beyond last element.
-       $single_match = new SystranVerbFamilyResult($matches, $this->lookedup_index);
-
-       // Set this iterator class to the end of results, to one beyond last element.
-       if ($this->is_verb_family) {
+           // Set this iterator class to the end of results, to one beyond last element.
+           $single_match = new SystranVerbFamilyResult($matches, $this->lookedup_index);
            
            parent::__construct(array($single_match));
 
        } else {
 
-         parent::__construct($matches);       
+           $this->lookedup_index = $main_verb_index;
+
+           parent::__construct($matches);       
        }
     } 
     
