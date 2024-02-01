@@ -1,8 +1,6 @@
 # Issues
 
-Bug in current y.txt
-
-Try to rework logic of SystranDictionaryResultsIterator ctor.
+Fix bugs.
 
 ## Summary of prefix verb issues:
 
