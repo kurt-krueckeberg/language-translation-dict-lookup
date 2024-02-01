@@ -134,5 +134,7 @@ class Database extends DatabaseBase implements InserterInterface {
           
         $rc = $samplesTbl->insert($sentence, $prim_key);  
       }
+      
+      return true;
    }
 }

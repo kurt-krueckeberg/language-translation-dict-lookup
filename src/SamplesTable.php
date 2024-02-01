@@ -43,7 +43,7 @@ class SamplesTable  {
        */
       
       $id = (int) $this->pdo->lastInsertId();
-
+      
       return $id;
    }
 }
