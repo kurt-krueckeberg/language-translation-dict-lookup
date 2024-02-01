@@ -26,7 +26,7 @@ try {
  */
     $c = new Config();
         
-    if ($c->lookup_file())
+    if (!file_exists($c->lookup_file()))
         die($c->lookup_file() . " not found.\n");
 
     $file = new FileReader($c->lookup_file());
@@ -35,7 +35,7 @@ try {
    
     $db = new Database($c); 
 
-    $sentFetcher = new LeipzigSentenceFetcher();
+    $sentFetcher = new LeipzigSentenceFetcher($c);
     
     foreach ($file as $word) {
        
@@ -62,9 +62,9 @@ try {
             }
 
             // Fetch sample sentences for the word
-            $sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
+            //++$sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
 
-            $db->save_examples($word, $sent_iter);  
+            //++$db->save_examples($word, $sent_iter);  
         }       
     }
 
