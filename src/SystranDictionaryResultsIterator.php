@@ -5,16 +5,11 @@ namespace Vocab;
 // More recent version
 class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator implements \Countable { 
     
-   // public readonly int $lookedup_index;  
-   // public readonly string $word_lookedup;
-
     private bool $is_verb_family;
-    
-   // public readonly SystranVerbFamilyResult $verbFamilyResult;
     
     public function __construct(string $word_lookedup, array $matches, \Collator $collator) 
     {
-        $this->is_verb_family = false; // We start by assuming it is false.
+       $this->is_verb_family = false; // We start by assuming it is false.
         
        if (count($matches) == 1) {
            
@@ -22,7 +17,7 @@ class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator
            return; 
        }  
 
-       // Sort the array using German collation sequence
+       // To determine main_verb_index, first sort the array using German collation sequence
        $cmp = function (array $left, array $right) use($collator) { 
 
            return $collator->compare($left['source']['lemma'], $right['source']['lemma']);
@@ -36,7 +31,7 @@ class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator
        });
 
        /*
-         Determine whether we have a prefix-verbs family result; otherwise, we have individual lookup results returned.
+         Next, determine whether we have a prefix-verbs family result or individual results.
         */
        $this->is_verb_family = $this->isPrefixVerbFamily($matches, $main_verb_index, $word_lookedup);
        
