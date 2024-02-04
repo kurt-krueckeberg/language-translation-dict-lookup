@@ -7,9 +7,18 @@ is returned?......return SystranVerbResult and thereafter return SystranRelatedV
 
 2. Pass RelatedVerbFamilyResult to LeipzieFetcher::fetch() and handle RelatedVerbFamilyResult just like the `inser_verb_family()` does
 
-Prefer #1.
+Prefer #1. We can do:
 
+```php
 
+$leipzig = new LeipzigFetch($config);
+
+foreach ($systran_lookup_iter as $result) {
+   
+   $samples =  $leipzig->fetch($results->word_defined());
+   //...
+   $db->save...(
+```
 
 ## Summary of prefix verb issues:
 
