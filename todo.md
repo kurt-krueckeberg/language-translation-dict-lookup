@@ -1,6 +1,15 @@
 # Issues
 
-Test new SystranDictionaryResultIterator. Try to remove `SystranDictionaryResultsIterator::lookedup_index`
+When the samples are fetched, all verbs in a family are not fetched because I am not passing the lookup results iterator.
+
+1. Should I change the SystranDictionaryResultsIterator to return individual verb results when a family of prefix verbs definitions and conjugations
+is returned?......return SystranVerbResult and thereafter return SystranRelatedVerbResult.
+
+2. Pass RelatedVerbFamilyResult to LeipzieFetcher::fetch() and handle RelatedVerbFamilyResult just like the `inser_verb_family()` does
+
+Prefer #1.
+
+
 
 ## Summary of prefix verb issues:
 

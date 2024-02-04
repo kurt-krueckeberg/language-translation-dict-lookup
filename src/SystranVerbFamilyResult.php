@@ -11,9 +11,9 @@ readonly class SystranVerbFamilyResult extends SystranVerbResult implements Verb
    { 
       parent::__construct($matches[$main_verb_index], function() : string {
 
-         $conjugation = $this->matches[$this->main_verb_index]['source']['inflection'];
+      $conjugater = $this->matches[$this->main_verb_index]['source']['inflection'];
           
-         return str_replace(array("(", "/", ")"), array( "", ", ", ""), $conjugation); 
+         return str_replace(array("(", "/", ")"), array( "", ", ", ""), $conjugater); 
          });
 
       $this->main_verb_index = $main_verb_index;
