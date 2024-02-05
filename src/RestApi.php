@@ -34,7 +34,7 @@ class RestApi {
        
        $reason = $response->getReasonPhrase();
        
-       if ($code != 200)
+       //if ($code != 200)
 
        return $response->getBody()->getContents();
    }
