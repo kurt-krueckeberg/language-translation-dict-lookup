@@ -110,13 +110,19 @@ class SystranDictionaryResultsIterator implements \Countable, \Iterator {
                continue;
            }
           
-           // We found one, look is next verb is non-tild version  
+           // Check if the next verb is a non-tild version?
            $j = $i + 1;   
+           
+           if ($j == count($matches)) { // There is no next verb.
                
-           $same = strcmp(substr($matches[$i]['source']['lemma'], 0, $pos), substr($matches[$j]['source']['lemma'], 0, $pos)); 
-          
-           // If none found, save the tilde version in results[] 
-           if ($same != 0) {
+                  $results[] = $matches[$i];
+                  continue;
+           }
+                     
+           // Is the next verb a non-tilde version
+           $cmp = strcmp(substr($matches[$i]['source']['lemma'], 0, $pos), substr($matches[$j]['source']['lemma'], 0, $pos));
+                   
+           if (0 != $cmp) {
                
                $results[] = $matches[$i];
 
