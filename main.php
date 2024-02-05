@@ -41,19 +41,24 @@ try {
        
        foreach ($iter as $lookup_result)  {
            
-            $word = $lookup_result->word_defined();
-               
-            if (!$db->word_exists($word)) {
-                  
-                $db->save_lookup($lookup_result);
+          $word = $lookup_result->word_defined();
+             
+          if (!$db->word_exists($word)) {
+                
+              $db->save_lookup($lookup_result);
 
-                echo "$word saved to database.\n";
-            }
+              echo "$word saved to database.\n";
+          }
 
-            // Fetch sample sentences for the word
-            $sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
+          $sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
+          
+          if ($sent_iter == false) { 
+              
+               echo "No sample sentences available for '$word'\n";
+               continue;
+          }
 
-            $db->save_samples($word, $lookup_result);  
+          $db->save_samples($word, $sent_iter);  
         }       
     }
 
@@ -64,4 +69,4 @@ try {
 catch (Exception $e) {
 
       echo "Exception: message = {$e->getMessage()}.\nError Code = {$e->getCode()}.\nException code = {$e->getCode()}.\n";
-} 
+}
