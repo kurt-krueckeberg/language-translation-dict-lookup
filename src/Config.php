@@ -8,7 +8,7 @@ namespace Vocab;
  */
 class Config {
 
-   private static $lookup_file_name = "/home/kurt/n/y.txt";
+   private static $lookup_file_name = "/home/kurt/v/y.txt";
 
    private static $sentence_count = 5;
 
