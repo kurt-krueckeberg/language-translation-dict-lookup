@@ -29,6 +29,12 @@ class RestApi {
        $options['http_errors'] = false;
  
        $response = $this->client->request($method, $route, $options);
+       
+       $code = $response->getStatusCode();
+       
+       $reason = $response->getReasonPhrase();
+       
+       if ($code != 200)
 
        return $response->getBody()->getContents();
    }
