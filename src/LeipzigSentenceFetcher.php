@@ -2,6 +2,8 @@
 declare(strict_types=1);
 namespace Vocab;
 
+ ['http_errors' => false]
+
 class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
 
    private static $method = 'GET';
@@ -20,8 +22,10 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
          $contents = $this->request(self::$method, $route , ['query' => ['offset' => 0, 'limit' => $count]]);
 
       } catch (\Exception $e) {
-
-          return new NullIterator();
+          
+          throw $e;
+          
+          //--return new NullIterator();
       }   
 
       $obj = json_decode($contents);

@@ -23,6 +23,10 @@ class RestApi {
    protected function request(string $method, string $route, array $options = array()) : string
    {
        $options['headers'] = $this->headers;
+
+       //$options[] = ['http_errors' => false]; ???
+
+       $options['http_errors'] = false;
  
        $response = $this->client->request($method, $route, $options);
 
