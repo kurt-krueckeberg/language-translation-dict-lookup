@@ -12,7 +12,7 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
       parent::__construct($c, ProviderID::Leipzig_de);    
    }
    
-   public function fetch(string $word, int $count=3) : \Iterator //ResultsIterator
+   public function fetch(string $word, int $count=3) : \Iterator | false
    {
       $route = urlencode($word);
 
