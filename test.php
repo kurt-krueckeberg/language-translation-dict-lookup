@@ -50,8 +50,17 @@ try {
                 echo "$word saved to database.\n";
             }
 
+             
+            $rc = strcmp($word, 'herunterkommen');
+            
+            echo "Comparision of $word and herunterkommen is: $rc.\n";
+            
+            if ($rc == 0)
+                
+                $debug = 10;
             // Fetch sample sentences for the word
             $sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
+           
 
             $db->save_samples($word, $sent_iter);  
         }       

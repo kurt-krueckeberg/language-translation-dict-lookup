@@ -24,7 +24,7 @@ class RestApi {
    {
        $options['headers'] = $this->headers;
 
-       //$options[] = ['http_errors' => false]; ???
+       //$options[] = ['http_errors' => false]; 
 
        $options['http_errors'] = false;
  
