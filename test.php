@@ -41,24 +41,24 @@ try {
        
        foreach ($iter as $lookup_result)  {
            
-            $word = $lookup_result->word_defined();
-               
-            if (!$db->word_exists($word)) {
-                  
-                $db->save_lookup($lookup_result);
-
-                echo "$word saved to database.\n";
-            }
-
-            $sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
-            
-            if ($sent_iter == false) { 
+          $word = $lookup_result->word_defined();
+             
+          if (!$db->word_exists($word)) {
                 
-                 echo "No sample sentences available for '$word'\n";
-            }
-           
+              $db->save_lookup($lookup_result);
 
-            $db->save_samples($word, $sent_iter);  
+              echo "$word saved to database.\n";
+          }
+
+          $sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
+          
+          if ($sent_iter == false) { 
+              
+               echo "No sample sentences available for '$word'\n";
+               continue;
+          }
+
+          $db->save_samples($word, $sent_iter);  
         }       
     }
 
