@@ -76,7 +76,7 @@ class HtmlBuilder {
           
              $translation = $trans->translate($s, 'en', 'de');
              
-             $str .= "<p>" . $s . "</p><p>" . "test" . "</p>\n";
+             $str .= "<p>" . $s . "</p><p>" . $translation . "</p>\n";
           }
 
       $str .= "</section>\n";
