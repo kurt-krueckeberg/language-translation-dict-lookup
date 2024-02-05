@@ -53,7 +53,7 @@ try {
             // Fetch sample sentences for the word
             $sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
 
-            $db->save_samples($word, $lookup_result);  
+            $db->save_samples($word, $sent_result);  
         }       
     }
 
@@ -64,4 +64,4 @@ try {
 catch (Exception $e) {
 
       echo "Exception: message = {$e->getMessage()}.\nError Code = {$e->getCode()}.\nException code = {$e->getCode()}.\n";
-} 
+}
