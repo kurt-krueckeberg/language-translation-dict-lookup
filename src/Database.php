@@ -12,7 +12,8 @@ class Database extends DatabaseBase implements InserterInterface {
 
    private array $tables;
 
-   private $prim_keys = []; // maps words to primary keys
+   private $word_prim_keys = []; // maps words to primary keys
+   private $conjugated_tenses_prim_keys = []; // maps words to primary keys
    
    public function __construct(Config $config)
    {
@@ -38,27 +39,28 @@ class Database extends DatabaseBase implements InserterInterface {
      return $id;
    }
 
-   public function insert_verb(WordResultInterface $wrface) : int
+   public function insert_verb(WordResultInterface $wrface) : int // returns words.id
    {
      $word_id = $this->insert_word($wrface);
      
      $conjTensesTbl = $this->get_table('ConjugatedTensesTable');
 
      $conj_id = $conjTensesTbl->insert($wrface, $word_id);
+     
+     $this->conjugated_tenses_prim_keys[$wrface->word_defined()] = $conj_id;  
 
      $conjugatedVerbsTbl = $this->get_table('ConjugatedVerbsTable');
 
      $conjugatedVerbsTbl->insert($conj_id, $word_id);
-
-     return $conj_id;
+     
+     return $word_id;
    }
 
-   public function insert_related_verbs(WordResultInterface $wrface) : int
+   public function insert_related_verb(WordResultInterface $wrface) : int
    {
-      $conj_id = $this->insert_verb($wrface);
+      $word_id = $this->insert_word($wrface);
 
-      $related = [];
-
+      /* 
       foreach($wrface as $key => $verbResult) {
 
          echo "Verb to be inserted: " . $verbResult->word_defined() . ".\n"; 
@@ -67,13 +69,13 @@ class Database extends DatabaseBase implements InserterInterface {
 
          $related[] = $id;
       }
- 
-      $conjugatedVerbsTbl = $this->get_table('ConjugatedVerbsTable');
+      */
 
-      foreach ($related as $word_id) {
-         
-          $conjugatedVerbsTbl->insert($conj_id, $word_id);
-      }  
+      $conjugatedVerbsTbl = $this->get_table('ConjugatedVerbsTable');
+       
+      $conj_id = $this->conjugated_tenses_prim_keys[$wrface->get_main_verb()]; 
+  
+      $conjugatedVerbsTbl->insert($conj_id, $word_id);
       
       return $conj_id;
    }
@@ -88,7 +90,7 @@ class Database extends DatabaseBase implements InserterInterface {
 
      $word_id = $word_tbl->insert($wrface); 
 
-     $this->prim_keys[$wrface->word_defined()] = $word_id;
+     $this->word_prim_keys[$wrface->word_defined()] = $word_id;
      
      foreach($wrface->definitions() as $defn) {
 
@@ -128,7 +130,7 @@ class Database extends DatabaseBase implements InserterInterface {
    {
       $samplesTbl = new SamplesTable($this->pdo);
 
-      $prim_key = $this->prim_keys[$word];
+      $prim_key = $this->word_prim_keys[$word];
 
       foreach ($iter as $sentence) {
           

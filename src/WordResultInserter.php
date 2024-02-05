@@ -31,8 +31,8 @@ class WordResultInserter implements InserterInterface {
         return $this->db->insert_noun($wrface);
     }
     
-    function insert_related_verbs(WordResultInterface $wrface) : int
+    function insert_related_verb(WordResultInterface $wrface) : int
     {
-        return $this->db->insert_related_verbs($wrface);
+        return $this->db->insert_related_verb($wrface);
     }
 }

@@ -2,60 +2,63 @@
 declare(strict_types=1);
 namespace Vocab;
 
-// More recent version
-class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator implements \Countable { 
-    
+class SystranDictionaryResultsIterator implements \Countable, \Iterator { 
+
     private bool $is_verb_family;
+    private int  $main_verb_index;
+
+    private \Iterator $iter;
     
     public function __construct(string $word_lookedup, array $matches, \Collator $collator) 
     {
        $this->is_verb_family = false; // We start by assuming it is false.
         
-       if (count($matches) == 1) {
+       if (count($matches) > 1) {
            
-           parent::__construct($matches);       
-           return; 
-       }  
-
-       // Remainder of code is to determine if we have a family of prefix vebs (and one main verb),
-       // To determine main_verb_index, first sort the array using German collation sequence
-       $cmp = function (array $left, array $right) use($collator) { 
-
-           return $collator->compare($left['source']['lemma'], $right['source']['lemma']);
-       };
-
-       usort($matches, $cmp);
-       
-       $main_verb_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { 
-                     
-           return $collator->compare($left['source']['lemma'], $key);
-       });
-
-       /*
-         Next, determine whether we have a prefix-verbs family result or individual results.
-        */
-       $this->is_verb_family = $this->isPrefixVerbFamily($matches, $main_verb_index, $word_lookedup);
-       
-       if ($this->is_verb_family) {       
-
-           $matches = $this->merge_verbs($matches);           
- 
-           $lookedup_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { //($GermanCollator)
-                     
-                                          return $collator->compare($left['source']['lemma'], $key);
-                                         });
-       
-           // Set this iterator class to the end of results, to one beyond last element.
-           $single_match = new SystranVerbFamilyResult($matches, $lookedup_index);
+           // Remainder of code is to determine if we have a family of prefix vebs (and one main verb),
+           // To determine main_verb_index, first sort the array using German collation sequence
+           $cmp = function (array $left, array $right) use($collator) { 
+    
+               return $collator->compare($left['source']['lemma'], $right['source']['lemma']);
+           };
+    
+           usort($matches, $cmp);
            
-           parent::__construct(array($single_match));
-       } 
-    }
+           $main_verb_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { 
+                         
+               return $collator->compare($left['source']['lemma'], $key);
+           });
+    
+           /*
+             Next, determine whether we have a prefix-verbs family result or individual results.
+            */
+           $this->is_verb_family = $this->isPrefixVerbFamily($matches, $main_verb_index, $word_lookedup);
+           
+           if ($this->is_verb_family) {       
+    
+               $matches = $this->merge_verbs($matches);           
+     
+               $this->main_verb_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { //($GermanCollator)
+                         
+                                              return $collator->compare($left['source']['lemma'], $key);
+                                             });
+           
+               $this->iter = new VerbFamilyIterator($matches, $this->main_verb_index); 
 
-    function count() : int
-    {
-        return $this->iter->count();
-    }
+           } else {
+
+               $this->iter = new SimpleDictionaryResultsIterator($matches); 
+           } 
+       } else {
+    
+          $this->iter = new SimpleDictionaryResultsIterator($matches); 
+       }
+   }
+
+   function count() : int
+   {
+       return $this->iter->count();
+   }
  
     /*
      Determine if the verb looked up, whose index in $matches is $this->lookedup_index, has other related verbs:
@@ -168,17 +171,31 @@ class SystranDictionaryResultsIterator extends AbstractDictionaryResultsIterator
        $all_definitions = array_merge($defns_nontilde, $additional_defns);
        
        return $all_definitions; 
-    }
- 
-   protected function get_current(mixed $current) : WordResultInterface | false
+   }
+
+   function rewind()
    {
-      if ($this->is_verb_family == false)
+     return $this->iter->rewind();
+   }
 
-         return SystranWordResult::create($current); 
+   function current() : SystranWordResult | false
+   {
+     return $this->iter->current();    
+   }
 
-      else {
-          
-         return $current;
-      }
+   function key() : int
+   {
+     return $this->iter->key();
+    
+   }
+
+   function valid() : bool
+   {
+     return $this->iter->valid();    
+   }
+
+   function next() : void
+   {
+     $this->iter->next();
    }
 }

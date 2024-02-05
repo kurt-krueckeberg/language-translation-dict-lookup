@@ -66,7 +66,7 @@ class SystranTranslator extends RestApi implements TranslateInterface, Dictionar
       exact_match = true will not return prefix verb variants or noun forms of verbs, like Aussehen for aussehen.
     */
 
-   final public function lookup(string $word, string $src, string $dest, bool $exact_match=false) : AbstractDictionaryResultsIterator                                                                                                    
+   final public function lookup(string $word, string $src, string $dest, bool $exact_match=false) : \Iterator 
    {      
       static $lookup = array('method' => "POST", 'route' => "resources/dictionary/lookup");
 
@@ -93,12 +93,14 @@ class SystranTranslator extends RestApi implements TranslateInterface, Dictionar
        */
 
       // Sort the array $abased $a['source']['lemma'] use German collation sequence
-      $cmp = function (array $left, array $right)  { //($GermanCollator)*/ 
+      /*
+      $cmp = function (array $left, array $right)  { //($GermanCollator) 
 
            return $this->collator->compare($left['source']['lemma'], $right['source']['lemma']);
       };
+      */
 
-      usort($matches, $cmp);
+      //usort($matches, $cmp);
       
       return new SystranDictionaryResultsIterator($word, $matches, $this->collator);
     }

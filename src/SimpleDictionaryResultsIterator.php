@@ -2,27 +2,34 @@
 declare(strict_types=1);
 namespace Vocab;
 
-abstract class AbstractDictionaryResultsIterator implements \Iterator, \SeekableIterator {
+class SimpleDictionaryResultsIterator implements \Iterator, \Countable {
 
     protected \ArrayIterator $iter;
-
-    abstract protected function get_current(mixed $match) : WordResultInterface | false;
 
     public function __construct(array $arr)
     {
         $this->iter = new \ArrayIterator($arr);
     }
 
+    function count() : int
+    {
+       return $this->iter->count();
+    }
+
     function current() : WordResultInterface | false
     {
         $current = $this->iter->current(); 
 
-        return ($current === false) ? $current : $this->get_current($current);
-    }
+        if ($current === false) return $current;
 
-    public function seek(int $i)
-    {
-       $this->iter->seek($i);  
+        return match($current['source']['pos']) {
+
+             'noun' => new SystranNounResult($current),
+             'verb' => new SystranVerbResult($current, function() use($current) : string { 
+                    return $current['source']['inflection'];}
+               ),
+             default => new SystranWordResult($current)
+         };
     }
 
     function next() : void

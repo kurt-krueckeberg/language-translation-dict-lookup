@@ -57,18 +57,9 @@ try {
            
             $word = $result->word_defined();
                
-            if (!$db->word_exists($word)) {
-                  
-                $db->save_lookup($result);
-
+    
                 echo "$word saved to database.\n";
-            }
-
-            // Fetch sample sentences for the word
-            //--$sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
-
-            //--$db->save_samples($word, $sent_iter);  
-        }       
+      }
     }
 
 } catch (PDOException $e) {
