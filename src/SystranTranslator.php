@@ -52,7 +52,9 @@ class SystranTranslator extends RestApi implements TranslateInterface, Dictionar
        
        $contents = $this->request($trans['method'], $trans['route'], ['query' => $query]); 
 
-       return json_decode($contents);
+       $std = json_decode($contents);
+       
+       return $std->outputs[0]->output;       
    }
 
    private function logError(string $err) : void

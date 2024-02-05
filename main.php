@@ -7,7 +7,6 @@ use Vocab\{Database, SystranTranslator, LeipzigSentenceFetcher, DbTablesMediator
 
 include 'vendor/autoload.php';
 
-
 try {
     
     $c = new Config();
@@ -43,12 +42,15 @@ try {
            
           $word = $lookup_result->word_defined();
              
-          if (!$db->word_exists($word)) {
-                
-              $db->save_lookup($lookup_result);
+          if ($db->word_exists($word)) {
 
-              echo "$word saved to database.\n";
+              echo "Word $word already in database.\n";
+              continue;
           }
+                
+          $db->save_lookup($lookup_result);
+
+          echo "$word saved to database.\n";
 
           $sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
           
