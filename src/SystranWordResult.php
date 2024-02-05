@@ -39,7 +39,7 @@ readonly class SystranWordResult implements WordResultInterface, VisitorInterfac
 
      // strip out any tilde or anything that is not a-zaööü. Keep ' ' for  reflexive verbs like
      // 'sich vorstellen'
-     return preg_replace('/[^A-ZÖÄÜa-zaöü ]/', '', $tmp); 
+     return preg_replace('/[^A-ZÖÄÜa-zaäöü ]/', '', $tmp); 
    }
 
    function definitions() : AbstractDefinitionsIterator

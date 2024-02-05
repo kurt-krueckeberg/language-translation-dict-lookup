@@ -15,7 +15,7 @@ class SystranDefinitionsIterator extends AbstractDefinitionsIterator {
   
        // strip out any tilde or anything that is not a-zaööü. Keep ' ' for  reflexive verbs like
        // 'sich vorstellen'
-       return preg_replace('/[^A-ZÖÄÜa-zaöü ]/', '', $target['source']['lemma']); 
+       return preg_replace('/[^A-ZÖÄÜa-zaäöü ]/', '', $target['source']['lemma']); 
     }
 
     protected function get_current(array $target) : DefinitionInterface | false
