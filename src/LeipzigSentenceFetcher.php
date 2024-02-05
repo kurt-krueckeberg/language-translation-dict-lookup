@@ -16,11 +16,10 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
    {
       $route = urlencode($word);
 
-      try {
+      $contents = $this->request(self::$method, $route , ['query' => ['offset' => 0, 'limit' => $count]]);
 
-         $contents = $this->request(self::$method, $route , ['query' => ['offset' => 0, 'limit' => $count]]);
-
-      } catch (Psr7\Message $e) {
+      /*
+      catch (Psr7\Message $e) {
           
            echo Psr7\Message::toString($e->getRequest());
            echo Psr7\Message::toString($e->getResponse());
@@ -30,6 +29,11 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
           
           echo $e->getMessage();
       }
+       * 
+       */
+      
+      if ($contents === false)
+          return $contents;
 
       $obj = json_decode($contents);
 

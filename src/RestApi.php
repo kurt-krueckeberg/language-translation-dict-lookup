@@ -20,7 +20,7 @@ class RestApi {
        $this->headers =  $params['headers'];
    }
 
-   protected function request(string $method, string $route, array $options = array()) : string
+   protected function request(string $method, string $route, array $options = array()) : string | false
    {
        $options['headers'] = $this->headers;
 
@@ -32,10 +32,15 @@ class RestApi {
        
        $code = $response->getStatusCode();
        
-       $reason = $response->getReasonPhrase();
+       //$reason = $response->getReasonPhrase();
        
-       //if ($code != 200)
+       if ($code != 200) {
+           
+          return false;
+          
+       } else {
 
-       return $response->getBody()->getContents();
+         return $response->getBody()->getContents();
+       }
    }
 }
