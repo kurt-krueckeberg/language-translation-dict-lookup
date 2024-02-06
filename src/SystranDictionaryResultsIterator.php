@@ -104,7 +104,7 @@ class SystranDictionaryResultsIterator implements \Countable, \Iterator {
            $pos = strpos($matches[$i]['source']['lemma'], "~");
 
            // If none found, save the prefix verb in results[]. 
-           if ($pos === false) { 
+           if ($pos === false || count($matches) == $i + 1) { 
                
                $results[] = $matches[$i];
                continue;
@@ -113,12 +113,6 @@ class SystranDictionaryResultsIterator implements \Countable, \Iterator {
            // Check if the next verb is a non-tild version?
            $j = $i + 1;   
            
-           if ($j == count($matches)) { // There is no next verb.
-               
-                  $results[] = $matches[$i];
-                  continue;
-           }
-                     
            // Is the next verb a non-tilde version
            $cmp = strcmp(substr($matches[$i]['source']['lemma'], 0, $pos), substr($matches[$j]['source']['lemma'], 0, $pos));
                    
