@@ -1,0 +1,115 @@
+body {
+ color: #000000;  
+ background-color: #ffffff;
+}
+
+section {
+
+  font-family: 'Lato Medium', Arial, sans-serif;
+  font-size: .75em;
+  display: grid; 
+  width: 100%;
+  margin: auto auto;
+  grid-template-columns: 1fr 1fr; 
+  column-gap: 10px;
+
+  padding: 10px; 
+}
+
+section.definitions, dl {
+ margin-bottom: 0em;
+ margin-top: 0em;
+ padding-bottom: 0em;
+}
+
+section.samples {
+  border-bottom: 1px solid #4f4f4f;
+}
+
+section p { 
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-right: 6px;
+  line-height: 1.4em; 
+  margin: 2px 0;     
+}
+
+.pos {
+  font-weight: bold;
+}
+
+dl.hwd > dt > ul {
+
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+dl.hwd > dt > ul > li:first-child {
+  font-style: italic;
+  margin-right: .4em; 
+}
+
+dl.hwd > dt > ul > li {
+  display: inline;
+}
+
+/* End prospective new code */
+
+/*
+ Use this `:not()` selector to select dd's that do not have a class set to 'expessions':
+*/
+dl.hwd > dd:not(.expressions) {
+  display: list-item;
+}
+
+dl.hwd >  dd {
+ margin-left: 20px;
+ margin-top: .6em;
+ margin-bottom: 0em;
+}
+
+/* NOTE:  From https://www.the-art-of-web.com/css/format-dl/  example #5 using Flexbox. */
+dd.expressions > dl {
+    display: flex;
+    flex-flow: row wrap;
+    margin-left: 20px;
+}
+
+dd.expressions > dl >  dt {
+    flex-basis: 45%;
+    padding: 2px 4px;
+}
+
+dd.expression > dl > dd {
+    flex-basis: 45%;
+    flex-grow: 1;
+    margin: 0;
+    padding: 2px 4px;
+
+  list-style-type: none;
+}
+
+h1, h2, h3, h4, h5 {
+
+  font-family: 'Karla Semibold', 'Open Sans', Arial, sans-serif;
+}
+
+table {
+ /* 
+  font-family: Arial, Helvetica, sans-serif;
+  */
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table td, table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+}
