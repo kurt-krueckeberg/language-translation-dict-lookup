@@ -1,3 +1,3 @@
 # Issues
 
-Debug samples code
+Take CSS course.
