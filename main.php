@@ -14,7 +14,6 @@ try {
     if (!file_exists($c->lookup_file())) {
         
         die($c->lookup_file() . " not found.\n");
-        
     }
 
     $file = new FileReader($c->lookup_file());
@@ -42,15 +41,12 @@ try {
            
           $word = $lookup_result->word_defined();
              
-          if ($db->word_exists($word)) {
-
-              echo "Word $word already in database.\n";
-              continue;
-          }
+          if (!$db->word_exists($word)) {
                 
-          $db->save_lookup($lookup_result);
+              $db->save_lookup($lookup_result);
 
-          echo "$word saved to database.\n";
+              echo "$word saved to database.\n";
+          }
 
           $sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
           
