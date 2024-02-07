@@ -18,33 +18,18 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
 
       $contents = $this->request(self::$method, $route , ['query' => ['offset' => 0, 'limit' => $count]]);
 
-      /*
-      catch (Psr7\Message $e) {
-          
-           echo Psr7\Message::toString($e->getRequest());
-           echo Psr7\Message::toString($e->getResponse());
-          
-          //--return new NullIterator();
-      }  catch( \Exception $e) {
-          
-          echo $e->getMessage();
-      }
-       * 
-       */
-      
       if ($contents === false)
           return $contents;
 
       $obj = json_decode($contents);
 
-     /*
-       $obj contains:
+     /* $obj contains:
        {
          "count": some_number_her,
-         "sentences": [ // SentenceInfomration json object.
+         "sentences": [ // Array of SentenceInfomration json objects.
            {
              "id": "string",
-             "sentence": "string",
+             "sentence": "string",  <---- The sample sentence
              "source": {
                "date": "2022-04-13T12:40:23.904Z",
                "id": "string",
@@ -53,13 +38,8 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
            }
          ]
        }
-       SentenceInformation is a 'stdClass' containing:   
-           1. id  => string
-           2. sentence => the actual string text of the sample sentence
-           3. source => ["daate" => ..., "id" => string, "url" => string]
-        */
-
-      // The iterator returns the 'sentence' member (of the SentenceInformation objects).
+      */
+      // The iterator returns each 'sentence' member of the SentenceInformation objects array.
       return new SentencesIterator( $obj->sentences, function ($x) {
               return $x->sentence; } 
           ); 

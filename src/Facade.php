@@ -27,7 +27,7 @@ class Facade {
       $this->c = $c; 
    }
   
-   function db_insert() int
+   function db_insert() : int
    {
       try {
        
@@ -69,17 +69,17 @@ class Facade {
       }
    } 
  
-   private function insert_samples(string $word)
+   private function insert_samples(string $word) : bool
    { 
       $sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
       
       if ($sent_iter == false) { 
           
            echo "No sample sentences available for '$word'\n";
-           continue;
+           return false;
       }
-   
-      $db->save_samples($word, $sent_iter);  
+
+      $this->db->save_samples($word, $sent_iter);  
    }
 
     // Read data from database for those words found and create web page
