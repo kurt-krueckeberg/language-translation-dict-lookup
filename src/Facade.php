@@ -14,7 +14,7 @@ class Facade {
 
    private Config $c;
 
-   function __construct(string $fname, Config $c)
+   function __construct(Config $c)
    {
       $this->file = new FileReader($c->lookup_file());
       
@@ -43,7 +43,7 @@ class Facade {
            }
            
            echo "$word results:\n";
-           
+
            foreach ($iter as $lookup_result)  {
                
               $word = $lookup_result->word_defined();
@@ -82,9 +82,10 @@ class Facade {
       $db->save_samples($word, $sent_iter);  
    }
 
- 
+    // Read data from database for those words found and create web page
     function create_html() : void
     {
+ 
     
     }
  }
