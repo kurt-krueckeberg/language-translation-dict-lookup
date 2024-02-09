@@ -71,7 +71,7 @@ class Facade {
  
    private function insert_samples(string $word) : bool
    { 
-      $sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
+      $sent_iter = $this->sentFetcher->fetch($word, $c->sentence_count());
       
       if ($sent_iter == false) { 
           
@@ -82,6 +82,13 @@ class Facade {
       $this->db->save_samples($word, $sent_iter);  
    }
 
+   private function getWordResult($word) : WordResultInterface
+   {
+      $this->db->word_exists($word); 
+
+      //...finish
+   }
+
     // Fetch words and their definitions, pos, inflections, etc from database, and for those words found, create a web page
     function create_html(string $filename) : void
     {
@@ -89,12 +96,13 @@ class Facade {
 
        foreach($file as $word) {
 
-        $wrface = $this->getWordResult($word);
-  
-        $cnt = $this->html->add_definitions($wrface); 
-
-        $sentIter = $this->getSamples($wrface);
+         $wrface = $this->getWordResult($word);
+   
+         $cnt = $this->html->add_definitions($wrface); 
  
-        $cnt = $this->html->add_samples($word, $sentIter, $this->sys); 
+         $sentIter = $this->getSamples($wrface);
+  
+         $cnt = $this->html->add_samples($word, $sentIter, $this->sys); 
+      }
     }
  }
