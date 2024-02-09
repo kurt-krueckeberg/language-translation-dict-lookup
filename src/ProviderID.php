@@ -13,6 +13,7 @@ enum ProviderID implements ProviderInterface {
    case  Collins;
    case  Pons;
    case  iTranslate;
+   case  Lingua;
    
    public function get_provider() : string
    {
@@ -21,11 +22,10 @@ enum ProviderID implements ProviderInterface {
            ProviderID::Leipzig_es  => "leipzig_es", 
            ProviderID::Systran  => "systran",
            ProviderID::Azure    => "azure",
-           ProviderID::Ibm      => "ibm",
            ProviderID::Deepl    => "deepl",
            ProviderID::Collins  => "collins",
            ProviderID::Pons     => "pons",
-           ProviderID::iTranslate  => "itranslate"
+           ProviderID::Lingua   => "lingua",
        };
    }
 }
