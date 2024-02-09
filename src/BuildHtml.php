@@ -31,7 +31,7 @@ static private string $out_end = <<<html_end
 </html>
 html_end;
 
-    public function __construct(string $ofname, string $src, string $dest)
+    public function __construct(string $html_filename, string $src, string $dest)
     { 
        $this->b_saved = false;
        
@@ -39,7 +39,7 @@ html_end;
        
        $this->dest = $dest;
 
-       $this->out = new File($ofname . ".html", "w"); 
+       $this->out = new File($html_filename . ".html", "w"); 
 
        $this->html_builder = new HtmlBuilder();
 

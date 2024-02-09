@@ -83,14 +83,18 @@ class Facade {
    }
 
     // Fetch words and their definitions, pos, inflections, etc from database, and for those words found, create a web page
-    function create_html(FileReader $file) : void
+    function create_html(string $filename) : void
     {
+       $this->html = new BuildHtml($filename, "de", "en");
+
        foreach($file as $word) {
 
-        $html = new BuildHtml(/*$argv[2]*/ "output", "de", "en");
+        $wrface = $this->getWordResult($word);
   
-        $cnt = $html->add_definitions(???$iter); 
+        $cnt = $this->html->add_definitions($wrface); 
+
+        $sentIter = $this->getSamples($wrface);
  
-        $cnt = $html->add_samples($word, $iter, $sys); 
+        $cnt = $this->html->add_samples($word, $sentIter, $this->sys); 
     }
  }
