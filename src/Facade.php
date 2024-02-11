@@ -82,9 +82,9 @@ class Facade {
       $this->db->save_samples($word, $sent_iter);  
    }
 
-   private function getWordResult($word) : WordResultInterface
+   private function fetch_word($word) : WordResultInterface
    {
-      $this->db->word_exists($word); 
+      $wrface = $this->db->fetch_word($word); 
 
       //...finish
    }

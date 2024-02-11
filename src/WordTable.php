@@ -2,48 +2,63 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class WordTable implements TableInsertInterface {  
+/*
+ * Try to find the word. 
+ * If found, if noun, get gender and plural; if verb, get conjugation.
+ * 
+ * Return a base class similiar to WordResultInterface -- which NounResultInterface and VerbResultInterface extend.
+ * Remove 'Result' from the name of these interfaces.
+ * 
+ */
+
+class FetchWord  {  
    
    //private \PDO $pdo;
-   private \PDOStatement $insert_stmt; 
-   private static $sql_insert = "insert into words(word, pos) values(:word, :pos)";
+   private \PDOStatement $word_select; 
+   private static $sql_wordselect = "select from words as w where w.word=:word";
 
    private string $word = '';
-   private string $pos = '';
-
+   
    private \PDO $pdo;
+   
+   private POS $pos;
 
    public function __construct(\PDO $pdo)
    {
       $this->pdo = $pdo;
 
-      $this->insert_stmt = $pdo->prepare(self::$sql_insert);
+      $this->word_select = $pdo->prepare(self::$sql_wordselect);
       
-      $this->insert_stmt->bindParam(':word', $this->word, \PDO::PARAM_STR);
-     
-      $this->insert_stmt->bindParam(':pos', $this->pos, \PDO::PARAM_STR);     
+      $this->insert_stmt->bindParam(':word', $this->word, \PDO::PARAM_STR);     
    }
 
-   public function insert(WordResultInterface $wrface, int $id=-1) : int
+   function find(string $word) : WordResultInterface | false
    {
-      $this->word = $wrface->word_defined();
+      $this->word = $word;
       
-      $this->pos  = $wrface->get_pos()->getString();
+      $rc = $this->word_select->execute();
       
-      $rc = $this->insert_stmt->execute();
-
-      /*
-      Note: lastInsertId() does not return the primary key; instead it returns the name of
-      the sequence object -- whatever that is -- from which the ID should be returned.
+      if ($rc == false)
+          return false;
       
-      Someone added this comment concerning MySQL:
+      $word = $this-word_select->fetch(\PDO::FETCH_ASSOC);
       
-      "With no argument, LAST_INSERT_ID() returns a BIGINT UNSIGNED (64-bit) value representing the first automatically generated value
-      successfully inserted for an AUTO_INCREMENT column as a result of the most recently executed INSERT statement."
-       */
+      $this->pos = POS::fromString($word['pos']);
       
-      $id = (int) $this->pdo->lastInsertId();
-
-      return $id;
+      switch ($word['pos']) {
+          
+          'noun':
+              
+              break;
+          
+          'verb':
+              // select verb inflection from verb 
+              break;
+          
+          default:
+              break;
+      }
+      
+      
    }
 }

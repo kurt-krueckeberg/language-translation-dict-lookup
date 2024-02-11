@@ -21,7 +21,7 @@ class LinguaTranslate extends RestApi implements TranslateInterface, DictionaryI
 
        $query = array();
        
-       $query['langpair'] = strtolower($from) . '-'  strtolower($to);;
+       $query['langpair'] = strtolower($from) . '-' .  strtolower($to);
        
        $query['query'] = $text;
        
