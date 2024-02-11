@@ -1,3 +1,3 @@
 # Issues
 
-Take CSS course.
+See comments in WordFetch.php

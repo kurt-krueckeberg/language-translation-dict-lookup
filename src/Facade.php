@@ -1,5 +1,7 @@
 <?php
 declare(strict_types=1);
+namespace Vocab;
+
 use \SplFileObject as File;
 
 class Facade {
@@ -82,7 +84,7 @@ class Facade {
       $this->db->save_samples($word, $sent_iter);  
    }
 
-   private function fetch_word($word) : WordResultInterface
+   private function fetch_word($word) : WordInterface
    {
       $wrface = $this->db->fetch_word($word); 
 

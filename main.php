@@ -3,7 +3,7 @@
 declare(strict_types=1);
 use \SplFileObject as File;
 
-use Vocab\{FileReader, Config};
+use Vocab\{FileReader, Config, Facade};
 
 include 'vendor/autoload.php';
    
