@@ -128,7 +128,7 @@ class Database extends DatabaseBase implements InserterInterface {
       return $this->tables[$className];
    }
 
-   private function fetch_word($word) : WordInterface | false
+   function fetch_word($word) : WordInterface | false
    {
       $fetch_word = $this->get_table('FetchWord');
 
