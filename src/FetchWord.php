@@ -13,8 +13,11 @@ class FetchWord  {
    private static $sql_nounselect = "select w.id, w.pos, n.gender, n.plural from 
                                           words as w
                                      join
-                                          nouns_data as n
-                                     on w.id=nouns.word_id
+                                          nouns_data as n on w.id=nouns.word_id
+                                     join
+                                          defns on defns.word_id=w.id
+                                     left join
+                                          exprs on exprs.defn_id=defns.id 
                                      where w.id=:id";
 
    private static $sql_verbselect = "select w.id as word_id, w.pos, tenses.conjugation, defns.id, defns.defn, exprs.id as exprs_id, exprs.expr, translated_expr from
@@ -25,7 +28,7 @@ class FetchWord  {
                                          conjugated_tenses as tenses on tenses.id=v.conj_id
                                      join 
                                           defns on defns.word_id=w.id
-                                     join
+                                     left join
                                           exprs on exprs.defn_id=defns.id 
                                      where w.id=:id"; 
                                            
