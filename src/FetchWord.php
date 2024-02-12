@@ -32,7 +32,7 @@ class FetchWord  {
    
    private POS $pos;
    
-   private int $id;
+   private int $id = -1 ;
 
    public function __construct(\PDO $pdo)
    {
@@ -42,11 +42,11 @@ class FetchWord  {
       
       $this->select_word->bindParam(':word', $this->word, \PDO::PARAM_STR);     
 
-      $this->select_noun->prepare(self::$sql_nounselect);
+      $this->select_noun = $pdo->prepare(self::$sql_nounselect);
               
       $this->select_noun->bindParam(':id', $this->id, \PDO::PARAM_INT);
               
-      $this->select_verb->prepare(self::$sql_verbselect);
+      $this->select_verb = $pdo->prepare(self::$sql_verbselect);
               
       $this->select_verb->bindParam(':id', $this->id, \PDO::PARAM_INT);
    }
