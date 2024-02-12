@@ -10,20 +10,21 @@ class FetchWord  {
 
    private static $sql_wordselect = "select pos from words as w where w.word=:word";
 
-   private static $sql_nounselect = "select words.pos, nouns.gender, nouns.plural from 
-                                          words
+  // TODO: Add definitions and expressions to these two select statements.
+   private static $sql_nounselect = "select w.id, w.pos, n.gender, n.plural from 
+                                          words as w
                                      join
-                                          nouns_data as nouns
+                                          nouns_data as n
                                      on words.:id=nouns.word_id";
 
-   private static $sql_verbselect = "select w.pos, v.conjugation from
+   private static $sql_verbselect = "select w.id, w.pos, v.conjugation from
                                           words as w
                                      join 
                                          conjugated_verbs as v
                                      on  w.:id=v.word_id
                                      join
                                          conjugated_tenses as tenses
-                                     on  tenses.id=v.conj_id"; // TODO: Add definitions and expressions to this.
+                                     on  tenses.id=v.conj_id"; 
                                            
    private string $word = '';
    
