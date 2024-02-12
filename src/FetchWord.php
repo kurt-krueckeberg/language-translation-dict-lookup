@@ -65,7 +65,7 @@ class FetchWord  {
       
       $this->pos = POS::fromString($row['pos']);
       
-      switch ($word['pos']) {
+      switch ($row['pos']) {
           
           case 'noun':
               $this->id = $row['id'];
