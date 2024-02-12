@@ -95,7 +95,7 @@ class Facade {
 
        foreach($this->file as $word) {
 
-         $wrface = $this->db->getWordResult($word);
+         $wrface = $this->db->fetch_word($word);
    
          $cnt = $this->html->add_definitions($wrface); 
  
