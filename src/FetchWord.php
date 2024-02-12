@@ -22,7 +22,7 @@ class FetchWord  {
 
    private static $sql_verbselect = "select w.id as word_id, w.pos, tenses.conjugation, defns.id, defns.defn, exprs.id as exprs_id, exprs.expr, translated_expr from
                                           words as w
-                                                                          join 
+                                     join 
                                          conjugated_verbs as v  on w.id=v.word_id
                                      join
                                          conjugated_tenses as tenses on tenses.id=v.conj_id
