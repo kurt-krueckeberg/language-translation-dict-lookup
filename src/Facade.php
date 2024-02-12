@@ -100,7 +100,7 @@ class Facade {
     {
        $this->html = new BuildHtml($filename, "de", "en");
 
-       foreach($file as $word) {
+       foreach($this->file as $word) {
 
          $wrface = $this->getWordResult($word);
    
