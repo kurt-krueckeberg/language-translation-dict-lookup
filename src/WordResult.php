@@ -8,7 +8,10 @@ abstract readonly class WordResult implements WordInterface, VisitorInterface {
    public string $word;
    public Pos $pos;
 
-   function __construct(string $word, string $pos)
+   /*
+
+    */
+   function __construct(string $word, string $pos, callable $defnsIter???)
    { 
       $this->word = $match;
       
@@ -29,6 +32,9 @@ abstract readonly class WordResult implements WordInterface, VisitorInterface {
      return preg_replace('/[^A-ZÖÄÜa-zaäöü ]/', '', $tmp); 
    }
 
+   /*
+      Dfinitions contain expressions
+    */
    function definitions() : AbstractDefinitionsIterator
    {
       return $this->get_definitions();      
