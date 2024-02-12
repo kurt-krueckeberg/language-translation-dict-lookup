@@ -61,24 +61,32 @@ class FetchWord  {
       if ($rc == false)
           return false;
       
-      $word = $this->select_word->fetch(\PDO::FETCH_ASSOC);
+      $row = $this->select_word->fetch(\PDO::FETCH_ASSOC);
       
-      $this->pos = POS::fromString($word['pos']);
+      $this->pos = POS::fromString($row['pos']);
       
       switch ($word['pos']) {
           
           case 'noun':
-              $this->id = $word['id'];
-              $result = $this->select_noun->execute();
+              $this->id = $row['id'];
+              
+              if (true !== $result = $this->select_noun->execute())
+                     throw new \LogicException("Could not find noun gender and plural for $word.\n") ;
+              
+              $result = $this->select_noun->fetch(\PDO::FETCH_ASSOC);
               
               //TODO: Create NounInterface result
               break;
           
           case 'verb':
               
-              $this->id = $word['id'];
-              $result = $this->select_verb->execute();
+              $this->id = $row['id'];
+              if (true !== $result = $this->select_verb->execute())
+                     throw new \LogicException("Could not find verb conjuation for $word.\n") ;
               
+              $result = $this->select_verb->fetch(\PDO::FETCH_ASSOC);
+              
+              $conj = $result['conjuation'];
               //TODO: Create VerbInterface result
               
               break;
