@@ -8,9 +8,6 @@ abstract readonly class WordResult implements WordInterface, VisitorInterface {
    public string $word;
    public Pos $pos;
 
-   /*
-
-    */
    function __construct(string $word, string $pos, callable $defnsIter???)
    { 
       $this->word = $match;
