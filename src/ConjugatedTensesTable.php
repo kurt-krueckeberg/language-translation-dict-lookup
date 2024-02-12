@@ -20,7 +20,7 @@ class ConjugatedTensesTable {
       $this->insert_stmt->bindParam(":conjugation", $this->conjugation, \PDO::PARAM_STR);
    }
 
-   public function insert(WordResultInterface $wrface) : int 
+   public function insert(WordInterface $wrface) : int 
    {
       $this->conjugation = $wrface->conjugation();
 
