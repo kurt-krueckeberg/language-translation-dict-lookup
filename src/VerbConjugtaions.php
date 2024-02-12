@@ -28,7 +28,7 @@ class VerbsConjugation extends Table implements TableInsertInterface {
       return $stmt;  
    }
 
-   public function insert(WordResultInterface $wrface, int $id=-1) : int
+   public function insert(WordInterface $wrface, int $id=-1) : int
    {
        $this->word_id = $id;
  

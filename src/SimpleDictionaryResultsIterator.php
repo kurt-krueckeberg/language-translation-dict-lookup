@@ -16,7 +16,7 @@ class SimpleDictionaryResultsIterator implements \Iterator, \Countable {
        return $this->iter->count();
     }
 
-    function current() : WordResultInterface | false
+    function current() : WordInterface | false
     {
         $current = $this->iter->current(); 
 

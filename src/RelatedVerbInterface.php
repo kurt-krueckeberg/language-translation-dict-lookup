@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-interface RelatedVerbResultInterface extends WordResultInterface {
+interface RelatedVerbInterface extends WordInterface {
 
   public function get_main_verb() : string;
 }

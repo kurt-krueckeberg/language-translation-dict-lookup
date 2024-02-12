@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace Vocab;
 use Vocab\AbstractDefinitionsIterator;
 
-readonly class SystranWordResult implements WordResultInterface, VisitorInterface {
+readonly class SystranWordResult implements WordInterface, VisitorInterface {
 
    public array $match;
 

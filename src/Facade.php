@@ -29,7 +29,7 @@ class Facade {
       $this->c = $c; 
    }
   
-   function db_insert() : int
+   function db_insert() : bool
    {
       try {
        
@@ -56,8 +56,11 @@ class Facade {
     
                   echo "$word saved to database.\n";
               }
-             
-             $this->insert_samples($word);
+
+             $sentIter = $this->sentFetcher->fetch($word);  
+
+             if ($sentIter !== false)
+                $this->db->save_samples($word, $sentIter);
            }
         } 
 
@@ -69,11 +72,12 @@ class Facade {
       
             echo "Exception: message = {$e->getMessage()}.\nError Code = {$e->getCode()}.\nException code = {$e->getCode()}.\n";
       }
+      return true;
    } 
  
    private function insert_samples(string $word) : bool
    { 
-      $sent_iter = $this->sentFetcher->fetch($word, $c->sentence_count());
+      $sent_iter = $this->sentFetcher->fetch($word, $this->c->sentence_count());
       
       if ($sent_iter == false) { 
           
@@ -96,7 +100,7 @@ class Facade {
     {
        $this->html = new BuildHtml($filename, "de", "en");
 
-       foreach($this->file as $word) {
+       foreach($file as $word) {
 
          $wrface = $this->getWordResult($word);
    

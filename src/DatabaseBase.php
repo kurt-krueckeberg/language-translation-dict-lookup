@@ -19,7 +19,7 @@ class DatabaseBase implements WordExistsInterface {
 
    public function word_exists(string $word) : bool
    {
-     $this->new_word = $word;
+      $this->new_word = $word;
 
      $rc = $this->word_exists_stmt->execute();
 

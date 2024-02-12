@@ -16,6 +16,6 @@ include 'vendor/autoload.php';
 
  $fac = new Facade($c);
 
- $fac->db_insert($c->lookup_file());
+ $fac->db_insert();
 
 // $fac->create_html();

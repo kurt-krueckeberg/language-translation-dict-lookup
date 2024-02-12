@@ -31,6 +31,8 @@ class FetchWord  {
    private \PDO $pdo;
    
    private POS $pos;
+   
+   private int $id;
 
    public function __construct(\PDO $pdo)
    {
@@ -40,10 +42,16 @@ class FetchWord  {
       
       $this->select_word->bindParam(':word', $this->word, \PDO::PARAM_STR);     
 
-      $this
+      $this->select_noun->prepare(self::$sql_nounselect);
+              
+      $this->select_noun->bindParam(':id', $this->id, \PDO::PARAM_INT);
+              
+      $this->select_verb->prepare(self::$sql_verbselect);
+              
+      $this->select_verb->bindParam(':id', $this->id, \PDO::PARAM_INT);
    }
 
-   function find(string $word) : WordResultInterface | false
+   function find(string $word) : WordInterface | false
    {
       $this->word = $word;
       
@@ -58,12 +66,20 @@ class FetchWord  {
       
       switch ($word['pos']) {
           
-          'noun':
-               
+          case 'noun':
+              $this->id = $word['id'];
+              $result = $this->select_noun->execute();
+              
+              //TODO: Create NounInterface result
               break;
           
-          'verb':
-              // select verb inflection from verb 
+          case 'verb':
+              
+              $this->id = $word['id'];
+              $result = $this->select_verb->execute();
+              
+              //TODO: Create VerbInterface result
+              
               break;
           
           default:

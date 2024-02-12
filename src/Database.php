@@ -13,7 +13,6 @@ class Database extends DatabaseBase implements InserterInterface {
    private array $tables;
 
    private $word_prim_keys = []; // maps words to primary keys
-
    private $conjugated_tenses_prim_keys = []; // maps words to primary keys
    
    public function __construct(Config $config)
@@ -29,7 +28,7 @@ class Database extends DatabaseBase implements InserterInterface {
      $this->inserter = new WordResultInserter($this);
    }
      
-   public function insert_noun(WordResultInterface $deface) : int
+   public function insert_noun(WordInterface $deface) : int
    {
      $id = $this->insert_word($deface);
   
@@ -40,7 +39,7 @@ class Database extends DatabaseBase implements InserterInterface {
      return $id;
    }
 
-   public function insert_verb(WordResultInterface $wrface) : int // returns words.id
+   public function insert_verb(WordInterface $wrface) : int // returns words.id
    {
      $word_id = $this->insert_word($wrface);
      
@@ -57,7 +56,7 @@ class Database extends DatabaseBase implements InserterInterface {
      return $word_id;
    }
 
-   public function insert_related_verb(WordResultInterface $wrface) : int
+   public function insert_related_verb(WordInterface $wrface) : int
    {
       $word_id = $this->insert_word($wrface);
 
@@ -81,7 +80,7 @@ class Database extends DatabaseBase implements InserterInterface {
       return $conj_id;
    }
 
-   public function insert_word(WordResultInterface $wrface) : int
+   public function insert_word(WordInterface $wrface) : int
    {
      $word_tbl = $this->get_table('WordTable');
 
@@ -106,7 +105,7 @@ class Database extends DatabaseBase implements InserterInterface {
     return $word_id; 
    }
 
-   public function save_lookup(WordResultInterface $wdResultFace)   
+   public function save_lookup(WordInterface $wdResultFace)   
    {
       $wdResultFace->accept($this->inserter); 
      
@@ -125,25 +124,6 @@ class Database extends DatabaseBase implements InserterInterface {
      } 
 
       return $this->tables[$className];
-   }
-
-   function getWordResult(string $word) : WordInterface | false
-   {
-       // Was it inserted via save_lookup(WordInterface)? 
-       /*
-       if (!isset($this->word_prim_keys[$word])) {
-
-            $fetch_word = $this->get_table('FetchWord'); 
-
-            $fetch_word($word);
-       } else { //???
-       */
-
-       $fetch_word = $this->get_table('FetchWord'); 
-
-       $wordFace = $fetch_word($word);
-
-       return $wordFace;
    }
 
    function save_samples(string $word, \Iterator $sentences_iter) : bool

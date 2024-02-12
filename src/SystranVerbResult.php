@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-readonly class SystranVerbResult extends SystranWordResult implements VerbResultInterface {
+readonly class SystranVerbResult extends SystranWordResult implements VerbInterface {
 
    private \Closure $conjugator;
    

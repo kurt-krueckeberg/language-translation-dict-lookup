@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-interface WordResultInterface {
+interface WordInterface {
     
    function word_defined() : string;
 

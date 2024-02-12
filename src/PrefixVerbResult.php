@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-abstract readonly class PrefixVerbResult extends WordResult implements VerbResultInterface {
+abstract readonly class PrefixVerbResult extends WordResult implements VerbInterface {
 
    public VerbFamilyResult $main_verb;
 

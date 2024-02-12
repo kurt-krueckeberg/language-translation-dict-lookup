@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-readonly class SystranVerbFamilyResult extends SystranVerbResult implements VerbResultInterface, \IteratorAggregate {
+readonly class SystranVerbFamilyResult extends SystranVerbResult implements VerbInterface, \IteratorAggregate {
 
    private int $main_verb_index;
    private array $matches;

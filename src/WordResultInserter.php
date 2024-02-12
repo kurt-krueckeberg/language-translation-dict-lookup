@@ -16,22 +16,22 @@ class WordResultInserter implements InserterInterface {
        return $this->db->insert_examples($word, $iter);
     }
 
-    function insert_word(WordResultInterface $wrface) : int
+    function insert_word(WordInterface $wrface) : int
     {
         return $this->db->insert_word($wrface);
     }
 
-    function insert_verb(WordResultInterface $wrface) : int
+    function insert_verb(WordInterface $wrface) : int
     {
         return $this->db->insert_verb($wrface);
     }
 
-    function insert_noun(WordResultInterface $wrface) : int
+    function insert_noun(WordInterface $wrface) : int
     {
         return $this->db->insert_noun($wrface);
     }
     
-    function insert_related_verb(WordResultInterface $wrface) : int
+    function insert_related_verb(WordInterface $wrface) : int
     {
         return $this->db->insert_related_verb($wrface);
     }

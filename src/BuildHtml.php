@@ -46,7 +46,7 @@ html_end;
        $this->out->fwrite(self::$out_start);
    }
  
-   public function add_definitions(WordResultInterface $wrface) : void
+   public function add_definitions(WordInterface $wrface) : void
    {
       $section = $this->html_builder->build_definitions_section($wrface);
 

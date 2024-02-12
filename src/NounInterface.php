@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-interface NounResultInterface extends WordResultInterface {
+interface NounInterface extends WordInterface {
   public function gender() : Gender;
   public function plural() : string;
 }

@@ -8,7 +8,7 @@ class HtmlBuilder {
    { 
    }
 
-   public function build_definitions_section(WordResultInterface $wrface) : string
+   public function build_definitions_section(WordInterface $wrface) : string
    {
       static $sec_start =  "<section class='definitions'>\n";
       static $dl_start = "  <dl class='hwd'>\n";
