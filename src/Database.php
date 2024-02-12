@@ -92,6 +92,8 @@ class Database extends DatabaseBase implements InserterInterface {
 
      $this->word_prim_keys[$wrface->word_defined()] = $word_id;
      
+     echo "TEST: insert primary key for: " . $wrface->word_defined() . "\n";
+     
      foreach($wrface->definitions() as $defn) {
 
         $defn_id = $defns_tbl->insert($defn->definition(), $word_id);
@@ -124,6 +126,15 @@ class Database extends DatabaseBase implements InserterInterface {
      } 
 
       return $this->tables[$className];
+   }
+
+   private function fetch_word($word) : WordInterface | false
+   {
+      $fetch_word = $this->get_table('FetchWord');
+
+      $wrface = $fetch_word($word); 
+
+      return $wrface;
    }
 
    function save_samples(string $word, \Iterator $sentences_iter) : bool

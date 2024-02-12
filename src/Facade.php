@@ -88,15 +88,6 @@ class Facade {
       $this->db->save_samples($word, $sent_iter);  
    }
 
-   private function fetch_word($word) : WordInterface | false
-   {
-      $fetch_word = $this->get_table('FetchWord');
-
-      $wrface = $fetch_word($word); 
-
-      return $wrface;
-   }
-
     // Fetch words and their definitions, pos, inflections, etc from database, and for those words found, create a web page
     function create_html(string $filename) : void
     {
@@ -104,7 +95,7 @@ class Facade {
 
        foreach($this->file as $word) {
 
-         $wrface = $this->getWordResult($word);
+         $wrface = $this->db->getWordResult($word);
    
          $cnt = $this->html->add_definitions($wrface); 
  
