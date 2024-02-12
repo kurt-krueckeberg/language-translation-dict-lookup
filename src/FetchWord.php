@@ -17,14 +17,15 @@ class FetchWord  {
                                           nouns_data as n
                                      on words.:id=nouns.word_id";
 
-   private static $sql_verbselect = "select w.id, w.pos, v.conjugation from
+   private static $sql_verbselect = "select w.id, w.pos, tenses.conjugation from
                                           words as w
                                      join 
                                          conjugated_verbs as v
-                                     on  w.:id=v.word_id
+                                     on  w.id=v.word_id
                                      join
                                          conjugated_tenses as tenses
-                                     on  tenses.id=v.conj_id"; 
+                                     on  tenses.id=v.conj_id
+                                     where w.id=:id"; 
                                            
    private string $word = '';
    
