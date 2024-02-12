@@ -33,7 +33,8 @@ abstract readonly class WordResult implements WordInterface, VisitorInterface {
    {
       return $this->get_definitions();      
    }
-  abstract protected function get_definitions() : AbstractDefinitionsIterator;
+
+   abstract protected function get_definitions() : AbstractDefinitionsIterator;
 
    function accept(InserterInterface $inserter) : int
    {
