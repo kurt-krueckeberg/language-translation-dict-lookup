@@ -33,7 +33,7 @@ class Facade {
    {
       try {
        
-        foreach ($file as $word) {
+        foreach ($this->file as $word) {
            
            $iter = $this->sys->lookup($word, 'de', 'en');
     
@@ -96,7 +96,7 @@ class Facade {
     {
        $this->html = new BuildHtml($filename, "de", "en");
 
-       foreach($file as $word) {
+       foreach($this->file as $word) {
 
          $wrface = $this->getWordResult($word);
    

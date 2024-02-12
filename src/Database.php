@@ -13,6 +13,7 @@ class Database extends DatabaseBase implements InserterInterface {
    private array $tables;
 
    private $word_prim_keys = []; // maps words to primary keys
+
    private $conjugated_tenses_prim_keys = []; // maps words to primary keys
    
    public function __construct(Config $config)
@@ -126,10 +127,23 @@ class Database extends DatabaseBase implements InserterInterface {
       return $this->tables[$className];
    }
 
-   function fetch_word(string $word) : WordInterface | false
+   function getWordResult(string $word) : WordInterface | false
    {
-       
+       // Was it inserted via save_lookup(WordInterface)? 
+       /*
+       if (!isset($this->word_prim_keys[$word])) {
 
+            $fetch_word = $this->get_table('FetchWord'); 
+
+            $fetch_word($word);
+       } else { //???
+       */
+
+       $fetch_word = $this->get_table('FetchWord'); 
+
+       $wordFace = $fetch_word($word);
+
+       return $wordFace;
    }
 
    function save_samples(string $word, \Iterator $sentences_iter) : bool
