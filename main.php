@@ -18,4 +18,4 @@ include 'vendor/autoload.php';
 
  $fac->db_insert();
 
- $fac->create_html();
+ $fac->create_html('output');
