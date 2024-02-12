@@ -92,8 +92,6 @@ class Database extends DatabaseBase implements InserterInterface {
 
      $this->word_prim_keys[$wrface->word_defined()] = $word_id;
      
-     echo "TEST: insert primary key for: " . $wrface->word_defined() . "\n";
-     
      foreach($wrface->definitions() as $defn) {
 
         $defn_id = $defns_tbl->insert($defn->definition(), $word_id);

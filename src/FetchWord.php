@@ -8,7 +8,7 @@ class FetchWord  {
    private \PDOStatement $select_noun; 
    private \PDOStatement $select_verb; 
 
-   private static $sql_wordselect = "select pos from words as w where w.word=:word";
+   private static $sql_wordselect = "select id, pos from words as w where w.word=:word";
 
   // TODO: Add definitions and expressions to these two select statements.
    private static $sql_nounselect = "select w.id, w.pos, n.gender, n.plural from 
@@ -51,16 +51,16 @@ class FetchWord  {
       $this->select_verb->bindParam(':id', $this->id, \PDO::PARAM_INT);
    }
 
-   function find(string $word) : WordInterface | false
+   function __invoke(string $word) : WordInterface | false
    {
       $this->word = $word;
       
-      $rc = $this->word_select->execute();
+      $rc = $this->select_word->execute();
       
       if ($rc == false)
           return false;
       
-      $word = $this->word_select->fetch(\PDO::FETCH_ASSOC);
+      $word = $this->select_word->fetch(\PDO::FETCH_ASSOC);
       
       $this->pos = POS::fromString($word['pos']);
       
