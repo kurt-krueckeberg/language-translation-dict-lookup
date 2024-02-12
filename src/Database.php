@@ -126,6 +126,12 @@ class Database extends DatabaseBase implements InserterInterface {
       return $this->tables[$className];
    }
 
+   function fetch_word(string $word) : WordInterface | false
+   {
+       
+
+   }
+
    function save_samples(string $word, \Iterator $sentences_iter) : bool
    {
       $samplesTbl = new SamplesTable($this->pdo);

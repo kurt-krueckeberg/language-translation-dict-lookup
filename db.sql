@@ -22,23 +22,16 @@ create table if not exists nouns_data (
   unique(word_id),
   foreign key(word_id) references words(id) on delete cascade
 );
-
-# -- The plural form of the noun
-# -- create table if not exists verb_conjugations (
-# --  id int not null auto_increment primary key,
-# --  conjugation varchar(75) not null,
-# --  word_id int not null,
-# --  unique(word_id),
-# --  foreign key(word_id) references words(id) on delete cascade
-# -- );
-# --  
+# -- The actual verb conjugations are in this table
+# -- prefix and reflexive verbs share the conjuation of the 
+# -- main verb. Thus, the conjugation of ankommen is kommen's
+# -- conjugation.
 create table if not exists conjugated_tenses (
   id int not null auto_increment primary key,
   conjugation varchar(75) not null
 );
 
-# -- Note: We are not remembering, not directly anyway, which verbs are prefix versions
-# -- or reflexive versions of a main verb to which they are related and share its conjugation.
+# -- This table locates the shared conjugation
 create table if not exists conjugated_verbs (
   conj_id int not null,
   word_id int not null,
