@@ -4,7 +4,7 @@ namespace Vocab;
 
 class DBVerb extends DBWordBase implements VerbInterface  {  
 
-private static $sql_verb = "select w.id as word_id, w.word, w.pos, tenses.conjugation as conjugation, defns.id as defns_id, defns.defn, exprs.id as exprs_id, exprs.expr, translated_expr from
+   private static $sql_verb = "select w.id as word_id, w.word, w.pos, tenses.conjugation as conjugation, defns.id as defns_id, defns.defn, exprs.id as exprs_id, exprs.expr, translated_expr from
      words as w
 join 
     conjugated_verbs as v  on w.id=v.word_id
@@ -17,7 +17,7 @@ left join
 where w.id=:word_id";
 
 
-private static $sql_count = "select defns.id as defn_id, count(*) as expressions_count from 
+   private static $sql_count = "select defns.id as defn_id, count(*) as expressions_count from 
 defns 
 left join
      exprs on exprs.defn_id=defns.id 
@@ -59,6 +59,8 @@ group by defns.id order by defn_id asc;";
       $rc = $verb_stmt->execute();
 
       $this->rows = $verb_stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+      $this->defns = $this->rows['defn']; // unique definitions
       
       $rc = $exprs_count->execute();
 
@@ -84,4 +86,18 @@ group by defns.id order by defn_id asc;";
      return custom iterator that wraps $this->rows and seeks to the next definition.
     */
    function definitions() : AbstractDefinitionsIterator
+   {
+       $a = [];
+
+       $current = 0;
+
+       foreach($this->expr_counts as $index => $cnt) {
+
+           // splice or chunk?
+           $a[$this->defns[$key] = [array_splice($this->rows['expr'], $current, $cnt), array_splice($this->rows['translated_expr'], $current, $cnt);
+
+           $current += $cnt;
+       }
+       return new ????($a);  
+   }
 }
