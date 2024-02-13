@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class DBVerb extends DBWordBase  {  
+class NewDBVerb extends DBWordBase  {  
 
 private static $sql_verb = "select w.id as word_id, w.pos, tenses.conjugation, defns.id, defns.defn, exprs.id as exprs_id, exprs.expr, translated_expr from
      words as w
@@ -23,7 +23,7 @@ left join
      WHERE defns.word_id=:word_id
 group by defns.id order by defn_id asc;";
       
-   static private $stmts = ['verb_info' => null, 'exprs_count' => null];
+   //static private $stmts = ['verb_info' => null, 'exprs_count' => null];
    
    static int $word_id = -1;
       
@@ -35,22 +35,21 @@ group by defns.id order by defn_id asc;";
 
    protected function do_bind($stmt_key, \PDOStatement $stmt) : void
    {
-      match ($stmt_key) {
-
-          'sql_verb' => $stmt->bindParam(":word_id", self::$word_id, \PDO::PARAM_INT),
-          'sql_count' => $stmt->bindParam(":word_id", self::$word_id, \PDO::PARAM_INT)
-      };
+      $rc =  match ($stmt_key) {
+          
+        'sql_verb', 'sql_count' => $stmt->bindParam(":word_id", self::$word_id, \PDO::PARAM_INT)        
+      };   
    }
 
    public function __construct(\PDO $pdo, int $word_id)
    {
       $this->pdo = $pdo;
       
-      self::$word_id = $word_id;
-
-      $verb_stmt = parent::get_stmt('sql_verb');
-
-      $exprs_count = $this->get_stmt('sql_count');
+      self::$word_id = $word_id;      
+      
+      $verb_stmt = parent::get_stmt($pdo, 'sql_verb');
+    
+      $exprs_count = parent::get_stmt($pdo, 'sql_count');
 
       $rc = $verb_stmt->execute();
 

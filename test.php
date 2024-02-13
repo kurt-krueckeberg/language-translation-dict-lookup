@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 declare(strict_types=1);
 use \SplFileObject as File;
@@ -14,11 +13,11 @@ include 'vendor/autoload.php';
      die($c->lookup_file() . " not found.\n");
  }
  
- $cred = $config->get_db_credentials();
+ $cred = $c->get_db_credentials();
      
  $pdo = new \PDO($cred["dsn"], $cred["user"], $cred["password"]); 
  
- $fac = new Vocab\\NewDBVerb($pdo);
+ $fac = new Vocab\NewDBVerb($pdo, 1);
 
  //$fac->db_insert();
 
