@@ -31,7 +31,7 @@ abstract class DBWordBase {
                    
          $stmt = $this->pdo->prepare( $this->get_sql($str) ); 
 
-         $this->bind($pdo, $stmt);
+         $this->bind($stmt, $str);
 
          self::$stmts[$str] = $stmt;
       }
