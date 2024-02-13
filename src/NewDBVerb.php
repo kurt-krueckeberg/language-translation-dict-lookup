@@ -58,7 +58,7 @@ group by defns.id order by defn_id asc;";
       };
    }
 
-   protected function bind(\PDOStatement $stmt, string $str) : \PDOStatement
+   protected function bind(\PDOStatement $stmt, string $str) : void 
    {    
       $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
       
