@@ -24,11 +24,11 @@ class SimpleDictionaryResultsIterator implements \Iterator, \Countable {
 
         return match($current['source']['pos']) {
 
-             'noun' => new SystranNounResult($current),
-             'verb' => new SystranVerbResult($current, function() use($current) : string { 
+             'noun' => new SystranNoun($current),
+             'verb' => new SystranVerb($current, function() use($current) : string { 
                     return $current['source']['inflection'];}
                ),
-             default => new SystranWordResult($current)
+             default => new SystranWord($current)
          };
     }
 

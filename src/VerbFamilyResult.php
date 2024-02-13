@@ -5,7 +5,7 @@ namespace Vocab;
 /*
   Note the use of the pluarl: RelatedVerbs not RelatedVerb
  */
-readonly class VerbFamilyResult extends SystranVerbResult implements VerbInterface, ItertorAggregate {
+readonly class VerbFamilyResult extends SystranVerb implements VerbInterface, ItertorAggregate {
 
    private array $related_verbs;
    private int $main_verb_index;

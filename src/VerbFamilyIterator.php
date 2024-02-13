@@ -22,7 +22,7 @@ class VerbFamilyIterator implements \Iterator, \Countable {
       return count($this->matches);
    }
 
-   function current() : SystranWordResult | false
+   function current() : SystranWord | false
    {
       $conjugator = function () : string  {
 
@@ -33,7 +33,7 @@ class VerbFamilyIterator implements \Iterator, \Countable {
       
       if ($this->iter_at_start) {
            
-         return new SystranVerbResult($this->matches[$this->main_verb_index], $conjugator);
+         return new SystranVerb($this->matches[$this->main_verb_index], $conjugator);
 
       } else {
          

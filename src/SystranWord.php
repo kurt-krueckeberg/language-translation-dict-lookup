@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace Vocab;
 use Vocab\AbstractDefinitionsIterator;
 
-readonly class SystranWordResult implements WordInterface, VisitorInterface {
+readonly class SystranWord implements WordInterface, VisitorInterface {
 
    public array $match;
 
@@ -12,20 +12,20 @@ readonly class SystranWordResult implements WordInterface, VisitorInterface {
       $this->match = $match;
    }
 
-   static public function create($match) : SystranWordResult
+   static public function create($match) : SystranWord
    {
       return match($match['source']['pos']) {
-         'noun' => new SystranNounResult($match),
-         'verb' => new SystranVerbResult($match, function() use($match) : string { 
+         'noun' => new SystranNoun($match),
+         'verb' => new SystranVerb($match, function() use($match) : string { 
                 return $match['source']['inflection'];}
            ),
-         default => new SystranWordResult($match)
+         default => new SystranWord($match)
       };
    }
 
-   static public function create_verbFamily(array $matches, int $main_verb_index) : SystranWordResult
+   static public function create_verbFamily(array $matches, int $main_verb_index) : SystranWord
    {
-      return new SystranVerbFamilyResult($matches, $main_verb_index);
+      return new SystranVerbFamily($matches, $main_verb_index);
    }
   
    function get_pos() : Pos

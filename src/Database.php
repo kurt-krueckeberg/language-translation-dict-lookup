@@ -130,6 +130,8 @@ class Database extends DatabaseBase implements InserterInterface {
    {
       $fetch_word = $this->get_table('FetchWord');
 
+      $test = new FetchVerb(1);
+  
       $wrface = $fetch_word($word); 
 
       return $wrface;

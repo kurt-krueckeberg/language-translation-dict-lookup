@@ -27,6 +27,6 @@ class DBVerb implements VerbInterface  {
    {
       // When the defn_id changes, we have a new definition, but with each separate definition,
       // we may have one or more expressions. We may have none. 
-      return array_column($this->rows, 'defn')?????;
+      //return array_column($this->rows, 'defn')?????;
    }
 }

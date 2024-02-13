@@ -178,7 +178,7 @@ class SystranDictionaryResultsIterator implements \Countable, \Iterator {
      return $this->iter->rewind();
    }
 
-   function current() : SystranWordResult | false
+   function current() : SystranWord | false
    {
      return $this->iter->current();    
    }
