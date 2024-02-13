@@ -35,9 +35,11 @@ group by defns.id order by defn_id asc;";
 
    protected function do_bind($stmt_key, \PDOStatement $stmt) : void
    {
+      var_dump($stmt);
       $rc =  match ($stmt_key) {
           
-        'sql_verb', 'sql_count' => $stmt->bindParam(":word_id", self::$word_id, \PDO::PARAM_INT)        
+        'sql_verb' => $stmt->bindParam(":word_id", self::$word_id, \PDO::PARAM_INT),     
+        'sql_count' => $stmt->bindParam(":word_id", self::$word_id, \PDO::PARAM_INT)
       };   
    }
 
