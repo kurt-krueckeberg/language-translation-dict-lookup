@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class DBVerb extends DBWord implements VerbInterface  {  
+class DBVerb implements VerbInterface  {  
    
    private \PDOStatement $stmt;
    private array $rows;
@@ -23,9 +23,10 @@ class DBVerb extends DBWord implements VerbInterface  {
       $this->rows[0]['pos'];
    }
 
-   // This is a base class method.
    function definitions() : \Iterator
    {
+      // When the defn_id changes, we have a new definition, but with each separate definition,
+      // we may have one or more expressions. We may have none. 
       return array_column($this->rows, 'defn')?????;
    }
 }
