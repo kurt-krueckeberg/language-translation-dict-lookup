@@ -34,6 +34,7 @@ group by defns.id order by defn_id asc;";
    
    private array $expr_counts;
 
+/*
    protected function prepare_and_bind(\PDO $pdo, string $str) : \PDOStatement
    {    
       $sql =  match ($str) {
@@ -43,6 +44,22 @@ group by defns.id order by defn_id asc;";
       };
       
       $stmt = $pdo->prepare($sql);
+      $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
+      
+      return $stmt;
+   }
+*/
+   protected function get_sql(string $str) : string
+   {    
+      return match ($str) {
+          
+        'sql_verb' => self::$sql_verb,
+        'sql_count' => self::$sql_count        
+      };
+   }
+
+   protected function bind(\PDOStatement $stmt, string $str) : \PDOStatement
+   {    
       $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
       
       return $stmt;

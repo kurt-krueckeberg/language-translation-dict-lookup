@@ -9,6 +9,7 @@ abstract class DBWordBase {
    /*
      Uses PHP variable variables act as keys into $stmts array.
     */
+/*
    protected function get_stmt(\PDO $pdo, string $str) : \PDOStatement
    {     
       if (!isset(self::$stmts[$str])) {
@@ -20,7 +21,28 @@ abstract class DBWordBase {
 
       return self::$stmts[$str];
    }
+*/
+
+   private \PDO $pdo;
+
+   protected function get_stmt(\PDO $pdo, string $str) : \PDOStatement
+   {     
+      if (!isset(self::$stmts[$str])) {
+                   
+         $stmt = $this->pdo->prepare( $this->get_sql($str) ); 
+
+         $this->bind($pdo, $stmt);
+
+         self::$stmts[$str] = $stmt;
+      }
+
+      return self::$stmts[$str];
+   }
         
-   abstract protected function prepare_and_bind(\PDO $pdo, string $str) : \PDOStatement;
+   abstract protected function bind(\PDOStatement $pdo, string $str) : void; 
    
+   function __construct(\PDO $pdo)
+   {
+      $this->pdo = $pdo;
+   }
 }
