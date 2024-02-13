@@ -5,29 +5,22 @@ namespace Vocab;
 abstract class DBWordBase {  
 
    static private $stmts = [];
-
-   static private $word_id; // <---- ????
-       
+    
    /*
      Uses PHP variable variables act as keys into $stmts array.
     */
-   protected function get_stmt(\PDO $pdo, string $sql_str) : \PDOStatement
+   protected function get_stmt(\PDO $pdo, string $str) : \PDOStatement
    {     
-      if (!isset(self::$stmts[$sql_str])) {
-         
-         $pdo_stmt = $pdo->prepare($sql_str);
+      if (!isset(self::$stmts[$str])) {
+                   
+         $pdo_stmt = $this->prepare_and_bind($pdo, $str); // <---- BUG
 
-         $this->do_bind($sql_str, $pdo_stmt);
-
-         self::$stmts[$sql_str] = $pdo_stmt;
+         self::$stmts[$str] = $pdo_stmt;
       }
 
-      return self::$stmts[$sql_str];
+      return self::$stmts[$str];
    }
         
-   abstract protected function do_bind(string $stmt_key, \PDOStatement $stmt) : void;
+   abstract protected function prepare_and_bind(\PDO $pdo, string $str) : \PDOStatement;
    
-   public function __construct(\PDO $pdo, int $word_id)
-   {
-   }
 }

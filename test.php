@@ -17,7 +17,9 @@ include 'vendor/autoload.php';
      
  $pdo = new \PDO($cred["dsn"], $cred["user"], $cred["password"]); 
  
- $fac = new Vocab\NewDBVerb($pdo, 1);
+ $x = new Vocab\DBVerb($pdo, 1);
+ 
+ $y = new Vocab\NewDBVerb($pdo, 1);
 
  //$fac->db_insert();
 

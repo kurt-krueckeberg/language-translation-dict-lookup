@@ -15,7 +15,8 @@ join
 left join
      exprs on exprs.defn_id=defns.id 
 where w.id=:word_id";
-   
+
+
 private static $sql_count = "select defns.id as defn_id, count(*) as expressions_count from 
 defns 
 left join
@@ -33,23 +34,27 @@ group by defns.id order by defn_id asc;";
    
    private array $expr_counts;
 
-   protected function do_bind($stmt_key, \PDOStatement $stmt) : void
-   {
-      var_dump($stmt);
-      $rc =  match ($stmt_key) {
+   protected function prepare_and_bind(\PDO $pdo, string $str) : \PDOStatement
+   {    
+      $sql =  match ($str) {
           
-        'sql_verb' => $stmt->bindParam(":word_id", self::$word_id, \PDO::PARAM_INT),     
-        'sql_count' => $stmt->bindParam(":word_id", self::$word_id, \PDO::PARAM_INT)
-      };   
+        'sql_verb' => self::$sql_verb,
+        'sql_count' => self::$sql_count        
+      };
+      
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
+      
+      return $stmt;
    }
 
    public function __construct(\PDO $pdo, int $word_id)
    {
       $this->pdo = $pdo;
-      
-      self::$word_id = $word_id;      
-      
+                  
       $verb_stmt = parent::get_stmt($pdo, 'sql_verb');
+            
+      self::$word_id = $word_id;     
     
       $exprs_count = parent::get_stmt($pdo, 'sql_count');
 
@@ -57,12 +62,8 @@ group by defns.id order by defn_id asc;";
 
       $this->rows = $verb_stmt->fetchAll(\PDO::FETCH_ASSOC);
       
-      print_r($this->rows);
-
       $rc = $exprs_count->execute();
 
-      $this->expr_counts = $exprs_count->fetchAll(\PDO::FETCH_ASSOC);
-      
-      print_r($this->expr_counts);
+      $this->expr_counts = $exprs_count->fetchAll(\PDO::FETCH_ASSOC);      
    }
 }
