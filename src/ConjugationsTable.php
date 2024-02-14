@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class ConjugatationsTable { 
+class ConjugationsTable { 
 
    private static $sql = "insert into conjugations(conjugation) values(:conjugation)";
    private string $conjugation = '';
