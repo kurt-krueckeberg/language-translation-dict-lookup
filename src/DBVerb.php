@@ -9,7 +9,7 @@ class DBVerb extends DBWordBase implements VerbInterface  {
 join 
     conjugated_verbs as v  on w.id=v.word_id
 join
-    conjugated_tenses as tenses on tenses.id=v.conj_id
+    conjugations as tenses on tenses.id=v.conj_id
 join 
      defns on defns.word_id=w.id
 left join
@@ -17,12 +17,14 @@ left join
 where w.id=:word_id";
 
 
-   private static $sql_count = "select defns.id as defn_id, count(*) as expressions_count from 
-defns 
-left join
-     exprs on exprs.defn_id=defns.id 
-     WHERE defns.word_id=:word_id
-group by defns.id order by defn_id asc;";
+   private static $sql_count = "select defns.id as defn_id, defns.defn, count(*) as expressions_count from 
+     defns 
+  left join
+     exprs
+         on exprs.defn_id=defns.id 
+where defns.word_id=:word_id
+  group by defns.id
+  order by defn_id asc;";
    
    /*
     * private non-sql string members

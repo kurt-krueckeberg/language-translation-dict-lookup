@@ -26,7 +26,7 @@ create table if not exists nouns_data (
 # -- prefix and reflexive verbs share the conjuation of the 
 # -- main verb. Thus, the conjugation of ankommen is kommen's
 # -- conjugation.
-create table if not exists conjugated_tenses (
+create table if not exists conjugations (
   id int not null auto_increment primary key,
   conjugation varchar(75) not null
 );
@@ -36,7 +36,7 @@ create table if not exists conjugated_verbs (
   conj_id int not null,
   word_id int not null,
   primary key(conj_id, word_id),
-  foreign key(conj_id) references conjugated_tenses(id),
+  foreign key(conj_id) references conjugations(id),
   foreign key(word_id) references words(id)
 );
 

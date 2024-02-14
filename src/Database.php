@@ -13,7 +13,7 @@ class Database extends DatabaseBase implements InserterInterface {
    private array $tables;
 
    private $word_prim_keys = []; // maps words to primary keys
-   private $conjugated_tenses_prim_keys = []; // maps words to primary keys
+   private $conjugations_prim_keys = []; // maps words to primary keys
    
    public function __construct(Config $config)
    {
@@ -47,7 +47,7 @@ class Database extends DatabaseBase implements InserterInterface {
 
      $conj_id = $conjTensesTbl->insert($wrface, $word_id);
      
-     $this->conjugated_tenses_prim_keys[$wrface->word_defined()] = $conj_id;  
+     $this->conjugations_prim_keys[$wrface->word_defined()] = $conj_id;  
 
      $conjugatedVerbsTbl = $this->get_table('ConjugatedVerbsTable');
 
@@ -73,7 +73,7 @@ class Database extends DatabaseBase implements InserterInterface {
 
       $conjugatedVerbsTbl = $this->get_table('ConjugatedVerbsTable');
        
-      $conj_id = $this->conjugated_tenses_prim_keys[$wrface->get_main_verb()]; 
+      $conj_id = $this->conjugations_prim_keys[$wrface->get_main_verb()]; 
   
       $conjugatedVerbsTbl->insert($conj_id, $word_id);
       

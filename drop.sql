@@ -33,7 +33,7 @@ create table if not exists nouns_data (
 # --  foreign key(word_id) references words(id) on delete cascade
 # -- );
 # --  
-create table if not exists conjugated_tenses (
+create table if not exists conjugations (
   id int not null auto_increment primary key,
   conjugation varchar(75) not null
 );
@@ -44,7 +44,7 @@ create table if not exists conjugated_verbs (
   conj_id int not null,
   word_id int not null,
   primary key(conj_id, word_id),
-  foreign key(conj_id) references conjugated_tenses(id),
+  foreign key(conj_id) references conjugations(id),
   foreign key(word_id) references words(id)
 );
 

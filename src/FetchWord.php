@@ -25,7 +25,7 @@ class FetchWord  {
                                      join 
                                          conjugated_verbs as v  on w.id=v.word_id
                                      join
-                                         conjugated_tenses as tenses on tenses.id=v.conj_id
+                                         conjugations as tenses on tenses.id=v.conj_id
                                      join 
                                           defns on defns.word_id=w.id
                                      left join
