@@ -69,6 +69,7 @@ class VerbFamilyIterator implements \Iterator, \Countable {
 
    function valid() : bool
    {
+      // Check if current is false, which implies cursor is at end of array.
       $tmp = \current($this->matches);
       
       return ($tmp === false) ? false : true;

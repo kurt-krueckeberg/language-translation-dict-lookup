@@ -23,6 +23,10 @@ left join
      exprs on exprs.defn_id=defns.id 
      WHERE defns.word_id=:word_id
 group by defns.id order by defn_id asc;";
+   
+   /*
+    * private non-sql string members
+    */
       
    static int $word_id = -1;
       
@@ -82,22 +86,11 @@ group by defns.id order by defn_id asc;";
       return Pos::fromString($this->row[0]['pos']);
    }
 
-   /*
-     return custom iterator that wraps $this->rows and seeks to the next definition.
-    */
-   function definitions() : AbstractDefinitionsIterator
+  /*
+   * Should we return a custom iterator? Say, DBDefinitionIterator, that wraps $this->rows and implements \Iterator or \SeekableIterator?
+   */
+   function definitions() : AbstractDefinitionsIterator // <-- TODO: This needs to be in an interface. Is it?
    {
-       $a = [];
-
-       $current = 0;
-
-       foreach($this->expr_counts as $index => $cnt) {
-
-           // splice or chunk?
-           $a[$this->defns[$key] = [array_splice($this->rows['expr'], $current, $cnt), array_splice($this->rows['translated_expr'], $current, $cnt);
-
-           $current += $cnt;
-       }
-       return new ????($a);  
+       return new DBDefinitionsIterator($this->rows, $this->expr_counts);
    }
 }

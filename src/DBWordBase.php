@@ -6,24 +6,7 @@ abstract class DBWordBase {
 
    static private $stmts = [];
     
-   /*
-     Uses PHP variable variables act as keys into $stmts array.
-    */
-/*
-   protected function get_stmt(\PDO $pdo, string $str) : \PDOStatement
-   {     
-      if (!isset(self::$stmts[$str])) {
-                   
-         $pdo_stmt = $this->prepare_and_bind($pdo, $str); // <---- BUG
-
-         self::$stmts[$str] = $pdo_stmt;
-      }
-
-      return self::$stmts[$str];
-   }
-*/
-
-   private \PDO $pdo;
+   protected \PDO $pdo;
 
    protected function get_stmt(\PDO $pdo, string $str) : \PDOStatement
    {     
@@ -40,6 +23,8 @@ abstract class DBWordBase {
    }
         
    abstract protected function bind(\PDOStatement $pdo, string $str) : void; 
+   abstract protected function get_sql(string $str) : string; 
+   abstract function definitions()
    
    function __construct(\PDO $pdo)
    {
