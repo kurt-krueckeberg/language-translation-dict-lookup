@@ -1,26 +1,30 @@
 # Issues
 
-To select the word, its , part of speech, conjugation joined with all its definitions:
+This does a left join that shows the particular word key, a particular defnition id and definition
+on the right all the word's associated expressions:
 
 ```sql
-select words.id as words_key, words.word, words.pos, X.conjugation, defns.defn
-from 
-  words 
-inner JOIN
-  defns
-on words.id=defns.word_id   
-inner JOIN
- (SELECT w.id, w.word, w.pos, shared.conj_id as shared_conj_id, conj.conjugation as conjugation  
-from 
-  words as w
-inner join
-  shared_conjugations as shared
-  on shared.word_id=w.id
-inner JOIN
-  conjugations as conj
-  on conj.id=shared.conj_id) as X
-  ON X.id=words.id
- where words.id=1;
+select words.id as words_key, words.word, defns.id as defn_id, defns.defn, exprs.expr from
+   words
+join
+     defns
+on words.id=defns.word_id
+ left join
+     exprs
+         on exprs.defn_id=defns.id 
+where defns.word_id=1
+  order by defn_id asc;
+```  
+  
+To get a count of the number of expressions for each definition that has associated expressions do:
+
+
+```sql
+select defns.id as defns_id, count(*) as expressions_count from
+defns   
+    join
+ exprs
+    on exprs.defn_id=defns.id 
+  group by defns.id having defns.id>=1 AND defns.id<=9
+    order by defn_id asc;
 ```
- 
- 

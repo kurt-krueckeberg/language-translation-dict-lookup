@@ -24,7 +24,7 @@ abstract class DBWordBase {
         
    abstract protected function bind(\PDOStatement $pdo, string $str) : void; 
    abstract protected function get_sql(string $str) : string; 
-   abstract function definitions()
+   abstract function definitions() : AbstractDefinitionsIterator;
    
    function __construct(\PDO $pdo)
    {
