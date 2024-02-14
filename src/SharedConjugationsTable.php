@@ -2,9 +2,9 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class ConjugatedVerbsTable { 
+class SharedConjugationsTable { 
 
-   private static $sql = "insert into conjugated_verbs(conj_id, word_id) values(:conj_id, :word_id)";
+   private static $sql = "insert into shared_conjugations(conj_id, word_id) values(:conj_id, :word_id)";
    private int $conj_id = -1;
    private int $word_id = -1;
 

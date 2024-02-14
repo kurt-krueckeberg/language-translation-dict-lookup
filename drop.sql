@@ -40,7 +40,7 @@ create table if not exists conjugations (
 
 # -- Note: We are not remembering, not directly anyway, which verbs are prefix versions
 # -- or reflexive versions of a main verb to which they are related and share its conjugation.
-create table if not exists conjugated_verbs (
+create table if not exists shared_conjugations (
   conj_id int not null,
   word_id int not null,
   primary key(conj_id, word_id),
