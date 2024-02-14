@@ -2,9 +2,9 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class ConjugatedTensesTable { 
+class ConjugatationsTable { 
 
-   private static $sql = "insert into conjugated_tenses(conjugation) values(:conjugation)";
+   private static $sql = "insert into conjugations(conjugation) values(:conjugation)";
    private string $conjugation = '';
 
    private \PDOStatement $insert_stmt;

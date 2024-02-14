@@ -43,7 +43,7 @@ class Database extends DatabaseBase implements InserterInterface {
    {
      $word_id = $this->insert_word($wrface);
      
-     $conjTensesTbl = $this->get_table('ConjugatedTensesTable');
+     $conjTensesTbl = $this->get_table('ConjugationsTable');
 
      $conj_id = $conjTensesTbl->insert($wrface, $word_id);
      
