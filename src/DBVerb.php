@@ -4,7 +4,10 @@ namespace Vocab;
 
 class DBVerb extends DBWordBase implements VerbInterface  {  
 
-   private static $sql_verb = "select w.id as word_id, w.word, w.pos, tenses.conjugation as conjugation, defns.id as defns_id, defns.defn, exprs.id as exprs_id, exprs.expr, translated_expr from
+   /*
+    * Get the verb, its id, part of speech, its conjugation, its definitions and any expressions associated with the definition.
+    */
+private static $sql_verb = "select w.id as word_id, w.word, w.pos, tenses.conjugation as conjugation, defns.id as defns_id, defns.defn, exprs.id as exprs_id, exprs.expr, translated_expr from
      words as w
 join 
     shared_conjugations as v  on w.id=v.word_id
@@ -22,7 +25,7 @@ where w.id=:word_id";
    * 
    * This result is need for the definitions iterator returned definitions(). This returned 
    */
-   private static $sql_count = "select defns.id as defn_id, defns.defn, count(*) as expressions_count from 
+   private static $sql_count = "select defns.id as defn_id, defns.defn, count(exprs.id) as expressions_count from 
      defns 
  join
      exprs
@@ -94,7 +97,7 @@ where w.id=:word_id";
    }
 
   /*
-   * Should we return a custom iterator? Say, DBDefinitionIterator, that wraps $this->rows and implements \Iterator or \SeekableIterator?
+   * Use the count of expressions (and the associated defns.id) from the $sql_count query onIterator.
    */
    function definitions() : AbstractDefinitionsIterator // <-- TODO: This needs to be in an interface. Is it?
    {
