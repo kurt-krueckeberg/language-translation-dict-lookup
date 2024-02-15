@@ -20,10 +20,7 @@ left join
 where w.id=:word_id";
 
   /*
-   * Get the expression count for each definition. Some definitions have no expressions. These are no included
-   * in the grouped rows of the joined defns and exprs tables.
-   * 
-   * This result is need for the definitions iterator returned definitions(). This returned 
+   * Get the expression count for each definition. Some definitions have no expressions. 
    */
    private static $sql_count = "select defns.id as defn_id, defns.defn, count(exprs.id) as expressions_count from 
      defns 
