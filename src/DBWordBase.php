@@ -2,7 +2,9 @@
 declare(strict_types=1);
 namespace Vocab;
 
-abstract class DBWordBase {  
+// TODO: Get rid of AbstractDefinitionsIterator and put its iteation-related code in thie class.
+
+abstract class DBWordBase extends AbstractDefinitionsIterator {  
 
    static private $stmts = [];
     
@@ -23,7 +25,11 @@ abstract class DBWordBase {
    }
         
    abstract protected function bind(\PDOStatement $pdo, string $str) : void; 
-   abstract protected function get_sql(string $str) : string; 
+
+   abstract protected function get_sql(string $str) : string;
+ 
+   abstract protected function get_current(array $target) : DefinitionInterface | false;
+
    abstract function definitions() : AbstractDefinitionsIterator;
    
    function __construct(\PDO $pdo)
