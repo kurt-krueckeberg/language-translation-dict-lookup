@@ -27,7 +27,7 @@ where w.id=:word_id";
    */
    private static $sql_count = "select defns.id as defn_id, defns.defn, count(exprs.id) as expressions_count from 
      defns 
- join
+left join
      exprs
          on exprs.defn_id=defns.id 
      where defns.word_id=:word_id
