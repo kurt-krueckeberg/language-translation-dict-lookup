@@ -50,17 +50,20 @@ class Facade {
                
               $word = $lookup_result->word_defined();
                  
-              if (!$this->db->word_exists($word)) {
-                    
-                  $this->db->save_lookup($lookup_result);
-    
-                  echo "$word saved to database.\n";
+              if ($this->db->word_exists($word)) {
+
+                  echo "$word is already in database.\n";
+                  continue;
               }
+                    
+              $this->db->save_lookup($lookup_result);
+    
+              $sentIter = $this->sentFetcher->fetch($word);  
 
-             $sentIter = $this->sentFetcher->fetch($word);  
+              if ($sentIter !== false)
+                 $this->db->save_samples($word, $sentIter);
 
-             if ($sentIter !== false)
-                $this->db->save_samples($word, $sentIter);
+                 echo "$word saved to database.\n";
            }
         } 
 

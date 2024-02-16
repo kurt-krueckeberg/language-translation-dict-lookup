@@ -7,21 +7,18 @@ class DBVerb extends DBWordBase implements VerbInterface  {
    /*
     * Get the verb, its id, part of speech, its conjugation, its definitions and any expressions associated with the definition.
     */
-private static $sql_verb = "select w.id as word_id, w.word, w.pos, tenses.conjugation as conjugation, defns.id as defns_id, defns.defn, exprs.id as exprs_id, exprs.expr, translated_expr from
+private static $sql_verb = "select w.id as word_id, w.word, w.pos, tenses.conjugation as conjugation from
      words as w
 join 
     shared_conjugations as v  on w.id=v.word_id
 join
     conjugations as tenses on tenses.id=v.conj_id
-join 
-     defns on defns.word_id=w.id
-left join
-     exprs on exprs.defn_id=defns.id 
 where w.id=:word_id";
 
   /*
    * Get the expression count for each definition. Some definitions have no expressions. 
-   */
+   * Moved to base class:
+
    private static $sql_count = "select defns.id as defn_id, defns.defn, count(exprs.id) as expressions_count from 
      defns 
 left join
@@ -30,7 +27,7 @@ left join
      where defns.word_id=:word_id
   group by defns.id
     order by defn_id asc;";
-   
+*/   
    /*
     * private non-sql string members
     */
@@ -68,14 +65,16 @@ left join
       $exprs_count = parent::get_stmt($pdo, 'sql_count');
 
       $rc = $verb_stmt->execute();
-  
+
       $this->rows = $verb_stmt->fetchAll(\PDO::FETCH_ASSOC);
 
+/*
       $this->defns = $this->rows['defn']; // unique definitions
       
       $rc = $exprs_count->execute();
 
       $this->expr_counts = $exprs_count->fetchAll(\PDO::FETCH_ASSOC);      
+*/
    }
 
    function conjugation() : string

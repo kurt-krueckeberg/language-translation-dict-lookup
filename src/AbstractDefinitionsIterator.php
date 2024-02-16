@@ -4,7 +4,7 @@ namespace Vocab;
 
 abstract class AbstractDefinitionsIterator implements \Iterator {
 
-    protected \ArrayIterator $aiter;
+    protected \ArrayIterator $iter;
 
     abstract protected function get_current(array $target) : DefinitionInterface | false;
 
@@ -15,7 +15,7 @@ abstract class AbstractDefinitionsIterator implements \Iterator {
 
     function current() : DefinitionInterface | false
     {
-      $ele =  parent::current();
+      $ele =  $this->iter->current();
 
       return ($ele === false) ? $ele : $this->get_current($ele);
     }

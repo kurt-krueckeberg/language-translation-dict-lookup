@@ -26,7 +26,7 @@ class SamplesTable  {
 
    public function insert(string $sample, int $word_id) : int
    {
-      $this->sample = $sample;
+      $this->samp= $sample;
       
       $this->word_id  = $word_id;
       
@@ -43,7 +43,7 @@ class SamplesTable  {
        */
       
       $id = (int) $this->pdo->lastInsertId();
-      
+
       return $id;
    }
 }

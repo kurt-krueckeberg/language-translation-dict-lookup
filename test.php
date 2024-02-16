@@ -13,11 +13,8 @@ include 'vendor/autoload.php';
      die($c->lookup_file() . " not found.\n");
  }
  
-
  $fac = new Facade($c);
 
  $fac->db_insert();
  
- //$y = new Vocab\NewDBVerb($pdo, 1);
-
- //--$fac->create_html('output');
+ $fac->create_html('output');

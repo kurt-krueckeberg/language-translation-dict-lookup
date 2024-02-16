@@ -128,13 +128,14 @@ class Database extends DatabaseBase implements InserterInterface {
 
    function fetch_word($word) : WordInterface | false
    {
-      $fetch_word = $this->get_table('FetchWord');
+      //--$fetch_word = $this->get_word_id('FetchWord');
 
-      $test = new FetchVerb(1);
+      $test = new DBWordBase($this->pdo, 1);
   
       $wrface = $fetch_word($word); 
 
-      return $wrface;
+      //++return $wrface;
+      return false;
    }
 
    function save_samples(string $word, \Iterator $sentences_iter) : bool
