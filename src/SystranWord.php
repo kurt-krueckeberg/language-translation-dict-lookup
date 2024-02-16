@@ -12,6 +12,16 @@ readonly class SystranWord implements WordInterface, VisitorInterface {
       $this->match = $match;
    }
 
+   static function SystranDefnsGenerator(array $match) : \Iterator
+   {
+     $targets = $match['targets'];
+     
+     foreach($targets as $key => $target) {
+   
+         yield $target['lemma'] => $target['expressions'];
+     }
+   }
+
    static public function create($match) : SystranWord
    {
       return match($match['source']['pos']) {
@@ -42,9 +52,9 @@ readonly class SystranWord implements WordInterface, VisitorInterface {
      return preg_replace('/[^A-ZÖÄÜa-zaäöü ]/', '', $tmp); 
    }
 
-   function definitions() : AbstractDefinitionsIterator
+   function getIterator() : \Iterator
    {
-      return new SystranDefinitionsIterator($this->match['targets']); 
+      return self::SystranDefnsGenerator($this->match);        
    }
 
    function accept(InserterInterface $inserter) : int

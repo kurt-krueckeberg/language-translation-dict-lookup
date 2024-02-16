@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class DBVerb extends DBWordBase implements VerbInterface  {  
+class DBVerb extends DBWordBase implements VerbInterface {  
 
    /*
     * Get the verb, its id, part of speech, its conjugation, its definitions and any expressions associated with the definition.
@@ -77,6 +77,11 @@ left join
 */
    }
 
+   getIterator() : \Iterator
+   {
+       // return static generator method.
+   } 
+
    function conjugation() : string
    {
      $this->rows[0]['conjugation'];
@@ -92,11 +97,4 @@ left join
       return Pos::fromString($this->row[0]['pos']);
    }
 
-  /*
-   * Use the count of expressions (and the associated defns.id) from the $sql_count query onIterator.
-   */
-   function definitions() : AbstractDefinitionsIterator // <-- TODO: This needs to be in an interface. Is it?
-   {
-       return new DBDefinitionsIterator($this->rows, $this->expr_counts);
-   }
 }

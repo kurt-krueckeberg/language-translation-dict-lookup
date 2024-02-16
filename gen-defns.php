@@ -1,14 +1,6 @@
-# Issues
-
-Look into Generators as an easy way of implementing as iterator.
-Use the instead of what I have.
-
-```sql
 <?php
 /*
- * Example of Generator that returns a definition as the key and its expressions as values.
- *
- * I could use this a the \Iterator for DBWordBase and for the SystranWord/Verb/Noun, which would do likewise.
+ * Example of returning a definition as a key and its expressions as values.
  */
 function gen_defn_exps(array $defs, array $e, array $counts) : \Iterator
 {
@@ -42,4 +34,3 @@ foreach (gen_defn_exps($defns, $expressions, $counts) as $key => $value) {
   
   echo "\n";
 }
-```

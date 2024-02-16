@@ -21,7 +21,7 @@ class HtmlBuilder {
 
       $dl .= sprintf($fmt, $wrface->word_defined(), strtoupper($wrface->get_pos()->getString()));
 
-      $defns = $this->add_defn($wrface->definitions()); // TODO: <---
+      $defns = $this->add_defn($wrface); 
           
       $dl .= $defns . " </dl>\n";
 
@@ -32,22 +32,22 @@ class HtmlBuilder {
       return $sec;   
    } 
 
-   private function add_defn(AbstractDefinitionsIterator $defnsIter) : string
+   private function add_defn(\Iterator $defnsIter) : string
    {       
       $dds = '';
       static $defn_fmt =  "  <dd>%s</dd>\n";
       static $exp_fmt =  "    <dt>%s</dt>\n    <dd>%s</dd>\n";
 
-      foreach ($defnsIter as $defn) {
+      foreach ($defnsIter as $defn => $expressions) {
 
-         $dds .= sprintf($defn_fmt, $defn->definition());
+         $dds .= sprintf($defn_fmt, $defn);
 
-         if (count($defn->expressions()) == 0) continue;
+         if (count($expressions) == 0) continue;
               
          // We have exprrssion to adda. We use a nested <dl> for the expressions.
          $exps = "  <dd class='expressions'>\n   <dl>\n"; 
          
-         foreach ($defn->expressions() as $expression) 
+         foreach ($expressions as $expression) 
 
                 $exps .= sprintf($exp_fmt, $expression['source'], $expression['target']);
 

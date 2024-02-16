@@ -1,9 +1,3 @@
-# Issues
-
-Look into Generators as an easy way of implementing as iterator.
-Use the instead of what I have.
-
-```sql
 <?php
 /*
  * Example of Generator that returns a definition as the key and its expressions as values.
@@ -42,4 +36,3 @@ foreach (gen_defn_exps($defns, $expressions, $counts) as $key => $value) {
   
   echo "\n";
 }
-```

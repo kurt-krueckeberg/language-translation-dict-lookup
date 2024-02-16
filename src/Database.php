@@ -92,11 +92,11 @@ class Database extends DatabaseBase implements InserterInterface {
 
      $this->word_prim_keys[$wrface->word_defined()] = $word_id;
      
-     foreach($wrface->definitions() as $defn) {
+     foreach($wrface as $defn => $expressions) {
 
-        $defn_id = $defns_tbl->insert($defn->definition(), $word_id);
+        $defn_id = $defns_tbl->insert($defn, $word_id);
 
-        foreach ($defn->expressions() as $expr) {
+        foreach ($expressions as $expr) {
 
           $expr_tbl->insert($expr, $defn_id);
         } 
@@ -132,6 +132,12 @@ class Database extends DatabaseBase implements InserterInterface {
 
       $test = new DBWordBase($this->pdo, 1);
   
+      foreach($test as $defn => $expressions) {
+          
+          echo "definition: $defn and expressions\n";
+          print_r($expressions);
+      }
+          
       $wrface = $fetch_word($word); 
 
       //++return $wrface;

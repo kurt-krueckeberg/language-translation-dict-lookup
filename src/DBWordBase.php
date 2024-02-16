@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class DBWordBase implements /* \Iterator */ \IteratorAggregate {  
+class DBWordBase implements \IteratorAggregate /* WordInterface */ {  
 
    static private $stmts = [];
     
@@ -10,7 +10,6 @@ class DBWordBase implements /* \Iterator */ \IteratorAggregate {
    
    protected \ArrayIterator $iter;
 
-   // TODO: Combinge these two queries into one. 
    private static $sql_defns_expressions_count = "select defns.id as defn_id, defns.defn as definitions, count(exprs.id) as expressions_count from 
      defns 
 left join
@@ -29,12 +28,30 @@ where defns.word_id=:word_id;";
 
    protected static int $word_id = -1;
    
-   protected array $expresion_cnt;
+   protected array $expresions_cnt;
    
    protected array $expressions;
    
    protected array $definitions;
    
+   static private function gen_defn_exps(array $definitions, array $expressions, array $exprs_counts) : \Iterator
+   {
+      $offset = 0;
+
+      foreach ($definitions as $index => $value) {
+
+         //--echo "key = $index and value = $value\n";
+
+         yield $value => array_slice($expressions, $offset, $exprs_counts[$index]);
+
+         //--echo "offset before: $offset\n";
+
+         $offset += $exprs_counts[$index];
+
+         //--echo "offset after: $offset\n"; 
+     }
+   }
+
    protected function get_stmt(\PDO $pdo, string $str) : \PDOStatement
    {     
       if (!isset(self::$stmts[$str])) {
@@ -79,7 +96,7 @@ where defns.word_id=:word_id;";
 
       $this->iter = new \ArrayIterator($this->definitions);
       
-      $this->expressions_cnt = array_column($result, 'expressions_count');
+      $this->expressions_cnts = array_column($result, 'expressions_count');
       
       $get_expressions = $this->get_stmt($pdo, 'sql_get_expressions');
       
@@ -89,38 +106,9 @@ where defns.word_id=:word_id;";
       
       $this->expressions = array_column($expressions, 'expressions');
    }
-     
-   function current() : DefinitionInterface | false
+   
+   function getIterator() : \Iterator
    {
-     $ele =  $this->iter->current();
-
-     if ($ele === false) return false;
-
-     $index = $this->iter->key();
-
-     $this->expressions_cnt[$index]; // todo: I also need both the offset from the start of the first element to the current set of exprssions
-                                     // and the total number of expressions. 
-     
-     return new DBDefinition($this->iter[$index], array() ); // <-- TODO: 2nd parameter not yet right per comment above.
-   }
-
-   function next() : void
-   {
-      $this->iter->next();
-   }
-
-   function valid() : bool
-   {
-      return $this->iter->valid();
-   }
-
-   function key() : int | null
-   {
-      return $this->iter->key();
-   }
-
-   function rewind() : void
-   {
-      $this->iter->rewind();
+       return DBWordBase::gen_defn_exps($this->definitions, $this->expressions, $this->expressions_cnts);
    }
 }
