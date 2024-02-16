@@ -2,14 +2,14 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class SamplesTable  {  
+class WordTable implements TableInsertInterface {  
    
    //private \PDO $pdo;
    private \PDOStatement $insert_stmt; 
-   private static $sql_insert = "insert into samples(sample, word_id) values(:sample, :word_id)";
+   private static $sql_insert = "insert into words(word, pos) values(:word, :pos)";
 
-   private string $sample = '';
-   private int $word_id = -1;
+   private string $word = '';
+   private string $pos = '';
 
    private \PDO $pdo;
 
@@ -18,17 +18,17 @@ class SamplesTable  {
       $this->pdo = $pdo;
 
       $this->insert_stmt = $pdo->prepare(self::$sql_insert);
-
-      $this->insert_stmt->bindParam(':sample', $this->sample, \PDO::PARAM_STR);     
       
-      $this->insert_stmt->bindParam(':word_id', $this->word_id, \PDO::PARAM_INT);
+      $this->insert_stmt->bindParam(':word', $this->word, \PDO::PARAM_STR);
+     
+      $this->insert_stmt->bindParam(':pos', $this->pos, \PDO::PARAM_STR);     
    }
 
-   public function insert(string $sample, int $word_id) : int
+   public function insert(WordInterface $wrface, int $id=-1) : int
    {
-      $this->sample = $sample;
+      $this->word = $wrface->word_defined();
       
-      $this->word_id  = $word_id;
+      $this->pos  = $wrface->get_pos()->getString();
       
       $rc = $this->insert_stmt->execute();
 
@@ -43,7 +43,7 @@ class SamplesTable  {
        */
       
       $id = (int) $this->pdo->lastInsertId();
-      
+
       return $id;
    }
 }
