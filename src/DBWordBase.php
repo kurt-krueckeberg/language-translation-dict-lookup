@@ -26,7 +26,10 @@ left join
    on defns.id=exprs.defn_id
 where defns.word_id=:word_id;";
 
+   private static string $sql_wordselect  = "select id, pos from words as w where w.word=:word";
+
    protected static int $word_id = -1;
+   protected static string $word = '';
    
    protected array $expresions_cnt;
    
@@ -40,15 +43,9 @@ where defns.word_id=:word_id;";
 
       foreach ($definitions as $index => $value) {
 
-         //--echo "key = $index and value = $value\n";
-
          yield $value => array_slice($expressions, $offset, $exprs_counts[$index]);
 
-         //--echo "offset before: $offset\n";
-
          $offset += $exprs_counts[$index];
-
-         //--echo "offset after: $offset\n"; 
      }
    }
 
@@ -70,19 +67,24 @@ where defns.word_id=:word_id;";
    {
       return match($str) {
         'sql_defns_expressions_count' => self::$sql_defns_expressions_count,
-        'sql_get_expressions' => self::$sql_get_expressions
+        'sql_get_expressions' => self::$sql_get_expressions,
+        'sql_wordselect' => self::$sql_wordselect
+
       };  
    }
 
-   protected function bind(\PDOStatement $stmt) : void
+   protected function bind(\PDOStatement $stmt, string $str='') : void
    {
-       $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
+       match ($str) {
+         'sql_wordselect' => $stmt->bindParam(':word', $this->word, \PDO::PARAM_STR),         
+         default => $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT)
+       };
    }
     
-   function __construct(\PDO $pdo, int $word_id)
+   function __construct(\PDO $pdo, Pos $pos, string $word, int $word_id)
    {
       $this->pdo = $pdo;
- 
+           
       // get count of expressions
       self::$word_id = $word_id;     
 

@@ -60,17 +60,6 @@ class Database extends DatabaseBase implements InserterInterface {
    {
       $word_id = $this->insert_word($wrface);
 
-      /* 
-      foreach($wrface as $key => $verbResult) {
-
-         echo "Verb to be inserted: " . $verbResult->word_defined() . ".\n"; 
-         
-         $id = $this->insert_word($verbResult); 
-
-         $related[] = $id;
-      }
-      */
-
       $conjugatedVerbsTbl = $this->get_table('SharedConjugationsTable');
        
       $conj_id = $this->conjugations_prim_keys[$wrface->get_main_verb()]; 
@@ -128,9 +117,13 @@ class Database extends DatabaseBase implements InserterInterface {
 
    function fetch_word($word) : WordInterface | false
    {
-      //--$fetch_word = $this->get_word_id('FetchWord');
+      $fetch= new FetchWord($this->pdo);
+      
+      $result = $fetch($word);
+      
+      if ($result === false) return false;
 
-      $test = new DBWordBase($this->pdo, 1);
+      $test = new DBWordBase($this->pdo, $result['pos'], $word, $result['word_id']);
   
       foreach($test as $defn => $expressions) {
           

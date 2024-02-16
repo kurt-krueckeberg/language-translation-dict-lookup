@@ -2,25 +2,30 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class DBWord extends DBWordBase {  
-  
-   private static $sql_wordselect = "select id, pos from words as w where w.word=:word";
+class FetchWord  {  
+   
+   private \PDOStatement $select_word; 
+   
+   private static $sql_wordselect = "select id as word_id, pos from words as w where w.word=:word";
                                            
    private string $word = '';
    
    private \PDO $pdo;
    
-   private POS $pos;
+   readonly public POS $pos;
    
-   private int $id = -1 ;
+   private int $word_id = -1 ;
 
-   public function __construct(\PDO $pdo, string $word)
+   public function __construct(\PDO $pdo)
    {
-      parent::get_stmt($pdo, $word) 
-      parent::__construct($pdo, $word_id);
+      $this->pdo = $pdo;
+
+      $this->select_word = $pdo->prepare(self::$sql_wordselect);
+      
+      $this->select_word->bindParam(':word', $this->word, \PDO::PARAM_STR);     
    }
 
-   function __invoke(string $word) : WordInterface | false
+   function __invoke(string $word) : array | false
    {
       $this->word = $word;
       
@@ -31,38 +36,35 @@ class DBWord extends DBWordBase {
       
       $row = $this->select_word->fetch(\PDO::FETCH_ASSOC);
       
-      $this->pos = POS::fromString($row['pos']);
+      return array('pos' => Pos::fromString($row['pos']), 'word_id' => $row['word_id']);
       
+      /*
       switch ($row['pos']) {
           
           case 'noun':
-              $this->id = $row['id'];
-              
+
               if (true !== $result = $this->select_noun->execute())
                      throw new \LogicException("Could not find noun gender and plural for $word.\n") ;
               
               $result = $this->select_noun->fetch(\PDO::FETCH_ASSOC);
-              
-              //TODO: Create NounInterface result
+                    
               break;
           
           case 'verb':
-              
-              $this->id = $row['id'];
+      
               if (true !== $result = $this->select_verb->execute())
                      throw new \LogicException("Could not find verb conjuation for $word.\n") ;
               
               $result = $this->select_verb->fetch(\PDO::FETCH_ASSOC);
               
               $conj = $result['conjuation'];
-              //TODO: Create VerbInterface result
-              
+                   
               break;
           
           default:
               break;
       }
-      
+      */
       
    }
 }
