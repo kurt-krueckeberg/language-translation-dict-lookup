@@ -68,7 +68,7 @@ left join
       $exprs_count = parent::get_stmt($pdo, 'sql_count');
 
       $rc = $verb_stmt->execute();
-
+  
       $this->rows = $verb_stmt->fetchAll(\PDO::FETCH_ASSOC);
 
       $this->defns = $this->rows['defn']; // unique definitions
