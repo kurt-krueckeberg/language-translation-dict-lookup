@@ -3,6 +3,8 @@
 error.log
 config.xml
 config.php
+src/Config.php
+src/config.php
 vendor/
 *.html
 .vscode/
