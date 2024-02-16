@@ -36,8 +36,8 @@ create table if not exists shared_conjugations (
   conj_id int not null,
   word_id int not null,
   primary key(conj_id, word_id),
-  foreign key(conj_id) references conjugations(id),
-  foreign key(word_id) references words(id)
+  foreign key(conj_id) references conjugations(id) on delete cascade,
+  foreign key(word_id) references words(id) on delete cascade
 );
 
 # -- This is not returned even though it is desired
