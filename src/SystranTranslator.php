@@ -103,8 +103,9 @@ class SystranTranslator extends RestApi implements TranslateInterface, Dictionar
       */
 
       //usort($matches, $cmp);
-      
-      return new SystranDictionaryResultsIterator($word, $matches, $this->collator);
+      $createIterator = new CreateSystranLookupResultsIterator;
+  
+      return $createIterator($word, $matches, $this->collator);
     }
     
      /*

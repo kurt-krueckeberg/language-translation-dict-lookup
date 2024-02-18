@@ -2,14 +2,37 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class SystranDictionaryResultsIterator implements /*\Countable,*/ \Iterator { 
+class CreateSystranLookupResultsIterator { 
 
     private bool $is_verb_family;
     private int  $main_verb_index;
 
-    private \Iterator $iter;
+    public static function VerbFamilyGenerator(array $matches, int $main_verb_index) : \Iterator 
+    {
+       $conjugator = function () use($matches, $main_verb_index): string  {
     
-    public static function SimpleDictionaryResultsIterator(array $arr) : \Iterator
+           $conj = $matches[$main_verb_index]['source']['inflection'];
+    
+           return str_replace(array("(", "/", ")"), array( "", ", ", ""), $conj); 
+       };
+       
+       yield new SystranVerb($matches[$main_verb_index], $conjugator);
+       
+       foreach($matches as $index => $current) {
+          
+          
+          if ($index == $main_verb_index) {
+             
+             continue;
+    
+          } else {
+             
+             yield new SystranRelatedVerbResult($current);
+          }
+       }
+    }   
+
+    public static function SimpleDictionaryResultsGenerator(array $arr) : \Iterator
     {
         foreach ($arr as $key => $current) {
 
@@ -24,7 +47,12 @@ class SystranDictionaryResultsIterator implements /*\Countable,*/ \Iterator {
         }
     }
     
-    public function __construct(string $word_lookedup, array $matches, \Collator $collator) 
+    public function __construct()
+    {
+
+    }
+
+    public function __invoke(string $word_lookedup, array $matches, \Collator $collator) 
     {
        $this->is_verb_family = false; // We start by assuming it is false.
         
@@ -57,17 +85,19 @@ class SystranDictionaryResultsIterator implements /*\Countable,*/ \Iterator {
                          
                                               return $collator->compare($left['source']['lemma'], $key);
                                              });
-           
-               $this->iter = new VerbFamilyIterator($matches, $this->main_verb_index); 
+
+               $result = CreateSystranLookupResultsIterator::VerbFamilyGenerator($matches, $this->main_verb_index); 
 
            } else {
 
-               $this->iter = SystranDictionaryResultsIterator::SimpleDictionaryResultsIterator($matches); //--new SimpleDictionaryResultsIterator($matches); 
+               $result = SystranDictionaryResultsIterator::SimpleDictionaryResultsGenerator($matches); //--new SimpleDictionaryResultsIterator($matches); 
            } 
        } else {
     
-          $this->iter = SystranDictionaryResultsIterator::SimpleDictionaryResultsIterator($matches); //-- new SimpleDictionaryResultsIterator($matches); 
+          $result = SystranDictionaryResultsIterator::SimpleDictionaryResultsGenerator($matches); //-- new SimpleDictionaryResultsIterator($matches); 
        }
+
+       return $result; 
    }
    /*
    function count() : int
@@ -187,31 +217,5 @@ class SystranDictionaryResultsIterator implements /*\Countable,*/ \Iterator {
        $all_definitions = array_merge($defns_nontilde, $additional_defns);
        
        return $all_definitions; 
-   }
-
-   function rewind()
-   {
-     return $this->iter->rewind();
-   }
-
-   function current() : SystranWord | false
-   {
-     return $this->iter->current();    
-   }
-
-   function key() : int
-   {
-     return $this->iter->key();
-    
-   }
-
-   function valid() : bool
-   {
-     return $this->iter->valid();    
-   }
-
-   function next() : void
-   {
-     $this->iter->next();
    }
 }

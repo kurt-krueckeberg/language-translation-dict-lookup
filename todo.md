@@ -1,4 +1,5 @@
 # Issues
 
-* Finish the code DBXXX classes and the code in Database::fetch_word
-* Change VerbFamilyIterator to use GernatorVerbFamily.php -- test with kommen, vergrößern, etc.
+* Test database-insert code with input words of: kommen, gehen -- and other prefix and non-prefix verbs and also include nouns and adjectives and adverbs.
+* Finish the code around Database line 134 that uses `FetchWord`.
+
