@@ -87,22 +87,6 @@ class SystranTranslator extends RestApi implements TranslateInterface, Dictionar
 
       $matches = $r['outputs'][0]['output']['matches']; 
 
-      /*
-        Create a sorted array of the source->lemma's lookup our word and determine its part of speech
-        then create either noun-, verb- or word mediator.
-      
-        Find where source->lemma == $word Get pos of this result.
-       */
-
-      // Sort the array $abased $a['source']['lemma'] use German collation sequence
-      /*
-      $cmp = function (array $left, array $right)  { //($GermanCollator) 
-
-           return $this->collator->compare($left['source']['lemma'], $right['source']['lemma']);
-      };
-      */
-
-      //usort($matches, $cmp);
       $createIterator = new CreateSystranLookupResultsIterator;
   
       return $createIterator($word, $matches, $this->collator);
