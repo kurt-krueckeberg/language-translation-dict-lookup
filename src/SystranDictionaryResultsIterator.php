@@ -2,12 +2,27 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class SystranDictionaryResultsIterator implements \Countable, \Iterator { 
+class SystranDictionaryResultsIterator implements /*\Countable,*/ \Iterator { 
 
     private bool $is_verb_family;
     private int  $main_verb_index;
 
     private \Iterator $iter;
+    
+    public static function SimpleDictionaryResultsIterator(array $arr) : \Iterator
+    {
+        foreach ($arr as $key => $current) {
+
+           yield match($current['source']['pos']) {
+
+             'noun' => new SystranNoun($current),
+             'verb' => new SystranVerb($current, function() use($current) : string { 
+                    return $current['source']['inflection'];}
+               ),
+             default => new SystranWord($current)
+           };
+        }
+    }
     
     public function __construct(string $word_lookedup, array $matches, \Collator $collator) 
     {
@@ -47,11 +62,11 @@ class SystranDictionaryResultsIterator implements \Countable, \Iterator {
 
            } else {
 
-               $this->iter = new SimpleDictionaryResultsIterator($matches); 
+               $this->iter = SystranDictionaryResultsIterator::SimpleDictionaryResultsIterator($matches); //--new SimpleDictionaryResultsIterator($matches); 
            } 
        } else {
     
-          $this->iter = new SimpleDictionaryResultsIterator($matches); 
+          $this->iter = SystranDictionaryResultsIterator::SimpleDictionaryResultsIterator($matches); //-- new SimpleDictionaryResultsIterator($matches); 
        }
    }
 

@@ -49,7 +49,7 @@ readonly class SystranWord implements WordInterface, VisitorInterface {
 
      // strip out any tilde or anything that is not a-zaööü. Keep ' ' for  reflexive verbs like
      // 'sich vorstellen'
-     return preg_replace('/[^A-ZÖÄÜa-zaäöü ]/', '', $tmp); 
+     return preg_replace('/[^A-ZÖÄÜa-zaäöüß ]/', '', $tmp); 
    }
 
    function getIterator() : \Iterator

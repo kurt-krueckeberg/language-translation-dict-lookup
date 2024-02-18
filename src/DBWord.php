@@ -16,7 +16,8 @@ class DBWord extends DBWordBase {
 
    public function __construct(\PDO $pdo, string $word)
    {
-      parent::get_stmt($pdo, $word) 
+      parent::get_stmt($pdo, $word);
+      
       parent::__construct($pdo, $word_id);
    }
 

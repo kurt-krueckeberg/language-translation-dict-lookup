@@ -37,7 +37,8 @@ class Facade {
            
            $iter = $this->sys->lookup($word, 'de', 'en');
     
-           if (count($iter) == 0) {
+           //if (count($iter) == 0) {
+           if (!$iter->valid()) {
                
                 echo "$word has no definitions\n";
                      
@@ -63,7 +64,7 @@ class Facade {
               if ($sentIter !== false)
                  $this->db->save_samples($word, $sentIter);
 
-                 echo "$word saved to database.\n";
+              echo "$word saved to database.\n";
            }
         } 
 

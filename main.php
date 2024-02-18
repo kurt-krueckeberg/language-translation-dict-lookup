@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 declare(strict_types=1);
 use \SplFileObject as File;
@@ -13,9 +12,9 @@ include 'vendor/autoload.php';
      
      die($c->lookup_file() . " not found.\n");
  }
- 
+
  $fac = new Facade($c);
 
  $fac->db_insert();
-
+ 
  $fac->create_html('output');

@@ -66,7 +66,8 @@ class HtmlBuilder {
 
       $str = $sec_samples;
 
-      if (count($iter) === 0)
+      //if (count($iter) === 0)
+      if (!$iter->valid())
 
           $str .= "<p><span class'bold'>" . trim($word) . "<span> has no sample sentsences.</p>";
 
