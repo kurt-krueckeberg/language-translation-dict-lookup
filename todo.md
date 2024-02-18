@@ -1,5 +1,8 @@
 # Issues
 
+* Faced calls `fetch_samples(WordInterface $wrface) : \Traversable`. Would it be better to have the vocab database `words.id` of the word
+to pass to `Database::fetchSamples(...)`? 
+
 * Finish the code related to creating the html page. This code retrieve database words and uses classes like
   DBWord, DBVerb and DBNoun, which have not been tested.
 
