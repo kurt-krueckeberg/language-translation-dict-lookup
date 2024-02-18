@@ -117,24 +117,21 @@ class Database extends DatabaseBase implements InserterInterface {
 
    function fetch_word($word) : WordInterface | false
    {
-      $fetch= new FetchWord($this->pdo);
+      $fetch = new FetchWord($this->pdo);
       
-      $result = $fetch($word);
+      list($pos, $word_id) = $fetch($word);
       
-      if ($result === false) return false;
+      if ($pos === false) return false;
 
-      $test = new DBWordBase($this->pdo, $result['pos'], $word, $result['word_id']);
-  
-      foreach($test as $defn => $expressions) {
-          
-          echo "definition: $defn and expressions\n";
-          print_r($expressions);
-      }
-          
-      $wrface = $fetch_word($word); 
-
-      //++return $wrface;
-      return false;
+      $result= match($pos) {
+         
+         Pos::Verb => new DBVerb($this->pdo, $pos, $word, $word_id),
+         Pos::Noun => new DBNoun($this->pdo, $word_id),
+         default => new DBWord($this->pod, $word_id)        
+         
+      };
+      
+      return $result;
    }
 
    function save_samples(string $word, \Iterator $sentences_iter) : bool

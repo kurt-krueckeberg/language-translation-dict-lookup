@@ -18,8 +18,7 @@ class CreateSystranLookupResultsIterator {
        
        yield new SystranVerb($matches[$main_verb_index], $conjugator);
        
-       foreach($matches as $index => $current) {
-          
+       foreach($matches as $index => $current) {          
           
           if ($index == $main_verb_index) {
              

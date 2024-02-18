@@ -36,51 +36,7 @@ where defns.word_id=:word_id;";
    protected array $expressions;
    
    protected array $definitions;
-   
-   static private function gen_defn_exps(array $definitions, array $expressions, array $exprs_counts) : \Iterator
-   {
-      $offset = 0;
-
-      foreach ($definitions as $index => $value) {
-
-         yield $value => array_slice($expressions, $offset, $exprs_counts[$index]);
-
-         $offset += $exprs_counts[$index];
-     }
-   }
-
-   protected function get_stmt(\PDO $pdo, string $str) : \PDOStatement
-   {     
-      if (!isset(self::$stmts[$str])) {
-                   
-         $stmt = $this->pdo->prepare( $this->get_sql($str) ); 
-
-         $this->bind($stmt, $str);
-
-         self::$stmts[$str] = $stmt;
-      }
-
-      return self::$stmts[$str];
-   }
-
-   protected function get_sql(string $str) : string
-   {
-      return match($str) {
-        'sql_defns_expressions_count' => self::$sql_defns_expressions_count,
-        'sql_get_expressions' => self::$sql_get_expressions,
-        'sql_wordselect' => self::$sql_wordselect
-
-      };  
-   }
-
-   protected function bind(\PDOStatement $stmt, string $str='') : void
-   {
-       match ($str) {
-         'sql_wordselect' => $stmt->bindParam(':word', $this->word, \PDO::PARAM_STR),         
-         default => $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT)
-       };
-   }
-    
+      
    function __construct(\PDO $pdo, Pos $pos, string $word, int $word_id)
    {
       $this->pdo = $pdo;
@@ -109,6 +65,50 @@ where defns.word_id=:word_id;";
       $this->expressions = array_column($expressions, 'expressions');
    }
    
+   static private function gen_defn_exps(array $definitions, array $expressions, array $exprs_counts) : \Iterator
+   {
+      $offset = 0;
+
+      foreach ($definitions as $index => $value) {
+
+         yield $value => array_slice($expressions, $offset, $exprs_counts[$index]);
+
+         $offset += $exprs_counts[$index];
+     }
+   }
+
+   protected function get_stmt(\PDO $pdo, string $str) : \PDOStatement
+   {     
+      if (!isset(self::$stmts[$str])) {
+                   
+         $stmt = $this->pdo->prepare( $this->get_sql($str) ); // <-- BUG: Calls derived class
+
+         $this->bind($stmt, $str);
+
+         self::$stmts[$str] = $stmt;
+      }
+
+      return self::$stmts[$str];
+   }
+
+   protected function get_sql(string $str) : string
+   {
+      return match($str) {
+        'sql_defns_expressions_count' => self::$sql_defns_expressions_count,
+        'sql_get_expressions' => self::$sql_get_expressions,
+        'sql_wordselect' => self::$sql_wordselect
+
+      };  
+   }
+
+   protected function bind(\PDOStatement $stmt, string $str='') : void
+   {
+       match ($str) {
+         'sql_wordselect' => $stmt->bindParam(':word', $this->word, \PDO::PARAM_STR),         
+         default => $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT)
+       };
+   }
+       
    function getIterator() : \Iterator
    {
        return DBWordBase::gen_defn_exps($this->definitions, $this->expressions, $this->expressions_cnts);

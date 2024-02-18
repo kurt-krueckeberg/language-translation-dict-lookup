@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-readonly class DBVerb implements VerbInterface {
+readonly class DBVerb extends DBWordBase implements VerbInterface {
 
    private \PDOStatement $stmt;
 

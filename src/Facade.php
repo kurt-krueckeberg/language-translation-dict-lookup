@@ -92,20 +92,20 @@ class Facade {
       $this->db->save_samples($word, $sent_iter);  
    }
 
-    // Fetch words and their definitions, pos, inflections, etc from database, and for those words found, create a web page
-    function create_html(string $filename) : void
-    {
-       $this->html = new BuildHtml($filename, "de", "en");
+   // Fetch words and their definitions, pos, inflections, etc from database, and for those words found, create a web page
+   function create_html(string $filename) : void
+   {
+      $this->html = new BuildHtml($filename, "de", "en");
 
-       foreach($this->file as $word) {
+      foreach($this->file as $word) {
 
-         $wrface = $this->db->fetch_word($word);
+        $wrface = $this->db->fetch_word($word);
    
-         $cnt = $this->html->add_definitions($wrface); 
+        $cnt = $this->html->add_definitions($wrface); 
  
-         $sentIter = $this->getSamples($wrface);
+        $sentIter = $this->getSamples($wrface);
   
-         $cnt = $this->html->add_samples($word, $sentIter, $this->sys); 
-      }
-    }
+        $cnt = $this->html->add_samples($word, $sentIter, $this->sys); 
+     }
+   }
  }

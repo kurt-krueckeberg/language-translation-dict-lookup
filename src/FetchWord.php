@@ -31,40 +31,13 @@ class FetchWord  {
       
       $rc = $this->select_word->execute();
       
-      if ($rc == false)
-          return false;
+      if ($rc == false) {
+          
+          return array(false, false);
+      }
       
       $row = $this->select_word->fetch(\PDO::FETCH_ASSOC);
       
-      return array('pos' => Pos::fromString($row['pos']), 'word_id' => $row['word_id']);
-      
-      /*
-      switch ($row['pos']) {
-          
-          case 'noun':
-
-              if (true !== $result = $this->select_noun->execute())
-                     throw new \LogicException("Could not find noun gender and plural for $word.\n") ;
-              
-              $result = $this->select_noun->fetch(\PDO::FETCH_ASSOC);
-                    
-              break;
-          
-          case 'verb':
-      
-              if (true !== $result = $this->select_verb->execute())
-                     throw new \LogicException("Could not find verb conjuation for $word.\n") ;
-              
-              $result = $this->select_verb->fetch(\PDO::FETCH_ASSOC);
-              
-              $conj = $result['conjuation'];
-                   
-              break;
-          
-          default:
-              break;
-      }
-      */
-      
+      return array(Pos::fromString($row['pos']), $row['word_id']);     
    }
 }

@@ -34,7 +34,7 @@ left join
       
    static int $word_id = -1;
       
-   private \PDO $pdo;
+   protected \PDO $pdo;
    
    private array $rows;
    
@@ -45,30 +45,35 @@ left join
       return match ($str) {
           
         'sql_verb' => self::$sql_verb,
-        'sql_count' => self::$sql_count        
+        'sql_count' => self::$sql_count,
+        default => parent::get_sql($str)         
       };
    }
 
-   protected function bind(\PDOStatement $stmt, string $str) : void 
+   protected function bind(\PDOStatement $stmt, string $str='') : void 
    {    
-      $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
+      match($str) {
+          
+      'sql_erb' => $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT),
+      
+      default => parent::bind($stmt, $str)
+      };
    }
 
-   public function __construct(\PDO $pdo, int $word_id)
+   public function __construct(\PDO $pdo, Pos $pos, string $word, int $word_id)
    {
-      parent::__construct($pdo);
+      parent::__construct($pdo, $pos, $word, $word_id);
                   
       $verb_stmt = parent::get_stmt($pdo, 'sql_verb');
             
       self::$word_id = $word_id;     
-    
-      $exprs_count = parent::get_stmt($pdo, 'sql_count');
-
+   
       $rc = $verb_stmt->execute();
 
       $this->rows = $verb_stmt->fetchAll(\PDO::FETCH_ASSOC);
 
 /*
+      $exprs_count = parent::get_stmt($pdo, 'sql_count');
       $this->defns = $this->rows['defn']; // unique definitions
       
       $rc = $exprs_count->execute();
@@ -77,9 +82,17 @@ left join
 */
    }
 
-   getIterator() : \Iterator
+   public static function GeneratorIteraor(array $rows, int $expression_counts) : \Iterator
    {
-       // return static generator method.
+       print_r($rows);
+   }
+   
+   function getIterator() : \Iterator
+   {
+       print_r($this->rows);
+       print_r($this->expr_counts);
+       
+       return DBVerb::GeneratorIteraor($this->rows, $this->expr_counts);
    } 
 
    function conjugation() : string
