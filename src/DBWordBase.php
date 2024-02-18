@@ -2,13 +2,13 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class DBWordBase implements \IteratorAggregate /* WordInterface */ {  
+class DBWordBase implements \IteratorAggregate {  
 
    static private $stmts = [];
     
    protected \PDO $pdo;
-   
-   protected \ArrayIterator $iter;
+      
+   //--protected \ArrayIterator $iter;
 
    private static $sql_defns_expressions_count = "select defns.id as defn_id, defns.defn as definitions, count(exprs.id) as expressions_count from 
      defns 
@@ -26,7 +26,7 @@ left join
    on defns.id=exprs.defn_id
 where defns.word_id=:word_id;";
 
-   private static string $sql_wordselect  = "select id, pos from words as w where w.word=:word";
+   //--private static string $sql_wordselect  = "select id, pos from words as w where w.word=:word";
 
    protected static int $word_id = -1;
    protected static string $word = '';
@@ -37,7 +37,7 @@ where defns.word_id=:word_id;";
    
    protected array $definitions;
       
-   function __construct(\PDO $pdo, Pos $pos, string $word, int $word_id)
+   function __construct(\PDO $pdo, int $word_id)
    {
       $this->pdo = $pdo;
            
@@ -52,7 +52,7 @@ where defns.word_id=:word_id;";
       
       $this->definitions = array_column($result, 'definitions');
 
-      $this->iter = new \ArrayIterator($this->definitions);
+      //--$this->iter = new \ArrayIterator($this->definitions);
       
       $this->expressions_cnts = array_column($result, 'expressions_count');
       
@@ -64,8 +64,8 @@ where defns.word_id=:word_id;";
       
       $this->expressions = array_column($expressions, 'expressions');
    }
-   
-   static private function gen_defn_exps(array $definitions, array $expressions, array $exprs_counts) : \Iterator
+     
+   static private function gen_defn_exps(array $definitions, array $expressions, array $exprs_counts) : \Traversable
    {
       $offset = 0;
 
@@ -109,7 +109,7 @@ where defns.word_id=:word_id;";
        };
    }
        
-   function getIterator() : \Iterator
+   public function getIterator() : \Traversable
    {
        return DBWordBase::gen_defn_exps($this->definitions, $this->expressions, $this->expressions_cnts);
    }

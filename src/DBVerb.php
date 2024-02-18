@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class DBVerb extends DBWordBase implements VerbInterface {  
+class DBVerb extends DBWordBase implements VerbInterface, WordInterface {  
 
    /*
     * Get the verb, its id, part of speech, its conjugation, its definitions and any expressions associated with the definition.
@@ -35,10 +35,42 @@ left join
    static int $word_id = -1;
       
    protected \PDO $pdo;
+   protected string $word_defined;
    
    private array $rows;
    
    private array $expr_counts;
+
+   public function __construct(\PDO $pdo, Pos $pos, string $word, int $word_id)
+   {
+      parent::__construct($pdo, $word_id);
+      
+      $this->pos = $pos;
+
+      $this->word_defined = $word;
+                  
+      $verb_stmt = parent::get_stmt($pdo, 'sql_verb');
+            
+      self::$word_id = $word_id;     
+   
+      $rc = $verb_stmt->execute();
+
+      $this->rows = $verb_stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+/*
+      $exprs_count = parent::get_stmt($pdo, 'sql_count');
+      $this->defns = $this->rows['defn']; // unique definitions
+      
+      $rc = $exprs_count->execute();
+
+      $this->expr_counts = $exprs_count->fetchAll(\PDO::FETCH_ASSOC);      
+*/
+   }
+   
+   public function get_pos() : Pos
+   {
+       return $this->pos;
+   }
 
    protected function get_sql(string $str) : string
    {    
@@ -60,54 +92,18 @@ left join
       };
    }
 
-   public function __construct(\PDO $pdo, Pos $pos, string $word, int $word_id)
-   {
-      parent::__construct($pdo, $pos, $word, $word_id);
-                  
-      $verb_stmt = parent::get_stmt($pdo, 'sql_verb');
-            
-      self::$word_id = $word_id;     
-   
-      $rc = $verb_stmt->execute();
-
-      $this->rows = $verb_stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-/*
-      $exprs_count = parent::get_stmt($pdo, 'sql_count');
-      $this->defns = $this->rows['defn']; // unique definitions
-      
-      $rc = $exprs_count->execute();
-
-      $this->expr_counts = $exprs_count->fetchAll(\PDO::FETCH_ASSOC);      
-*/
-   }
-
    public static function GeneratorIteraor(array $rows, int $expression_counts) : \Iterator
    {
        print_r($rows);
    }
    
-   function getIterator() : \Iterator
-   {
-       print_r($this->rows);
-       print_r($this->expr_counts);
-       
-       return DBVerb::GeneratorIteraor($this->rows, $this->expr_counts);
-   } 
-
    function conjugation() : string
    {
-     $this->rows[0]['conjugation'];
+     return $this->rows[0]['conjugation'];
    }
 
    function word_defined() : string
    {
-     $this->rows[0]['word'];
+     return $this->word_defined;
    } 
-
-   function  get_pos() : Pos
-   {
-      return Pos::fromString($this->row[0]['pos']);
-   }
-
 }

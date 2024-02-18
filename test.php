@@ -12,7 +12,6 @@ include 'vendor/autoload.php';
      
      die($c->lookup_file() . " not found.\n");
  }
-
   
  $fac = new Facade($c);
 

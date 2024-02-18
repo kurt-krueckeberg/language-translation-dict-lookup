@@ -130,8 +130,13 @@ class Database extends DatabaseBase implements InserterInterface {
          default => new DBWord($this->pod, $word_id)        
          
       };
-      
+           
       return $result;
+   }
+   
+   function fetch_samples(WordInterface $wrface) : \Traversable
+   {
+       // Retrieve all the samples, if any, from the word definition in $wrface
    }
 
    function save_samples(string $word, \Iterator $sentences_iter) : bool

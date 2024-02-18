@@ -32,7 +32,7 @@ class HtmlBuilder {
       return $sec;   
    } 
 
-   private function add_defn(\Iterator $defnsIter) : string
+   private function add_defn(\Traversable $defnsIter) : string
    {       
       $dds = '';
       static $defn_fmt =  "  <dd>%s</dd>\n";

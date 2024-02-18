@@ -103,7 +103,7 @@ class Facade {
    
         $cnt = $this->html->add_definitions($wrface); 
  
-        $sentIter = $this->getSamples($wrface);
+        $sentIter = $this->db->fetch_samples($wrface); // TODO: I t would be good to have word_id.
   
         $cnt = $this->html->add_samples($word, $sentIter, $this->sys); 
      }
