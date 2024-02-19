@@ -62,7 +62,7 @@ class HtmlBuilder {
    }
  
    // to do: make sure the array has both 1.) sample and 2.) its translation.
-   public function add_samples_section(string $word, SentencesIterator $iter, TranslateInterface $trans) : string 
+   public function add_samples_section(string $word, \Traversable $iter, TranslateInterface $trans) : string 
    {
       static $sec_samples = "<section class='samples'>";
 

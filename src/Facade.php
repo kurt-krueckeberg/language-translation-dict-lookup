@@ -29,8 +29,13 @@ class Facade {
       $this->c = $c; 
    }
   
-   function db_insert() : bool
+   /*
+    * Returns list of words found in dictionary and inserted into database.
+    */
+   function db_insert() : array 
    {
+      $results = [];
+      
       try {
        
         foreach ($this->file as $word) {
@@ -43,6 +48,8 @@ class Facade {
                      
                 continue;
            }
+      
+           $results[] = $word;
            
            echo "$word results:\n";
 
@@ -62,7 +69,7 @@ class Facade {
 
               if ($sentIter !== false) {
                   
-                 $this->db->save_samples($word, $sentIter);
+                 $this->db->save_samples($word, $this->sys, $sentIter);
               }
 
               echo "$word saved to database.\n";
@@ -76,7 +83,8 @@ class Facade {
       
             echo "Exception: message = {$e->getMessage()}.\nError Code = {$e->getCode()}.\nException code = {$e->getCode()}.\n";
       }
-      return true;
+      
+      return $results;
    } 
  
    private function insert_samples(string $word) : bool
@@ -93,13 +101,21 @@ class Facade {
    }
 
    // Fetch words and their definitions, pos, inflections, etc from database, and for those words found, create a web page
-   function create_html(string $filename) : void
+   function create_html(array $words, string $filename) : void
    {
       $this->html = new BuildHtml($filename, "de", "en");
 
-      foreach($this->file as $word) {
+      foreach($words as $word) {
 
-        list($wrface, $word_id) = $this->db->fetch_word($word);
+        $result = $this->db->fetch_word($word);  
+        
+        if ($result === false) {
+            
+            echo "$word is not in database.\n";
+            continue;            
+        }
+        
+        list($wrface, $word_id) = $result;
    
         $cnt = $this->html->add_definitions($wrface); 
  

@@ -15,6 +15,12 @@ include 'vendor/autoload.php';
   
  $fac = new Facade($c);
 
- $fac->db_insert();
+ $word_list = $fac->db_insert();
  
- $fac->create_html('output');
+ /*
+  *  TODO: This method does not know about words that were not found in the diciontary and
+  *  therefore not saved in the atabase. 
+  * 
+  *  It should process the subset of only those words found in dictionary
+  */
+ $fac->create_html($word_list, 'output');

@@ -55,7 +55,7 @@ html_end;
       return;
    }
 
-   public function add_samples(string $word, SentencesIterator $iter, TranslateInterface $trans) : void 
+   public function add_samples(string $word, \Traversable $iter, TranslateInterface $trans) : void 
    {
       $section = $this->html_builder->add_samples_section($word, $iter, $trans);
 

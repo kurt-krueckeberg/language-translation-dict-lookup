@@ -6,10 +6,11 @@ class SamplesTable  {
    
    //private \PDO $pdo;
    private \PDOStatement $insert_stmt; 
-   private static $sql_insert = "insert into samples(sample, word_id) values(:sample, :word_id)";
+   private static $sql_insert = "insert into samples(sample, target, word_id) values(:sample, :target, :word_id)";
 
-   private string $sample = '';
-   private int $word_id = -1;
+   private static string $sample = '';
+   private static string $target = '';
+   private static int $word_id = -1;
 
    private \PDO $pdo;
 
@@ -19,16 +20,19 @@ class SamplesTable  {
 
       $this->insert_stmt = $pdo->prepare(self::$sql_insert);
 
-      $this->insert_stmt->bindParam(':sample', $this->sample, \PDO::PARAM_STR);     
+      $this->insert_stmt->bindParam(':sample', self::$sample, \PDO::PARAM_STR);     
+      $this->insert_stmt->bindParam(':target', self::$target, \PDO::PARAM_STR);     
       
-      $this->insert_stmt->bindParam(':word_id', $this->word_id, \PDO::PARAM_INT);
+      $this->insert_stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
    }
 
-   public function insert(string $sample, int $word_id) : int
+   public function insert(string $sample, string $target, int $word_id) : int
    {
-      $this->sample = $sample;
+      self::$sample = $sample;
+
+      self::$target = $target;
       
-      $this->word_id  = $word_id;
+      self::$word_id  = $word_id;
       
       $rc = $this->insert_stmt->execute();
 

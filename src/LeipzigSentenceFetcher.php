@@ -11,8 +11,16 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
    {       
       parent::__construct($c, ProviderID::Leipzig_de);    
    }
+
+   static public function SentencesGenerator(array $sentences)
+   {
+      foreach($sentences as $object) {
+
+         yield $object->sentence;
+      }
+   }
    
-   public function fetch(string $word, int $count=3) : \Iterator | false
+   public function fetch(string $word, int $count=3) : \Traversable | false
    {
       $route = urlencode($word);
 
@@ -40,8 +48,11 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
        }
       */
       // The iterator returns each 'sentence' member of the SentenceInformation objects array.
+      return LeipzigSentenceFetcher::SentencesGenerator( $obj->sentences );
+      /*
       return new SentencesIterator( $obj->sentences, function ($x) {
               return $x->sentence; } 
           ); 
+       */
    }
 }

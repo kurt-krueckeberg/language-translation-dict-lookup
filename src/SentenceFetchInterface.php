@@ -4,5 +4,5 @@ namespace Vocab;
 
 interface SentenceFetchInterface  { 
 
-   public function fetch(string $word, int $count=3) : \Iterator | false; 
+   public function fetch(string $word, int $count=3) : \Traversable | false; 
 }

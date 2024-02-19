@@ -103,7 +103,6 @@ class Database extends DatabaseBase implements InserterInterface {
 
    function fetch_word($word) : array | false // array(WordInterface $wface,int $word_id) | false
    {
-      //--$fetch = new FetchWord($this->pdo);
       $fetch = $this->get_table('FetchWord');
       
       list($pos, $word_id) = $fetch($word);
@@ -129,7 +128,7 @@ class Database extends DatabaseBase implements InserterInterface {
        return $fetch($word_id);
    }
 
-   function save_samples(string $word, \Iterator $sentences_iter) : bool
+   function save_samples(string $word, TranslateInterface $translator, \Traversable $sentences_iter) : bool
    {
       $samplesTbl = new SamplesTable($this->pdo);
 
@@ -137,7 +136,7 @@ class Database extends DatabaseBase implements InserterInterface {
 
       foreach ($sentences_iter as $sentence) {
           
-        $rc = $samplesTbl->insert($sentence, $prim_key);  
+        $rc = $samplesTbl->insert($sentence, $translator->translate($sentence, 'en'), $prim_key);  
       }
       
       return true;

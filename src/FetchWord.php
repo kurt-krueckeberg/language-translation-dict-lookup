@@ -37,6 +37,8 @@ class FetchWord  {
       }
       
       $row = $this->select_word->fetch(\PDO::FETCH_ASSOC);
+
+      if ($row === false) return false;
       
       return array(Pos::fromString($row['pos']), $row['word_id']);     
    }
