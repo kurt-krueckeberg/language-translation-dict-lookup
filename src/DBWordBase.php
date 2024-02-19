@@ -96,8 +96,6 @@ where defns.word_id=:word_id;";
       return match($str) {
         'sql_defns_expressions_count' => self::$sql_defns_expressions_count,
         'sql_get_expressions' => self::$sql_get_expressions,
-        'sql_wordselect' => self::$sql_wordselect
-
       };  
    }
 

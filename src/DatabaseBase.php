@@ -31,4 +31,18 @@ class DatabaseBase implements WordExistsInterface {
          
      return ($rc === false) ? false : true;            
    }
+      
+   protected function get_table(string $table_name) : mixed
+   {
+      $className = "Vocab\\$table_name";
+  
+      if (isset($this->tables[$className]) === false) {
+
+         $instance = new $className($this->pdo);
+
+         $this->tables[$className] = $instance;
+     } 
+
+      return $this->tables[$className];
+   }
 }

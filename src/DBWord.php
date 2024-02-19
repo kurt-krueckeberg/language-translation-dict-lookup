@@ -4,9 +4,9 @@ namespace Vocab;
 
 class DBWord extends DBWordBase {  
   
-   private static $sql_wordselect = "select id, pos from words as w where w.word=:word";
+   private static $sql_wordselect = "select id, pos from words as w where w.word=:word_id";
                                            
-   private string $word = '';
+   private static int $word_id = -1;
    
    private \PDO $pdo;
    
@@ -14,13 +14,27 @@ class DBWord extends DBWordBase {
    
    private int $id = -1 ;
 
-   public function __construct(\PDO $pdo, string $word)
+   public function __construct(\PDO $pdo, int $word_id)
    {
-      parent::get_stmt($pdo, $word);
+      parent::get_stmt($pdo, 'sql_wordselect');
       
       parent::__construct($pdo, $word_id);
    }
-
+   
+   protected function get_sql(string $str) : string
+   {
+      return match($str) {
+        'sql_wordselect' => self::$sql_wordselect
+      };  
+   }
+   
+   protected function bind(\PDOStatement $stmt, string $str='') : void
+   {
+       match ($str) {
+         'sql_wordselect' => $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_STR),         
+       };
+   }
+   
    function __invoke(string $word) : WordInterface | false
    {
       $this->word = $word;
@@ -63,7 +77,5 @@ class DBWord extends DBWordBase {
           default:
               break;
       }
-      
-      
    }
 }

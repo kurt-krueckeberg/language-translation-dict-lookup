@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class DBVerb extends DBWordBase implements VerbInterface, WordInterface {  
+class DBVerb extends DBWordBase implements VerbInterface {  
 
    /*
     * Get the verb, its id, part of speech, its conjugation, its definitions and any expressions associated with the definition.
