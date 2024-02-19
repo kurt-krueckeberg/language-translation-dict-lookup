@@ -121,9 +121,12 @@ class Database extends DatabaseBase implements InserterInterface {
       return array($result, $word_id);
    }
    
-   function fetch_samples(WordInterface $wrface) : \Traversable
+   function fetch_samples(int $word_id) : \Traversable | false
    {
        // Retrieve all the samples, if any, from the word definition in $wrface
+       $fetch = new FetchSamples($this->pdo);
+
+       return $result = $fetch($word_id);
    }
 
    function save_samples(string $word, \Iterator $sentences_iter) : bool

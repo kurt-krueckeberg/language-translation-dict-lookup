@@ -8,8 +8,6 @@ class DBWordBase implements \IteratorAggregate {
     
    protected \PDO $pdo;
       
-   //--protected \ArrayIterator $iter;
-
    private static $sql_defns_expressions_count = "select defns.id as defn_id, defns.defn as definitions, count(exprs.id) as expressions_count from 
      defns 
 left join
@@ -41,19 +39,17 @@ where defns.word_id=:word_id;";
    {
       $this->pdo = $pdo;
            
-      // get count of expressions
-      self::$word_id = $word_id;     
-
       $exprs_cnt_stmt = $this->get_stmt($pdo, 'sql_defns_expressions_count');
       
+      // Get expressions count
+      self::$word_id = $word_id;     
+
       $exprs_cnt_stmt->execute();
       
       $result = $exprs_cnt_stmt->fetchALL(\PDO::FETCH_ASSOC);
       
       $this->definitions = array_column($result, 'definitions');
 
-      //--$this->iter = new \ArrayIterator($this->definitions);
-      
       $this->expressions_cnts = array_column($result, 'expressions_count');
       
       $get_expressions = $this->get_stmt($pdo, 'sql_get_expressions');
@@ -65,7 +61,7 @@ where defns.word_id=:word_id;";
       $this->expressions = array_column($expressions, 'expressions');
    }
      
-   static private function gen_defn_exps(array $definitions, array $expressions, array $exprs_counts) : \Traversable
+   static private function generator_defn_exprs(array $definitions, array $expressions, array $exprs_counts) : \Traversable
    {
       $offset = 0;
 
@@ -109,6 +105,6 @@ where defns.word_id=:word_id;";
        
    public function getIterator() : \Traversable
    {
-       return DBWordBase::gen_defn_exps($this->definitions, $this->expressions, $this->expressions_cnts);
+       return DBWordBase::generator_defn_exprs($this->definitions, $this->expressions, $this->expressions_cnts);
    }
 }

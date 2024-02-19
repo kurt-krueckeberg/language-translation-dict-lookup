@@ -5,7 +5,8 @@ namespace Vocab;
 class DBVerb extends DBWordBase implements VerbInterface {  
 
    /*
-    * Get the verb, its id, part of speech, its conjugation, its definitions and any expressions associated with the definition.
+    * Get the verb's id, part of speech, its conjugation. The base class will get its definitions and any 
+    * associated expressions.
     */
 private static $sql_verb = "select w.id as word_id, w.word, w.pos, tenses.conjugation as conjugation from
      words as w
@@ -15,23 +16,6 @@ join
     conjugations as tenses on tenses.id=v.conj_id
 where w.id=:word_id";
 
-  /*
-   * Get the expression count for each definition. Some definitions have no expressions. 
-   * Moved to base class:
-
-   private static $sql_count = "select defns.id as defn_id, defns.defn, count(exprs.id) as expressions_count from 
-     defns 
-left join
-     exprs
-         on exprs.defn_id=defns.id 
-     where defns.word_id=:word_id
-  group by defns.id
-    order by defn_id asc;";
-*/   
-   /*
-    * private non-sql string members
-    */
-      
    static int $word_id = -1;
       
    protected \PDO $pdo;
@@ -86,7 +70,7 @@ left join
    {    
       match($str) {
           
-      'sql_erb' => $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT),
+      'sql_verb' => $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT),
       
       default => parent::bind($stmt, $str)
       };
