@@ -69,6 +69,6 @@ where w.id=:word_id";
 
    function gender() : string
    {
-     return $this->rows[0]['gender'];
+     return Gender::fromString($this->rows[0]['gender']);
    } 
 }
