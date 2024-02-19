@@ -8,7 +8,7 @@ class DBNoun extends DBWordBase implements NounInterface {
     * Get the noun's id, part of speech, gender and plural. The base class will get its definitions and any 
     * associated expressions.
     */
-private static $sql_noun = "select w.id as word_id, w.pos as pos, n.gender as gender, n.plural as plural from
+protected static $sql_noun = "select n.gender as gender, n.plural as plural from
      words as w
 join
     nouns_data as n on w.id=n.word_id
@@ -19,6 +19,11 @@ where w.id=:word_id";
    protected \PDO $pdo;
    
    private array $rows;
+   
+   private string $word_defined;
+   
+   private Pos $pos;
+   
    
    public function __construct(\PDO $pdo, Pos $pos, string $word, int $word_id)
    {
@@ -34,7 +39,7 @@ where w.id=:word_id";
    
       $rc = $noun_stmt->execute();
 
-      $this->rows = $verb_stmt->fetchAll(\PDO::FETCH_ASSOC);
+      $this->rows = $noun_stmt->fetchAll(\PDO::FETCH_ASSOC);
    }
    
    public function get_pos() : Pos

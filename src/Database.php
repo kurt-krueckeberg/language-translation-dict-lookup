@@ -112,7 +112,7 @@ class Database extends DatabaseBase implements InserterInterface {
       $result= match($pos) {
          
          Pos::Verb => new DBVerb($this->pdo, $pos, $word, $word_id),
-         Pos::Noun => new DBNoun($this->pdo, $word_id),
+         Pos::Noun => new DBNoun($this->pdo, $pos, $word, $word_id),
          default => new DBWord($this->pdo, $word_id)        
          
       };
