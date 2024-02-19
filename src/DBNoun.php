@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class DBNoun extends DBWordBase implements VerbInterface {  
+class DBNoun extends DBWordBase implements NounInterface {  
 
    /*
     * Get the noun's id, part of speech, gender and plural. The base class will get its definitions and any 
