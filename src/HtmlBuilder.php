@@ -47,10 +47,12 @@ class HtmlBuilder {
          // We have exprrssion to adda. We use a nested <dl> for the expressions.
          $exps = "  <dd class='expressions'>\n   <dl>\n"; 
          
-         foreach ($expressions as $expression) 
+         foreach ($expressions as $expression) {
 
-                $exps .= sprintf($exp_fmt, $expression['source'], $expression['target']);
-
+             // TODO: <-- source and targe only apply to Systran lookup results
+             // not to words in the database.
+                $exps .= sprintf($exp_fmt, $expression['source'], $expression['target']); 
+         }
          $exps .= "  </dl>\n  </dd>\n";
          
          $dds .=  $exps ;              

@@ -4,10 +4,10 @@ namespace Vocab;
 
 class ExpressionsTable { 
 
-   private static $sql = "insert into exprs(expr, translated_expr, defn_id) values(:expr, :translated_expr, :defn_id)";
-   private string $expr = '';
-   private string $translated_expr = '';
-   private int $defn_id = -1;
+   private static $sql = "insert into exprs(source, target, defn_id) values(:source, :target, :defn_id)";
+   private static string $source = '';
+   private static string $target = '';
+   private static int $defn_id = -1;
 
    private \PDOStatement $insert_stmt;
 
@@ -19,25 +19,26 @@ class ExpressionsTable {
 
       $this->insert_stmt = $pdo->prepare(self::$sql);
 
-      $this->insert_stmt->bindParam(":expr", $this->expr, \PDO::PARAM_STR);
+      $this->insert_stmt->bindParam(":source", self::$source, \PDO::PARAM_STR);
 
-      $this->insert_stmt->bindParam(":translated_expr", $this->translated_expr, \PDO::PARAM_STR);
+      $this->insert_stmt->bindParam(":target", self::$target, \PDO::PARAM_STR);
 
-      $this->insert_stmt->bindParam(":defn_id", $this->defn_id, \PDO::PARAM_INT);	
+      $this->insert_stmt->bindParam(":defn_id", self::$defn_id, \PDO::PARAM_INT);	
    }
 
    /*
        TODO: This method shuld be redone to accept an interface not an array because... 
        ...this code will only works for Systran dictionary results.
     */
-   public function insert(array $expression, $foreign_key) : int 
+   public function insert(array $expression, int $defn_id) : int 
    {
-      $this->expr = $expression['source'];
+      self::$source = $expression['source'];
       
-      $this->translated_expr = $expression['target'];
+      self::$target = $expression['target'];
 
-      $this->defn_id = $foreign_key;
-      $this->insert_stmt->execute(); 
+      self::$defn_id = $defn_id;
+
+      $rc = $this->insert_stmt->execute(); 
 
       return (int) $this->pdo->lastInsertId();
    }

@@ -8,7 +8,7 @@ class DBVerb extends DBWordBase implements VerbInterface {
     * Get the verb's id, part of speech, its conjugation. The base class will get its definitions and any 
     * associated expressions.
     */
-private static $sql_verb = "select w.id as word_id, w.word, w.pos, tenses.conjugation as conjugation from
+protected static $sql_verb = "select w.id as word_id, w.word, w.pos, tenses.conjugation as conjugation from
      words as w
 join 
     shared_conjugations as v  on w.id=v.word_id
@@ -33,22 +33,13 @@ where w.id=:word_id";
 
       $this->word_defined = $word;
                   
-      $verb_stmt = parent::get_stmt($pdo, 'sql_verb');
+      $verb_stmt = $this->get_stmt($pdo, 'sql_verb');
             
       self::$word_id = $word_id;     
    
       $rc = $verb_stmt->execute();
 
       $this->rows = $verb_stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-/*
-      $exprs_count = parent::get_stmt($pdo, 'sql_count');
-      $this->defns = $this->rows['defn']; // unique definitions
-      
-      $rc = $exprs_count->execute();
-
-      $this->expr_counts = $exprs_count->fetchAll(\PDO::FETCH_ASSOC);      
-*/
    }
    
    public function get_pos() : Pos
@@ -68,11 +59,10 @@ where w.id=:word_id";
 
    protected function bind(\PDOStatement $stmt, string $str='') : void 
    {    
-      match($str) {
+       match($str) {
           
-      'sql_verb' => $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT),
-      
-      default => parent::bind($stmt, $str)
+        'sql_verb' => $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT),
+        default => parent::bind($stmt, $str)
       };
    }
 

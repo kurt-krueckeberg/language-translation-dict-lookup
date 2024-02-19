@@ -8,10 +8,16 @@ class DatabaseBase implements WordExistsInterface {
    
    private \PDOStatement $word_exists_stmt;
    
+   private \PDO $pdo;
+   
    private string $new_word = '';
+   
+   private array $tables;
 
    public function __construct(\PDO $pdo)
    {
+      $this->pdo = $pdo;
+      
       $this->word_exists_stmt = $pdo->prepare(self::$word_exists_sql); 
       
       $this->word_exists_stmt->bindParam(':new_word', $this->new_word, \PDO::PARAM_STR); 

@@ -55,7 +55,6 @@ html_end;
       return;
    }
 
-  // to do: make sure the array has both 1.) sample and 2.) its translation.
    public function add_samples(string $word, SentencesIterator $iter, TranslateInterface $trans) : void 
    {
       $section = $this->html_builder->add_samples_section($word, $iter, $trans);

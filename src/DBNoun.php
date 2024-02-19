@@ -24,6 +24,8 @@ where w.id=:word_id";
    {
       parent::__construct($pdo, $word_id);
       
+      $this->word_defined = $word;
+      
       $this->pos = $pos;
 
       $noun_stmt = parent::get_stmt($pdo, 'sql_noun');
@@ -40,27 +42,24 @@ where w.id=:word_id";
        return $this->pos;
    }
 
-   protected function get_sql(string $str) : string
-   {    
-      return match ($str) {
-          
-        'sql_noun' => self::$sql_noun
-      };
-   }
-
    protected function bind(\PDOStatement $stmt, string $str='') : void 
    {    
       match($str) {
           
-      'sql_noun' => $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT),
+       'sql_noun' => $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT),
       
-      default => parent::bind($stmt, $str)
+       default => parent::bind($stmt, $str)
       };
    }
 
    public static function GeneratorIteraor(array $rows, int $expression_counts) : \Iterator
    {
        print_r($rows);
+   }
+   
+   function word_defined(): string 
+   {
+      return $this->word_defined;
    }
    
    function plural() : string

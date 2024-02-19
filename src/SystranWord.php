@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 namespace Vocab;
-use Vocab\AbstractDefinitionsIterator;
 
 readonly class SystranWord implements WordInterface, VisitorInterface {
 
@@ -22,22 +21,6 @@ readonly class SystranWord implements WordInterface, VisitorInterface {
      }
    }
 
-   static public function create($match) : SystranWord
-   {
-      return match($match['source']['pos']) {
-         'noun' => new SystranNoun($match),
-         'verb' => new SystranVerb($match, function() use($match) : string { 
-                return $match['source']['inflection'];}
-           ),
-         default => new SystranWord($match)
-      };
-   }
-
-   static public function create_verbFamily(array $matches, int $main_verb_index) : SystranWord
-   {
-      return new SystranVerbFamily($matches, $main_verb_index);
-   }
-  
    function get_pos() : Pos
    {
        return Pos::fromString($this->match['source']['pos']);

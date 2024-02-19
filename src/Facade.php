@@ -67,13 +67,12 @@ class Facade {
 
               echo "$word saved to database.\n";
            }
-        } 
-
-      } catch (PDOException $e) {
+        }                
+      } catch (\PDOException $e) {
       
             echo "Exception: message = " . $e->getMessage() . "\nError Code = " . $e->getCode() . "\n";
 
-      } catch (Exception $e) {
+      } catch (\Exception $e) {
       
             echo "Exception: message = {$e->getMessage()}.\nError Code = {$e->getCode()}.\nException code = {$e->getCode()}.\n";
       }

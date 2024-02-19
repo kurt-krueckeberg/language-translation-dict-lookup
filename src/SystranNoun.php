@@ -2,7 +2,8 @@
 declare(strict_types=1);
 namespace Vocab;
 
-readonly class SystranNoun extends SystranWord implements NounInterface  {
+readonly class SystranNoun extends SystranWord implements NounInterface {
+    
    private Gender $gender;
  
    private string $plural;

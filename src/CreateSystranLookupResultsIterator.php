@@ -80,7 +80,7 @@ class CreateSystranLookupResultsIterator {
     
                $matches = $this->merge_verbs($matches);           
      
-               $this->main_verb_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { //($GermanCollator)
+               $this->main_verb_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) {
                          
                                               return $collator->compare($left['source']['lemma'], $key);
                                              });
@@ -89,22 +89,16 @@ class CreateSystranLookupResultsIterator {
 
            } else {
 
-               $result = SystranDictionaryResultsIterator::SimpleDictionaryResultsGenerator($matches); //--new SimpleDictionaryResultsIterator($matches); 
-           } 
+               $result = CreateSystranLookupResultsIterator::SimpleDictionaryResultsGenerator($matches); 
+           }    
        } else {
     
-          $result = SystranDictionaryResultsIterator::SimpleDictionaryResultsGenerator($matches); //-- new SimpleDictionaryResultsIterator($matches); 
+          $result = CreateSystranLookupResultsIterator::SimpleDictionaryResultsGenerator($matches);
        }
 
        return $result; 
    }
-   /*
-   function count() : int
-   {
-       return $this->iter->count();
-   }
-   */
-   
+      
     /*
      Determine if the verb looked up, whose index in $matches is $this->lookedup_index, has other related verbs:
       1. count($matches) > 1 && word looked up is a verb. If so, is the verb looked up...

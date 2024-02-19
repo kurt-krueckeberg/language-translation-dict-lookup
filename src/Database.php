@@ -10,7 +10,7 @@ class Database extends DatabaseBase implements InserterInterface {
 
    private InserterInterface $inserter;
 
-   private array $tables;
+   //private array $tables;
 
    private $word_prim_keys = []; // maps words to primary keys
    private $conjugations_prim_keys = []; // maps words to primary keys
@@ -100,11 +100,11 @@ class Database extends DatabaseBase implements InserterInterface {
      
       return true;
    } 
-   
 
    function fetch_word($word) : array | false // array(WordInterface $wface,int $word_id) | false
    {
-      $fetch = new FetchWord($this->pdo);
+      //--$fetch = new FetchWord($this->pdo);
+      $fetch = $this->get_table('FetchWord');
       
       list($pos, $word_id) = $fetch($word);
       
@@ -124,9 +124,9 @@ class Database extends DatabaseBase implements InserterInterface {
    function fetch_samples(int $word_id) : \Traversable | false
    {
        // Retrieve all the samples, if any, from the word definition in $wrface
-       $fetch = new FetchSamples($this->pdo);
-
-       return $result = $fetch($word_id);
+       $fetch = $this->get_table('FetchSamples');
+      
+       return $fetch($word_id);
    }
 
    function save_samples(string $word, \Iterator $sentences_iter) : bool
