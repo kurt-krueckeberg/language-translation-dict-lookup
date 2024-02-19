@@ -67,7 +67,7 @@ where w.id=:word_id";
      return $this->rows[0]['plural'];
    }
 
-   function gender() : string
+   function gender() : Gender
    {
      return Gender::fromString($this->rows[0]['gender']);
    } 
