@@ -58,8 +58,8 @@ create table if not exists defns (
 # -- Example expressions for a particular word
 create table if not exists exprs (
   id int not null auto_increment primary key,
-  expr varchar(85) not null,
-  translated_expr varchar(85) not null,
+  source varchar(85) not null,
+  target varchar(85) not null,
   defn_id int not null,
   foreign key(defn_id) references defns(id) on delete cascade
 );
@@ -68,6 +68,7 @@ create table if not exists exprs (
 create table if not exists samples (
   id int not null auto_increment primary key,
   sample text not null,
+  target text not null,
   word_id int not null,
   foreign key(word_id) references words(id) on delete cascade
 );

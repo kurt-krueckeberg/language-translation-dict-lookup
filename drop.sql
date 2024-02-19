@@ -23,29 +23,22 @@ create table if not exists nouns_data (
   unique(word_id),
   foreign key(word_id) references words(id) on delete cascade
 );
-
-# -- The plural form of the noun
-# -- create table if not exists verb_conjugations (
-# --  id int not null auto_increment primary key,
-# --  conjugation varchar(75) not null,
-# --  word_id int not null,
-# --  unique(word_id),
-# --  foreign key(word_id) references words(id) on delete cascade
-# -- );
-# --  
+# -- The actual verb conjugations are in this table
+# -- prefix and reflexive verbs share the conjuation of the 
+# -- main verb. Thus, the conjugation of ankommen is kommen's
+# -- conjugation.
 create table if not exists conjugations (
   id int not null auto_increment primary key,
   conjugation varchar(75) not null
 );
 
-# -- Note: We are not remembering, not directly anyway, which verbs are prefix versions
-# -- or reflexive versions of a main verb to which they are related and share its conjugation.
+# -- This table locates the shared conjugation
 create table if not exists shared_conjugations (
   conj_id int not null,
   word_id int not null,
   primary key(conj_id, word_id),
-  foreign key(conj_id) references conjugations(id),
-  foreign key(word_id) references words(id)
+  foreign key(conj_id) references conjugations(id) on delete cascade,
+  foreign key(word_id) references words(id) on delete cascade
 );
 
 # -- This is not returned even though it is desired
@@ -66,8 +59,8 @@ create table if not exists defns (
 # -- Example expressions for a particular word
 create table if not exists exprs (
   id int not null auto_increment primary key,
-  expr varchar(85) not null,
-  translated_expr varchar(85) not null,
+  source varchar(85) not null,
+  target varchar(85) not null,
   defn_id int not null,
   foreign key(defn_id) references defns(id) on delete cascade
 );
@@ -76,6 +69,7 @@ create table if not exists exprs (
 create table if not exists samples (
   id int not null auto_increment primary key,
   sample text not null,
+  target text not null,
   word_id int not null,
   foreign key(word_id) references words(id) on delete cascade
 );
