@@ -49,13 +49,13 @@ class Facade {
                 continue;
            }
       
-           $results[] = $word;
-           
            echo "$word results:\n";
 
            foreach ($iter as $lookup_result)  {
                
               $word = $lookup_result->word_defined();
+              
+              $results[] = $word;
                  
               if ($this->db->word_exists($word)) {
 
