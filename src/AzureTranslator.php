@@ -24,16 +24,32 @@ class AzureTranslator extends RestApi implements TranslateInterface {
        // route: /translate?api-version=3.0&from=en&to=fr&to=zu"
        static $azure = array('method' => "POST", 'route' => "/translate?api-version=3.0");
 
-       $query = array();
+       //$query = array();
        
        if ($from !== '') 
            $query['from'] = strtolower($from);
        
        $query['to'] = strtolower($to);
        
-       $body['text'] = $text;
+       //$body['text'] = $text;
+
+       $request = $this->client->createRequest('POST', '/translate?api-version=3.0');
        
-       $contents = $this->request($azure['method'], $azure['route'], ['query' => $query, 'body' => $body]); 
+       $query = $request->getQuery();
+ 
+       $query['from'] = strtolower($from);
+       
+       $query['to'] = strtolower($to);
+
+       $postBody = $request->getBody();
+
+       // $postBody is an instance of GuzzleHttp\Post\PostBodyInterface
+       $postBody->setField('text', $text);
+
+       // Send the POST request
+       $contents = $client->send($request);
+       
+       //$contents = $this->request($azure['method'], $azure['route'], ['query' => $query, 'body' => $body]); 
 
        $std = json_decode($contents);
        
