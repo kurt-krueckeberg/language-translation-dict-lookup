@@ -37,7 +37,6 @@ class Facade {
            
            $iter = $this->sys->lookup($word, 'de', 'en');
     
-           //if (count($iter) == 0) {
            if (!$iter->valid()) {
                
                 echo "$word has no definitions\n";
@@ -61,8 +60,10 @@ class Facade {
     
               $sentIter = $this->sentFetcher->fetch($word);  
 
-              if ($sentIter !== false)
+              if ($sentIter !== false) {
+                  
                  $this->db->save_samples($word, $sentIter);
+              }
 
               echo "$word saved to database.\n";
            }
@@ -99,11 +100,11 @@ class Facade {
 
       foreach($this->file as $word) {
 
-        $wrface = $this->db->fetch_word($word);
+        list($wrface, $word_id) = $this->db->fetch_word($word);
    
         $cnt = $this->html->add_definitions($wrface); 
  
-        $sentIter = $this->db->fetch_samples($wrface); // TODO: I t would be good to have word_id.
+        $sentIter = $this->db->fetch_samples($word_id); 
   
         $cnt = $this->html->add_samples($word, $sentIter, $this->sys); 
      }

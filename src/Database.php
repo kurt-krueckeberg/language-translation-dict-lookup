@@ -101,21 +101,8 @@ class Database extends DatabaseBase implements InserterInterface {
       return true;
    } 
    
-   private function get_table(string $table_name) : mixed
-   {
-      $className = "Vocab\\$table_name";
-  
-      if (isset($this->tables[$className]) === false) {
 
-         $instance = new $className($this->pdo);
-
-         $this->tables[$className] = $instance;
-     } 
-
-      return $this->tables[$className];
-   }
-
-   function fetch_word($word) : WordInterface | false
+   function fetch_word($word) : array | false // array(WordInterface $wface,int $word_id) | false
    {
       $fetch = new FetchWord($this->pdo);
       
@@ -127,11 +114,11 @@ class Database extends DatabaseBase implements InserterInterface {
          
          Pos::Verb => new DBVerb($this->pdo, $pos, $word, $word_id),
          Pos::Noun => new DBNoun($this->pdo, $word_id),
-         default => new DBWord($this->pod, $word_id)        
+         default => new DBWord($this->pdo, $word_id)        
          
       };
            
-      return $result;
+      return array($result, $word_id);
    }
    
    function fetch_samples(WordInterface $wrface) : \Traversable
