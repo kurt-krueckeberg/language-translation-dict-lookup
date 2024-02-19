@@ -1,0 +1,23 @@
+= Azure Translation REST API
+
+link:https://learn.microsoft.com/en-us/azure/ai-services/translator/reference/v3-0-translate[Translate Text REST API]
+
+[caption="Required: "]
+.query parameters:
+[%header]
+|===
+|Query Parameter|Description
+
+|api-version
+|Required. Value must be `3.0`
+
+|to
+|output language. For English `n`
+|===
+
+== Links
+
+* link:https://learn.microsoft.com/en-us/azure/ai-services/translator/text-sdk-overview?tabs=csharp[Overview]
+* link:https://learn.microsoft.com/en-us/azure/ai-services/translator/quickstart-text-rest-api?tabs=csharp[Quickstart: Azure AI Translator REST APIs]
+* link:https://github.com/MicrosoftTranslator/Text-Translation-API-V3-PHP[PHP Example]
+* link:https://learn.microsoft.com/en-us/azure/ai-services/translator/reference/rest-api-guide[Text Translation API Guide]
