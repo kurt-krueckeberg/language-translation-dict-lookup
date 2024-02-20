@@ -31,31 +31,12 @@ class AzureTranslator extends RestApi implements TranslateInterface {
        
        $query['to'] = strtolower($to);
        
-       //$body['text'] = $text;
 
-/* USE
-$client = new \GuzzleHttp\Client();
-
-$client->post(
-    'http://www.example.com/user/create',
-    array(
-        'body' => array(
-            'text' => 'Guten Tag!'            
-        )
-    )
-);
-*/
-//////////////////////////
-
-$request = $client->post('/translate?api-version=3.0',
-    [
-        'query' => ['from' => 'de', 'to' => 'en'], 
-        'json' => [ 'text' => 'Guten Tag!']
-    ]
-);
-////////////
-              
-       //$contents = $this->request($azure['method'], $azure['route'], ['query' => $query, 'body' => $body]); 
+       $contents = $this->client->post('/translate?api-version=3.0',
+                     [
+                       'query' => ['from' => 'de', 'to' => 'en'], 
+                       'json' => [ 'text' => 'Guten Tag!']
+                     ]);
 
        $std = json_decode($contents);
        
