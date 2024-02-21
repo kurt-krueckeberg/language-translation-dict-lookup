@@ -9,10 +9,6 @@ try {
     
     $c = new Config();
     
-    $systran = new SystranTranslator($c);
-    
-    echo $systran->translate("Guten Tag.", 'en', 'de');
-    
     $azure = new AzureTranslator($c);
 
     $english = $azure->translate("Guten Tag.", 'en', 'de');

@@ -2,11 +2,11 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class AzureTranslator extends RestApi implements /*DictionaryInterface,*/ TranslateInterface {
+class AzureTranslator extends RestApi implements DictionaryInterface, TranslateInterface {
 
    static private array  $lookup = array('method' => "POST", 'route' => "dictionary/lookup");
    static private array  $examples = array('method' => "POST", 'route' => "dictionary/examples");
-   static private array  $trans = array('method' => "POST", 'route' => "translate");
+
    static private array  $languages = array('method' => "GET", 'route' => "languages");
    static private string $from = "from";
    static private string $to = "to";
@@ -32,12 +32,9 @@ class AzureTranslator extends RestApi implements /*DictionaryInterface,*/ Transl
    
    public function __construct(Config $c)
    {
-      //--parent::__construct($c, ClassID::Azure);        
       parent::__construct($c, ProviderID::Azure);        
 
       $this->collator = $c->getCollator(); 
-
-       //parent::__construct($a['base_uri'], $a['headers']);        
    }
 
    // If no source language is given, it will be auto-detected.
@@ -93,11 +90,26 @@ class AzureTranslator extends RestApi implements /*DictionaryInterface,*/ Transl
    */
    final public function translate(string $text, string $dest_lang, $source_lang="") : string 
    {
-       $this->setLanguages($dest_lang, $source_lang);
-
-       $this->json = [['Text' => $text]];       
-
-       $contents = $this->request(self::$trans['method'], self::$trans['route'], ['query' => $this->query, 'json' => $this->json]); 
+       static $trans = array('method' => "POST", 'route' => "/translate", 'query' => ['api-version' => '3.0']);
+              
+       $json = [['Text' => json_encode($text)]];
+       
+       $query = ['from' => 'de', 'to' => 'en', 'api-version' => '3.0'];
+       
+       $options = [];
+       
+       $options['query'] = $query;
+       
+       $options['json'] = $json;
+       
+       $options['http_errors'] = false;
+       
+       $contents = $this->request($trans['method'], $trans['route'], $options);
+       
+       if ($contents === false) {
+           
+           die("AzureTranslate respons was: false.\n");           
+       }
 
        $obj = json_decode($contents);
 
@@ -142,7 +154,7 @@ class AzureTranslator extends RestApi implements /*DictionaryInterface,*/ Transl
       }
      ]
    */
-   final public function lookup(string $word, string $src_lang, string $dest_lang) : ResultsIterator
+   final public function lookup(string $word, string $src_lang, string $dest_lang, bool $exact_match=false) : \Iterator //-- ResultsIterator
    {      
       $this->setLanguages($dest_lang, $src_lang); 
        
@@ -152,7 +164,16 @@ class AzureTranslator extends RestApi implements /*DictionaryInterface,*/ Transl
 
       $obj = json_decode($contents); 
 
-      return new ResultsIterator($obj[0]->translations, AzureTranslator::get_lookup_result(...));
+      return AzureTranslator::LookupGenerator($obj[0]->translations); 
+      //--return new ResultsIterator($obj[0]->translations, AzureTranslator::get_lookup_result(...));
+   }
+
+   static public function LookupGenerator(array $translation)
+   {
+        foreach($translations as $translation) { 
+
+           yield  $translation->normalizedTarget;
+        }
    }
 
    public static function get_lookup_result(\stdClass $x) : AzureDictResult 
