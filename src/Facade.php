@@ -10,6 +10,8 @@ class Facade {
 
    private SystranTranslator $sys;
 
+   private AzureTranslator $azure;
+
    private Database $db;
 
    private LeipzigSentenceFetcher $sentFetcher;
@@ -21,6 +23,8 @@ class Facade {
       $this->file = new FileReader($c->lookup_file());
       
       $this->sys = new SystranTranslator($c);
+
+      $this->azure = new AzureTranslator($c);
      
       $this->db = new Database($c); 
   
@@ -69,7 +73,7 @@ class Facade {
 
               if ($sentIter !== false) {
                   
-                 $this->db->save_samples($word, $this->sys, $sentIter);
+                 $this->db->save_samples($word, $this->azure, $sentIter);
               }
 
               echo "$word saved to database.\n";
@@ -121,7 +125,7 @@ class Facade {
  
         $sentIter = $this->db->fetch_samples($word_id); 
   
-        $cnt = $this->html->add_samples($word, $sentIter, $this->sys); 
+        $cnt = $this->html->add_samples($word, $sentIter, $this->azure); 
      }
    }
  }
