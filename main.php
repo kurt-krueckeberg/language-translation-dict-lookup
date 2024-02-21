@@ -15,6 +15,6 @@ include 'vendor/autoload.php';
 
  $fac = new Facade($c);
 
- $fac->db_insert();
+ $words = $fac->db_insert();
  
- $fac->create_html('output');
+ $fac->create_html($words, 'output');
