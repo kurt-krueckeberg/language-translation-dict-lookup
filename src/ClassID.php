@@ -18,6 +18,7 @@ enum ClassID implements ClassmapperInterface {
        return match($this) { // Returns implementation class
            ClassID::Leipzig  => "Vocab\LeipzigSentenceFetcher", 
            ClassID::Systran  => "Vocab\SystranTranslator",
+           ClassID::Azure  => "Vocab\AzureTranslator",
            ClassID::Deepl    => "Vocab\DeeplTranslator",
            ClassID::Lingua   => "Vocab\LinguaTranslator"
        };
@@ -27,6 +28,7 @@ enum ClassID implements ClassmapperInterface {
    {
        return match($this) { // Returns implementation class's abbreviation used in 'config.xml'
            ClassID::Leipzig  => "leipzig",
+           ClassID::Azure  => "azure",
            ClassID::Systran  => "systran",
            ClassID::Deepl    => "deepl",
            ClassID::Deepl    => "lingua"
