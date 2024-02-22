@@ -33,7 +33,7 @@ create table if not exists conjugations (
 );
 
 # -- This table locates the shared conjugation
-create table if not exists shared_conjugations (
+create table if not exists verbs_conjugations (
   conj_id int not null,
   word_id int not null,
   primary key(conj_id, word_id),
