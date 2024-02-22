@@ -18,9 +18,9 @@ class Facade {
 
    private Config $c;
 
-   function __construct(Config $c)
+   function __construct(string $filename, Config $c)
    {
-      $this->file = new FileReader($c->lookup_file());
+      $this->file = new FileReader($filename);
       
       $this->sys = new SystranTranslator($c);
 
