@@ -1,2 +1,43 @@
 
 Read C.J. Date's book
+
+
+If words.pos = 'noun', then select all this (for words.id=24):
+
+select w.id as w_id, w.word as w_word, w.pos as words_pos, nd.gender as nd_gender,nd.plural as nd_plural, d.word_id as defns_word_id, d.defn as definition, e.defn_id as expressions_defn_id, e.source FROM words as w
+inner JOIN
+nouns_data as nd
+on w.id = nd.word_id
+inner join
+defns as d on w.id=d.word_id
+left JOIN
+exprs as e on e.defn_id=d.id
+where d.word_id=24
+
+
+/*
+ * In general:
+ */
+
+$sql_noun_select = "select w.id as w_id, w.word as w_word, w.pos as words_pos, nd.gender as nd_gender,nd.plural as nd_plural, d.word_id as defns_word_id, d.defn as definition, e.defn_id as expressions_defn_id, e.source FROM words as w
+inner JOIN
+nouns_data as nd
+on w.id = nd.word_id
+inner join
+defns as d on w.id=d.word_id
+left JOIN
+exprs as e on e.defn_id=d.id
+where d.word_id=:word_id";
+
+
+If verb,...
+  select just this verb
+
+
+  select all prefix verbs, if applicable:
+
+select word_id from shared_conjugations as sc
+inner join
+(SELECT conj_id, count(word_id) as cnt FROM `shared_conjugations` 
+group by conj_id having cnt > 1) as X
+on sc.conj_id=X.conj_id;
