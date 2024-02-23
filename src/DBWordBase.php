@@ -17,15 +17,6 @@ left join
   group by defns.id
     order by defn_id asc;";
 
-/*
-   private static $sql_get_expressions = "select exprs.id as epxrs_id, exprs.expr as expr, exprs.translated_expr as expr_translated from 
-   defns
- join 
-   exprs
-   on defns.id=exprs.defn_id
-where defns.word_id=:word_id;";
-*/
-
    private static $sql_get_expressions = "select exprs.source as source, exprs.target as target from 
    defns
  join 
@@ -83,7 +74,7 @@ where defns.word_id=:word_id;";
 
          $class_name = get_class($this); 
           
-         $sql = $class_name::$$str;
+         $sql = $class_name::$$str; // If $str = "sql_fetch_word", $$str is $sql_fetcy_word.
           
          $stmt = $this->pdo->prepare( $sql ); 
 

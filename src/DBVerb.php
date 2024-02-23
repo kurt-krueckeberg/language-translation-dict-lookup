@@ -47,16 +47,6 @@ where w.id=:word_id";
        return $this->pos;
    }
 
-   protected function get_sql(string $str) : string
-   {    
-      return match ($str) {
-          
-        'sql_verb' => self::$sql_verb,
-        'sql_count' => self::$sql_count,
-        default => parent::get_sql($str)         
-      };
-   }
-
    protected function bind(\PDOStatement $stmt, string $str='') : void 
    {    
        match($str) {
