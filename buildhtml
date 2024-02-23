@@ -2,24 +2,12 @@
 <?php
 declare(strict_types=1);
 
-use Vocab\{FileReader, Config, Facade};
+use Vocab\{Config, CliFacade};
 
 include 'vendor/autoload.php';
   
 $c = new Config();
          
-if (!file_exists($c->lookup_file())) {
-     
-    die($c->lookup_file() . " not found.\n");
-}
+$fac = new CliFacade($c);
 
-$fac = new Facade($c->lookup_file(), $c);
-
-$words = $fac->db_insert();
- 
-$fac->create_html($words, 'output');
-
-while (false !== $line = readline()) {
-
- echo $line . "\n";
-}
+$fac('output');
