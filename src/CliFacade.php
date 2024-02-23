@@ -43,7 +43,7 @@ class CliFacade {
  
         $sentIter = $this->db->fetch_samples($word_id); 
   
-        $cnt = $this->html->add_samples($word, $sentIter, $this->azure); 
+        $cnt = $this->html->add_samples($word, $sentIter); 
      }
    }
  }
