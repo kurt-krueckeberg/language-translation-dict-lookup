@@ -1,6 +1,6 @@
+#!/usr/bin/env php
 <?php
 declare(strict_types=1);
-use \SplFileObject as File;
 
 use Vocab\{FileReader, Config, Facade};
 
@@ -18,3 +18,8 @@ $fac = new Facade($c->lookup_file(), $c);
 $words = $fac->db_insert();
  
 $fac->create_html($words, 'output');
+
+while (false !== $line = readline()) {
+
+ echo $line . "\n";
+}
