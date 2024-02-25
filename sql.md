@@ -69,7 +69,7 @@ where d.word_id=1
 
 2.  select all prefix verbs, if applicable:
 
-TODO: Correlated query alternative?
+Minus the final where-clause, this query selects those verbs with at least two shared conjugations. It selects verb families:
 
 ```sql
 select words.id as words_id, words.word, words.pos, vc.conj_id, cnt from words 
@@ -85,6 +85,9 @@ group by conj_id having cnt > 1) as X
 on vc.conj_id=X.conj_id
 where words.id=:word
 ```
+
+Goal: We want to include the other words/verbs which have the same `verb_conjugations.conj_id` `:word_id`.
+
 
 ### Alternatvie Design
 
