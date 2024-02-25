@@ -21,14 +21,21 @@ where d.word_id=24
  * In general:
  */
 
-$sql_noun_select = "select w.id as w_id, w.word as w_word, w.pos as words_pos, nd.gender as nd_gender,nd.plural as nd_plural, d.word_id as defns_word_id, d.defn as definition, e.defn_id as expressions_defn_id, e.source FROM words as w
+$sql_noun_select = "select w.id as w_id,    
+    w.word as w_word,    
+    w.pos as words_pos,    
+    nd.gender as nd_gender,    
+    nd.plural as nd_plural,    
+    d.word_id as defns_word_id,    
+    d.defn as definition,    
+    e.defn_id as expressions_defn_id,    
+    e.source FROM words as w
 inner JOIN
-nouns_data as nd
-on w.id = nd.word_id
+  nouns_data as nd ON w.id = nd.word_id
 inner join
-defns as d on w.id=d.word_id
+  defns as d ON w.id=d.word_id
 left JOIN
-exprs as e on e.defn_id=d.id
+  exprs as e ON e.defn_id=d.id
 where d.word_id=:word_id";
 ```
 
@@ -39,17 +46,21 @@ If verb,...
 1.  select just this verb
 
 ```sql
-select w.id as w_id, w.word as w_word, conjs.conjugation as conjugation, d.word_id as defns_word_id, d.defn as definition, e.defn_id as expressions_defn_id, e.source FROM words as w
-     inner JOIN
-  verbs_conjugations as vc
-        on vc.word_id=w.id
-     inner Join
-  conjugations as conjs
-        on conjs.id = vc.conj_id
-     inner join
-  defns as d on w.id=d.word_id
+select w.id as w_id,
+     w.word as w_word,
+     conjs.conjugation as conjugation,
+     d.word_id as defns_word_id,
+     d.defn as definition,
+     e.defn_id as expressions_defn_id,
+     e.source FROM words as w
+inner JOIN
+  verbs_conjugations as vc ON vc.word_id=w.id
+inner Join
+  conjugations as conjs ON conjs.id = vc.conj_id
+inner join
+  defns as d ON w.id=d.word_id
 left JOIN
-exprs as e on e.defn_id=d.id
+  exprs as e ON e.defn_id=d.id
 where d.word_id=1
 ```
 
@@ -63,5 +74,4 @@ inner join
 (SELECT conj_id, count(word_id) as cnt FROM `verbs_conjugations` 
 group by conj_id having cnt > 1) as X
 on vc.conj_id=X.conj_id;
-inner join
 ```
