@@ -85,3 +85,21 @@ group by conj_id having cnt > 1) as X
 on vc.conj_id=X.conj_id
 where words.id=:word
 ```
+
+### Alternatvie Design
+
+Have conjugations stored in each verb. 
+Have table of `verb_families`: 
+
+
+Should verbs that have no prefix versions also be in this table? They are a "family" of one verb.
+
+```sql
+create table if not exists verb_families
+main_verb_id
+related_verb_id
+foreign key(main_verb_id) references words(id),
+foreign key(related_verb_id) references words(id)
+```
+
+
