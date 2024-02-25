@@ -11,7 +11,7 @@ class DBVerb extends DBWordBase implements VerbInterface {
 protected static $sql_verb = "select w.id as word_id, w.word, w.pos, tenses.conjugation as conjugation from
      words as w
 join 
-    shared_conjugations as v  on w.id=v.word_id
+    verbs_conjugations as v  on w.id=v.word_id
 join
     conjugations as tenses on tenses.id=v.conj_id
 where w.id=:word_id";

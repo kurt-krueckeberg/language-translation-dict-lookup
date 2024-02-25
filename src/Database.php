@@ -49,7 +49,7 @@ class Database extends DatabaseBase implements InserterInterface {
      
      $this->conjugations_prim_keys[$wrface->word_defined()] = $conj_id;  
 
-     $conjugatedVerbsTbl = $this->get_table('SharedConjugationsTable');
+     $conjugatedVerbsTbl = $this->get_table('VerbsConjugationsTable');
 
      $conjugatedVerbsTbl->insert($conj_id, $word_id);
      
@@ -60,7 +60,7 @@ class Database extends DatabaseBase implements InserterInterface {
    {
       $word_id = $this->insert_word($wrface);
 
-      $conjugatedVerbsTbl = $this->get_table('SharedConjugationsTable');
+      $conjugatedVerbsTbl = $this->get_table('VerbsConjugationsTable');
        
       $conj_id = $this->conjugations_prim_keys[$wrface->get_main_verb()]; 
   
