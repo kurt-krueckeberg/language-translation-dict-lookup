@@ -108,7 +108,7 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
        
        if ($contents === false) {
            
-           die("AzureTranslate respons was: false.\n");           
+           die("AzureTranslate response to translate of '$text' was false.\n");           
        }
 
        $obj = json_decode($contents);
