@@ -66,12 +66,19 @@ where d.word_id=1
 
 2.  select all prefix verbs, if applicable:
 
-TODO: Combine with above query--with corrolated query?
+TODO: Correlated query alternative?
 
 ```sql
-select word_id from verbs_conjugations as vc
+select words.id as words_id, words.word, words.pos, vc.conj_id, cnt from words 
+inner JOIN
+verbs_conjugations as vc on words.id=vc.word_id
+inner Join
+  conjugations as conjs ON conjs.id = vc.conj_id
+inner join
+  defns as d ON words.id=d.word_id
 inner join
 (SELECT conj_id, count(word_id) as cnt FROM `verbs_conjugations` 
 group by conj_id having cnt > 1) as X
-on vc.conj_id=X.conj_id;
+on vc.conj_id=X.conj_id
+where words.id=:word
 ```
