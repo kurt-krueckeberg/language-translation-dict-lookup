@@ -1,6 +1,6 @@
 # Database Retrievel of Stored Words
 
-# Nouns
+## Nouns
 
 If words.pos = 'noun', then select all this (for words.id=24):
 
@@ -39,7 +39,10 @@ left JOIN
 where d.word_id=:word_id";
 ```
 
-# Verbs 
+## Verbs 
+
+Those verbs that share conjutation are prefix verbs of a main verb. Does it matter? We can get the entire family of main plus prefix- or reflexive verbs, but 
+we don't know which is the main verb.
 
 If verb,...
 
