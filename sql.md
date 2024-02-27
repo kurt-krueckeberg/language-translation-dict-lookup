@@ -39,7 +39,7 @@ left JOIN
 where d.word_id=:word_id";
 ```
 
-## Verbs 
+## Verb Queries
 
 Those verbs that share conjutation are prefix verbs of a main verb. Does it matter? We can get the entire family of main plus prefix- or reflexive verbs, but 
 we don't know which is the main verb.
@@ -69,39 +69,6 @@ where d.word_id=1
 
 2.  select all prefix verbs, if applicable:
 
-Minus the final where-clause, this query selects those verbs with at least two shared conjugations. It selects verb families:
-
-```sql
-select words.id as words_id, words.word, words.pos, vc.conj_id, cnt from words 
-inner JOIN
-verbs_conjugations as vc on words.id=vc.word_id
-inner Join
-  conjugations as conjs ON conjs.id = vc.conj_id
-inner join
-  defns as d ON words.id=d.word_id
-inner join
-(SELECT conj_id, count(word_id) as cnt FROM `verbs_conjugations` where 
-group by conj_id having cnt > 1) as X
-on vc.conj_id=X.conj_id
-where words.id=:word
-```
-
-```sql
-select words.id as words_id, words.word, words.pos, vc.conj_id, cnt from words 
-inner JOIN
-verbs_conjugations as vc on words.id=vc.word_id
-inner Join
-  conjugations as conjs ON conjs.id = vc.conj_id
-inner join
-  defns as d ON words.id=d.word_id
-inner join
-(SELECT conj_id, count(word_id) as cnt FROM `verbs_conjugations` 
-group by conj_id having cnt > 1) as X
-on vc.conj_id=X.conj_id
-where X.conj_id=5;
-```
-
-Goal: We want to include the other words/verbs which have the same `verb_conjugations.conj_id` `:word_id`.
 
 
 ### Alternative Database Tables
