@@ -104,7 +104,7 @@ where X.conj_id=5;
 Goal: We want to include the other words/verbs which have the same `verb_conjugations.conj_id` `:word_id`.
 
 
-### Alternatvie Design
+### Alternative Database Tables
 
 Have conjugations stored in each verb. 
 Have table of `verb_families`: 

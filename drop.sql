@@ -23,22 +23,22 @@ create table if not exists nouns_data (
   unique(word_id),
   foreign key(word_id) references words(id) on delete cascade
 );
-# -- The actual verb conjugations are in this table
+# -- The actual verb conjs are in this table
 # -- prefix and reflexive verbs share the conjuation of the 
 # -- main verb. Thus, the conjugation of ankommen is kommen's
 # -- conjugation.
-create table if not exists conjugations (
+create table if not exists conjs (
   id int not null auto_increment primary key,
   conjugation varchar(75) not null
 );
 
 # -- This table locates the conjugation. Prefix and reflexive
 # -- verbs share the same conjugation.
-create table if not exists verbs_conjugations (
+create table if not exists verbs_conjs (
   word_id int not null primary key,
   conj_id int not null,
   unique (word_id, conj_id),
-  foreign key(conj_id) references conjugations(id) on delete cascade,
+  foreign key(conj_id) references conjs(id) on delete cascade,
   foreign key(word_id) references words(id) on delete cascade
 );
 
