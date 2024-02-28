@@ -104,7 +104,8 @@ on Y.outer_conj_id=X.inner_conj_id";
 
    function getIterator() : \Iterator
    {
-      // Return static method of an implementing class.
+      // call the generator that is either a static method of an implementing class--that may already exist in part or in full.
+      // The generator will provide iteration over all the definitions. What iterates of the verb family?
    }
    
    function conjugation() : string
