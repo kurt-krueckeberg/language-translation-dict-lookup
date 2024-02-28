@@ -101,6 +101,11 @@ on Y.outer_conj_id=X.inner_conj_id";
    {
        print_r($rows);
    }
+
+   function getIterator() : \Iterator
+   {
+      // Return static method of an implementing class.
+   }
    
    function conjugation() : string
    {
