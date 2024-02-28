@@ -70,7 +70,6 @@ select w.id as w_id,
 
 ### Get all verb families
 
-
 To Select all verbs in a prefix verb family, as well as verbs not in prefix verb family, of a verb whose `words.id=:word_id`:
 
 ```sql
