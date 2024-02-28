@@ -24,7 +24,6 @@ where w.id=:word_id";
    
    private Pos $pos;
    
-   
    public function __construct(\PDO $pdo, Pos $pos, string $word, int $word_id)
    {
       parent::__construct($pdo, $word_id);

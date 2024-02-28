@@ -4,6 +4,8 @@ namespace Vocab;
 
 class DBVerb /* extends DBWordBase */ implements VerbInterface {  
 
+   static private $stmts = [];
+
    /*
     * Get the verb's id, part of speech, its conjugation. The base class will get its definitions and any 
     * associated expressions.

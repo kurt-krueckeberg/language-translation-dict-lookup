@@ -12,7 +12,7 @@ trait get_stmt_trait {
           
          $sql = $class_name::$$str; 
           
-         $stmt = $this->pdo->prepare( $sql ); 
+         $stmt = $pdo->prepare( $sql ); 
 
          $this->bind($stmt, $str);
 
