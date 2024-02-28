@@ -18,6 +18,8 @@ trait get_stmt_trait {
 
          self::$stmts[$str] = $stmt;
       }
+      
+      return self::$stmts[$str];
    }
 
    abstract function bind(\PDOStatement $pdostatement, string $str);
