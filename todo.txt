@@ -1,2 +1,4 @@
 In DBVerb how do we iterate over a verb family? DBVerb getIterator() calls a generator that provides iteration of
 a particular word's definitions and expressions associated with each definition.
+
+To answer these questions, look at the BuildHtml code.
