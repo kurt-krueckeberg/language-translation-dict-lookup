@@ -1,1 +1,2 @@
-Make the `get_stmt(string $sql)` code a trait or put it in a base class.
+In DBVerb how do we iterate over a verb family? DBVerb getIterator() calls a generator that provides iteration of
+a particular word's definitions and expressions associated with each definition.
