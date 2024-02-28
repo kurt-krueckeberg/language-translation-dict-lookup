@@ -105,6 +105,7 @@ class Facade {
    }
 
    // Fetch words and their definitions, pos, inflections, etc from database, and for those words found, create a web page
+   // TODO: This code does not handle fetching a prefix verbs along with the main verb.
    function create_html(array $words, string $filename) : void
    {
       $this->html = new BuildHtml($filename, "de", "en");
