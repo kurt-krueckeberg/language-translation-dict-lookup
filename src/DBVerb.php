@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class DBVerb extends /* DBWordBase */ implements VerbInterface {  
+class DBVerb /* extends DBWordBase */ implements VerbInterface {  
 
    /*
     * Get the verb's id, part of speech, its conjugation. The base class will get its definitions and any 
@@ -29,7 +29,7 @@ inner join
  inner join
   conjs ON conjs.id=vc.conj_id
 ) as X
-on Y.outer_conj_id=X.inner_conj_id"
+on Y.outer_conj_id=X.inner_conj_id";
 
 /*
  * This retrieves a verb family: the words.id, the cpnjugation, the definitions and any associated expressions. 
@@ -65,11 +65,10 @@ on Y.outer_conj_id=X.inner_conj_id";
    
    private array $expr_counts;
 
+   use get_stmt_trait;
+
    public function __construct(\PDO $pdo, Pos $pos, string $word, int $word_id)
    {
-      /*
-      parent::__construct($pdo, $word_id);
-       */
       $this->pos = $pos;
 
       $this->word_defined = $word;
@@ -92,8 +91,7 @@ on Y.outer_conj_id=X.inner_conj_id";
    {    
        match($str) {
           
-        'sql_verb' => $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT),
-        default => parent::bind($stmt, $str)
+        'sql_verb_family_word', 'sql_verb' => $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT),
       };
    }
 
