@@ -4,7 +4,7 @@ namespace Vocab;
 
 class ConjugationsTable { 
 
-   private static $sql = "insert into conjugations(conjugation) values(:conjugation)";
+   private static $sql = "insert into conjs(conjugation) values(:conjugation)";
    private string $conjugation = '';
 
    private \PDOStatement $insert_stmt;

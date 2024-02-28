@@ -8,7 +8,7 @@ class VerbsConjugation extends Table implements TableInsertInterface {
    private string $conjugation = '';
    private int $word_id = 0;
 
-   private static $insert_sql = "insert into verb_conjugations(conjugation, word_id) values(:conjugation, :word_id)";
+   private static $insert_sql = "insert into verb_conjs(conjugation, word_id) values(:conjugation, :word_id)";
 
    public function __construct(\PDO $pdo)
    {

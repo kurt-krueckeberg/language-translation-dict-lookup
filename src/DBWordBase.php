@@ -7,7 +7,8 @@ class DBWordBase implements \IteratorAggregate {
    static private $stmts = [];
     
    protected \PDO $pdo;
-      
+
+   // This doesn't work for get an entire verb family.      
    private static $sql_defns_expressions_count = "select defns.id as defn_id, defns.defn as definitions, count(exprs.id) as expressions_count from 
      defns 
 left join
@@ -31,6 +32,8 @@ where defns.word_id=:word_id;";
    protected array $expressions;
    
    protected array $definitions;
+
+   use get_stmt_trait;
       
    function __construct(\PDO $pdo, int $word_id)
    {
@@ -67,7 +70,7 @@ where defns.word_id=:word_id;";
          $offset += $exprs_counts[$index];
      }
    }
-
+/* Replaced with get_stmt_trait
    protected function get_stmt(\PDO $pdo, string $str) : \PDOStatement
    {     
       if (!isset(self::$stmts[$str])) {
@@ -85,6 +88,7 @@ where defns.word_id=:word_id;";
 
       return self::$stmts[$str];
    }
+*/
            
    protected function bind(\PDOStatement $stmt, string $str='') : void
    {  

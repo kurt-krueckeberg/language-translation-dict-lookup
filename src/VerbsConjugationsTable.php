@@ -4,7 +4,7 @@ namespace Vocab;
 
 class VerbsConjugationsTable { 
 
-   private static $sql = "insert into verbs_conjugations(conj_id, word_id) values(:conj_id, :word_id)";
+   private static $sql = "insert into verbs_conjs(conj_id, word_id) values(:conj_id, :word_id)";
    private int $conj_id = -1;
    private int $word_id = -1;
 

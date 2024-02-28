@@ -16,20 +16,14 @@ readonly class VerbFamilyResult extends SystranVerb implements VerbInterface, It
 
         $conjugation = $matches[$this->main_verb_index]['source']['inflection'];
 
-        // Change '(kommen/kam/gekommen)' to 'kommen,kam,gekommen'
+        // Change '(kommen/kam/gekommen)' to 'kommen,kam,gekommen' or
         return str_replace(array("(", "/", ")"), array("", ", ", ""), $conjugation); }
       ); 
    }
 
-   /*
-   public function conjugation() : string
-   {
-      return $this->matches[$this->main_index]['source']['inflection'];
-   }
-   */
    public function getIterator() : \Iterator 
    {
-      return new RelatedVerbsIterator($this->matches, $this->main_verb_index);
+      return new RelatedVerbsIterator($this->matches, $this->main_verb_index); // <-- This does not exitst~
    }
 
    function accept(InserterInterface $inserter) : int
