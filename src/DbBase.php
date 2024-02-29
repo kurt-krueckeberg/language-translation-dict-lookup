@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class DatabaseBase implements WordExistsInterface { 
+class DbBase implements WordExistsInterface { 
 
    private static $word_exists_sql = "select 1 from words where word=:new_word";
    

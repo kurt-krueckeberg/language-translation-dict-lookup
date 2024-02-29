@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class Database extends DatabaseBase implements InserterInterface { 
+class Database extends DbBase implements InserterInterface { 
 
    private \PDO $pdo;
 
@@ -101,7 +101,7 @@ class Database extends DatabaseBase implements InserterInterface {
       return true;
    } 
 
-   function fetch_word($word) : array | false // array(WordInterface $wface,int $word_id) | false
+   function fetch_db_word($word) : array | false // array(WordInterface $wface,int $word_id) | false
    {
       $fetch = $this->get_table('FetchWord');
       
@@ -109,6 +109,8 @@ class Database extends DatabaseBase implements InserterInterface {
       
       if ($pos === false) return false;
 
+      
+/*
       $result= match($pos) {
          
          Pos::Verb => new DBVerb($this->pdo, $pos, $word, $word_id),

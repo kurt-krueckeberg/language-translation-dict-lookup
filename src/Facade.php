@@ -112,7 +112,7 @@ class Facade {
 
       foreach($words as $word) {
 
-        $result = $this->db->fetch_word($word);  
+        $result = $this->db->fetch_db_word($word);  
         
         if ($result === false) {
             

@@ -27,7 +27,7 @@ class CliDatabase {
       $this->word_fetch->bindParam(':word', $this->word, \PDO::PARAM_STR); 
    }
 
-   function fetch_word($word) : array | false // array(WordInterface $wface,int $word_id) | false
+   function fetch_db_word($word) : array | false // array(WordInterface $wface,int $word_id) | false
    {
       $fetch = $this->get_table('FetchWord');
       

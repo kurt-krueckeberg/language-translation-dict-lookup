@@ -70,25 +70,6 @@ where defns.word_id=:word_id;";
          $offset += $exprs_counts[$index];
      }
    }
-/* Replaced with get_stmt_trait
-   protected function get_stmt(\PDO $pdo, string $str) : \PDOStatement
-   {     
-      if (!isset(self::$stmts[$str])) {
-
-         $class_name = get_class($this); 
-          
-         $sql = $class_name::$$str; // If $str = "sql_fetch_word", $$str is $sql_fetcy_word.
-          
-         $stmt = $this->pdo->prepare( $sql ); 
-
-         $this->bind($stmt, $str);
-
-         self::$stmts[$str] = $stmt;
-      }
-
-      return self::$stmts[$str];
-   }
-*/
            
    protected function bind(\PDOStatement $stmt, string $str='') : void
    {  
