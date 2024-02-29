@@ -22,5 +22,5 @@ trait get_stmt_trait {
       return self::$stmts[$str];
    }
 
-   abstract function bind(\PDOStatement $pdostatement, string $str);
+   abstract function bind(\PDOStatement $pdostatement, string $str) : void;
 }

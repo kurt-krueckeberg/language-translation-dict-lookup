@@ -36,30 +36,31 @@ inner join
 on Y.outer_conj_id=X.inner_conj_id
 order by w_id ASC";
     
-    static \PDOStatements $stmt = [];
+    static private $stmts = array();
 
     static int $word_id = -1;  
 
     use get_stmt_trait;
 
-    public function __construct(Pos $pos, int $word_id)
+    public function __construct(\PDO $pdo, Pos $pos, int $word_id)
     {
        if ($pos !== Pos::Verb && $pos !== Pos::Noun)
             $this->iter = CreateDBWordResultIterator(CreateDBWordResultIterator::SingleWordResult);
     
        $rows = match ($pos) {
           
-          Pos::Verb => $this->fetchRows($sql_noun, $this->word_id), 
-          Pos::Noun => $this->fetchRows($sql_verb_family, $this->word_id)
+          Pos::Verb => $this->fetchRows($pdo, self::$sql_noun, $word_id), 
+          Pos::Noun => $this->fetchRows($pdo, self::$sql_verb_family, $word_id)
        };
     
+       /*
        if (count($rows) > 1) {
            
          // Return an iterator with more than one match if row count > 1. 
     
-         if (pos is verb) { // We assume this is a verb family. The main verb is in row 0. 
+         if ($pos == Pos::Verb) { // We assume this is a verb family. The main verb is in row 0. 
            
-           if (/* Test if row[1] also has Pos of Verb? and do strpos($row[1]['word'], $row[0]['word']) != 0 or false */ {
+           if (// Test if row[1] also has Pos of Verb? and do strpos($row[1]['word'], $row[0]['word']) != 0 or false  {
     
 	       $this->iter = CreateDBWordResultIterator::VerbFamilyGenerator($matches, $this->main_verb_index); 
 
@@ -72,18 +73,26 @@ order by w_id ASC";
           $this->iter = CreateDBWordResultIterator::SingleWordResultGenerator($matches);
        }
      }
+        * 
+        */
+       $debug = 0;
+    }
+   
+    function bind(\PDOStatement $stmt, string $str) : void
+    {
+        $stmt->bind(':word_id', self::$word_id, \PDO::PARAM_INT);
     }
 
-    private function bind(...)
+    function fetchRows(\PDO $pdo, string $sql, int $word_id) : array
     {
-
-    }
-
-    function fetchRows(string $sql, int $word_id)
-    {
-
-       $this->get_stmt($sql);
-
+       $stmt = $this->get_stmt($pdo, $sql);
+       
+       $rc = $stmt->execute();
+       
+       if ($rc === false)
+           die ("fatal error\n");
+       
+       $stmt->fetchAll();
     }
 
     function fetchNoun(int $id)
@@ -94,7 +103,7 @@ order by w_id ASC";
 
     public static function VerbFamilyGenerator(array $row, int $main_verb_index) : \Iterator 
     {
-        yield new DBVerb(???);
+        //--yield new DBVerb(???);
         
         foreach($matches as $index => $current) {          
           
@@ -109,9 +118,12 @@ order by w_id ASC";
        }
     }   
 
+    /*
     public static function SingleWordResultGenerator(array $arr) : \Iterator
     {
         yield new DBWord(???);
     }
+     * 
+     */
    
 }
