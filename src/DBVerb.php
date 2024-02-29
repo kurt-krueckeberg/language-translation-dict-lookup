@@ -31,7 +31,8 @@ inner join
  inner join
   conjs ON conjs.id=vc.conj_id
 ) as X
-on Y.outer_conj_id=X.inner_conj_id";
+on Y.outer_conj_id=X.inner_conj_id
+order by w_id ASC";
 
 /*
  * This retrieves a verb family: the words.id, the cpnjugation, the definitions and any associated expressions. 
