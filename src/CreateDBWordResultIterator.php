@@ -48,6 +48,7 @@ order by w_id ASC";
 
     public function __construct(\PDO $pdo, Pos $pos, int $word_id)
     {
+       $this->pdo = $pdo;
        $this->pos = $pos;
        
        if ($pos !== Pos::Verb && $pos !== Pos::Noun)
@@ -110,8 +111,16 @@ order by w_id ASC";
         }
     }
 
-    public static function SingleWordResultGenerator(??) : \Iterator
+    public static function SingleNounResultGenerator(\PDO) : \Iterator
     {
-        yield new DBWord(???);
+        $result = match($this->pos) {
+
+          Pos::Noun => new DBNoun($this->pdo, $this->rows[??],  function() {
+            return $this->rows['????']; }, function() {
+            return $this->rows['????']),
+         default => new DBWord($this->pdo, $this->pos, $this->word_id) 
+        };
+
+        yield $result;
     }   
 }

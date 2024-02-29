@@ -4,22 +4,19 @@ namespace Vocab;
 
 class DBNoun extends DBWordBase implements NounInterface {  
 
-   private Pos $pos;
+   private callable $plural;
+
+   private gender $gender;
    
    private string $word_defined;
    
-   public function __construct(\PDO $pdo, Pos $pos, string $word, int $word_id)
+   public function __construct(\PDO $pdo, string $word, int $word_id, callable $plural, callable $gender)
    {
       parent::__construct($pdo, $word_id);
       
       $this->word_defined = $word;
-      
-      $this->pos = $pos;
-   }
-   
-   public function get_pos() : Pos
-   {
-       return $this->pos;
+      $this->plural = $plural;
+      $this->gender;
    }
    
    function word_defined(): string 
@@ -29,11 +26,11 @@ class DBNoun extends DBWordBase implements NounInterface {
    
    function plural() : string
    {
-     return $this->rows[0]['plural'];
+     return ($this->plural)();
    }
 
    function gender() : Gender
    {
-     return Gender::fromString($this->rows[0]['gender']);
+     return ($this->gender)(); 
    } 
 }
