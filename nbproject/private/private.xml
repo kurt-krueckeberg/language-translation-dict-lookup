@@ -3,7 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/kurt/v/vendor/composer/ClassLoader.php</file>
             <file>file:/home/kurt/v/src/CreateDBWordResultIterator.php</file>
+            <file>file:/home/kurt/v/src/get_stmt_trait.php</file>
+            <file>file:/home/kurt/v/test.php</file>
         </group>
     </open-files>
 </project-private>

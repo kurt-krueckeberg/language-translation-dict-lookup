@@ -49,8 +49,8 @@ order by w_id ASC";
     
        $rows = match ($pos) {
           
-          Pos::Verb => $this->fetchRows($pdo, self::$sql_noun, $word_id), 
-          Pos::Noun => $this->fetchRows($pdo, self::$sql_verb_family, $word_id)
+          Pos::Verb => $this->fetchRows($pdo, 'sql_verb_family', $word_id), 
+          Pos::Noun => $this->fetchRows($pdo, 'sql_noun', $word_id)
        };
     
        /*
@@ -80,19 +80,21 @@ order by w_id ASC";
    
     function bind(\PDOStatement $stmt, string $str) : void
     {
-        $stmt->bind(':word_id', self::$word_id, \PDO::PARAM_INT);
+        $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
     }
 
     function fetchRows(\PDO $pdo, string $sql, int $word_id) : array
     {
        $stmt = $this->get_stmt($pdo, $sql);
        
+       self::$word_id = $word_id;
+       
        $rc = $stmt->execute();
        
        if ($rc === false)
            die ("fatal error\n");
        
-       $stmt->fetchAll();
+       return $stmt->fetchAll();
     }
 
     function fetchNoun(int $id)
