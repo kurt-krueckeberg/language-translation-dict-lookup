@@ -46,7 +46,6 @@ order by w_id ASC";
     {
        if ($pos !== Pos::Verb && $pos !== Pos::Noun)
             $this->iter = CreateDBWordResultIterator(CreateDBWordResultIterator::SingleWordResult);
-          
     
        $rows = match ($pos) {
           
@@ -62,18 +61,16 @@ order by w_id ASC";
            
            if (/* Test if row[1] also has Pos of Verb? and do strpos($row[1]['word'], $row[0]['word']) != 0 or false */ {
     
-	       $result = CreateDBWordResultIterator::VerbFamilyGenerator($matches, $this->main_verb_index); 
+	       $this->iter = CreateDBWordResultIterator::VerbFamilyGenerator($matches, $this->main_verb_index); 
 
        } else {
 
-	   $result = CreateDBWordResultIterator::SimpleDictionaryResultsGenerator($matches); 
+	   $this->iter = CreateDBWordResultIterator::SimpleDictionaryResultsGenerator($matches); 
        }    
        } else {
     
-          $result = CreateDBWordResultIterator::SingleWordResultGenerator($matches);
+          $this->iter = CreateDBWordResultIterator::SingleWordResultGenerator($matches);
        }
-    
-       return $result; 
      }
     }
 
