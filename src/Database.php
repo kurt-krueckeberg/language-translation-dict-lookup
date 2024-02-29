@@ -101,7 +101,7 @@ class Database extends DbBase implements InserterInterface {
       return true;
    } 
 
-   function fetch_db_word($word) : array | false // array(WordInterface $wface,int $word_id) | false
+   function fetch_db_word($word) : \Iterator // array | false // where the array is: array(WordInterface $wface,int $word_id) | false
    {
       $fetch = $this->get_table('FetchWord');
       
@@ -109,7 +109,9 @@ class Database extends DbBase implements InserterInterface {
       
       if ($pos === false) return false;
 
-      
+     $creator = CreateDBWordResultIterator($pos, $word_id);
+
+     return $creator->getIterator();
 /*
       $result= match($pos) {
          
@@ -120,6 +122,7 @@ class Database extends DbBase implements InserterInterface {
       };
            
       return array($result, $word_id);
+*/
    }
    
    function fetch_samples(int $word_id) : \Traversable | false

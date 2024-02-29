@@ -7,8 +7,6 @@ class CreateDBWordResultIterator {
     private bool $is_verb_family;
     private int  $main_verb_index;
 
-    \PDOStatement $pdostmt;
-
     public static function VerbFamilyGenerator(array $row, int $main_verb_index) : \Iterator 
     {
        yield new DBVerb(???);
@@ -39,22 +37,22 @@ class CreateDBWordResultIterator {
         }
     }
     
-    public function __construct(\PDOStatement $stmt)
-    {
-       $this->pdostmt = $stmt;
-    }
-
-    public function __invoke(string $word_lookedup, array $matches, \Collator $collator) 
+    public function __construct(Pos $pos, int $word_id)
     {
        $this->is_verb_family = false; // We start by assuming it is false.
-
-       $rows = $this->pdostmt->fetchAll();
-        
-       if ($this->pdostmt->rowCount() > 1) {
+ 
+       $rows = match ($pos) {
+          
+          Pos::Verb => $this->fetchVerb($this->word_id), 
+          Pos::Noun => $this->fetchNoun($this->word_id),
+          default =>  $this->fetchWord(????) // Only need definitions and expressioins.
+         
+       };
+ 
+       if (count($rows) > 1) {
            
          // Return an iterator with more than one match if row count > 1. 
   
-         // TODO: we need the POS 
          if (pos is verb) { // We assume this is a verb family. The main verb is in row 0. 
            
            if (/* Test if row[1] also has Pos of Verb? and do strpos($row[1]['word'], $row[0]['word']) != 0 or false */ {
