@@ -31,8 +31,8 @@ class CreateDBWordResultIterator {
            yield match($current['pos']) {
 
              'noun' => new DBNoun($????),
-             'verb' => new DBVerb($????),                ),
-             default => new DBnWord($????)
+             'verb' => new DBVerb($????), 
+             default => new DBWord($????)
            };
         }
     }
