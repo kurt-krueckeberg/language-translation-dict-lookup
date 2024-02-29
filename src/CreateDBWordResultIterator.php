@@ -4,8 +4,6 @@ namespace Vocab;
 
 class CreateDBWordResultIterator { 
 
-    private \Iterator $iter;
- 
     protected static $sql_noun = "select n.gender as gender, n.plural as plural from
      words as w
 join
@@ -37,45 +35,29 @@ on Y.outer_conj_id=X.inner_conj_id
 order by w_id ASC";
     
     static private $stmts = array();
+    
+    private $rows = array();
 
     static int $word_id = -1;  
-
+    
+    private \Iterator $iter;
+ 
+    private Pos $pos;
+    
     use get_stmt_trait;
 
     public function __construct(\PDO $pdo, Pos $pos, int $word_id)
     {
+       $this->pos = $pos;
+       
        if ($pos !== Pos::Verb && $pos !== Pos::Noun)
             $this->iter = CreateDBWordResultIterator(CreateDBWordResultIterator::SingleWordResult);
     
-       $rows = match ($pos) {
+       $this->rows = match ($pos) {
           
           Pos::Verb => $this->fetchRows($pdo, 'sql_verb_family', $word_id), 
           Pos::Noun => $this->fetchRows($pdo, 'sql_noun', $word_id)
-       };
-    
-       /*
-       if (count($rows) > 1) {
-           
-         // Return an iterator with more than one match if row count > 1. 
-    
-         if ($pos == Pos::Verb) { // We assume this is a verb family. The main verb is in row 0. 
-           
-           if (// Test if row[1] also has Pos of Verb? and do strpos($row[1]['word'], $row[0]['word']) != 0 or false  {
-    
-	       $this->iter = CreateDBWordResultIterator::VerbFamilyGenerator($matches, $this->main_verb_index); 
-
-       } else {
-
-	   $this->iter = CreateDBWordResultIterator::SimpleDictionaryResultsGenerator($matches); 
-       }    
-       } else {
-    
-          $this->iter = CreateDBWordResultIterator::SingleWordResultGenerator($matches);
-       }
-     }
-        * 
-        */
-       $debug = 0;
+       };    
     }
    
     function bind(\PDOStatement $stmt, string $str) : void
@@ -97,35 +79,39 @@ order by w_id ASC";
        return $stmt->fetchAll();
     }
 
-    function fetchNoun(int $id)
+    /*
+     * The main verb -- if this is a verb family (and if it is not) -- will be in the first row
+     * because the sql result was returned 'order by words.id ASC' and the main verb always has the smallest
+     * primary key.
+     */
+    public static function VerbFamilyGenerator(array $rows) : \Iterator 
     {
-
-
-    }
-
-    public static function VerbFamilyGenerator(array $row, int $main_verb_index) : \Iterator 
-    {
-        //--yield new DBVerb(???);
-        
-        foreach($matches as $index => $current) {          
-          
-          if ($index == $main_verb_index) {
+       foreach($rows as $index => $current) {
+            
+         if ($index == 0) {
              
-             continue;
+            yield new DBVerb();
     
-          } else {
+         } else {
              
-             yield new DBRelatedVerbResult($current);
-          }
+            yield new DBRelatedVerbResult($current);
+         }
        }
     }   
+    
+    function getIterator() : \Iterator
+    {
+        if ($this->pos == Pos::Verb)
+            return CreateDBWordResultIterator::VerbFamilyGenerator ($this->rows);
+        else if ($this->pos == Pos::Noun) {
+            
+        } else {
+            
+        }
+    }
 
-    /*
-    public static function SingleWordResultGenerator(array $arr) : \Iterator
+    public static function SingleWordResultGenerator(??) : \Iterator
     {
         yield new DBWord(???);
-    }
-     * 
-     */
-   
+    }   
 }
