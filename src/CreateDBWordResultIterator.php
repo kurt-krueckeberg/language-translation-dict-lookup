@@ -4,14 +4,102 @@ namespace Vocab;
 
 class CreateDBWordResultIterator { 
 
-    private bool $is_verb_family;
-    private int  $main_verb_index;
+    private \Iterator $iter;
+ 
+    protected static $sql_noun = "select n.gender as gender, n.plural as plural from
+     words as w
+join
+    nouns_data as n on w.id=n.word_id
+where w.id=:word_id";
+
+    protected static $sql_verb = "select w.id as word_id, w.word, w.pos, tenses.conjugation as conjugation from
+     words as w
+join 
+    verbs_conjs as v  on w.id=v.word_id
+join
+    conjs as tenses on tenses.id=v.conj_id
+where w.id=:word_id";
+
+    protected static $sql_verb_family = "select w_id, w_word, conjugation FROM
+(select vc.conj_id as outer_conj_id, vc.word_id as outer_word_id from verbs_conjs as vc where vc.word_id=:word_id) as Y
+inner join
+(select w.id as w_id,
+     w.word as w_word,
+     conjs.conjugation as conjugation,
+     vc.conj_id as inner_conj_id     
+ from words as w
+ inner join
+  verbs_conjs as vc ON vc.word_id=w.id
+ inner join
+  conjs ON conjs.id=vc.conj_id
+) as X
+on Y.outer_conj_id=X.inner_conj_id
+order by w_id ASC";
+    
+    static \PDOStatements $stmt = [];
+
+    static int $word_id = -1;  
+
+    use get_stmt_trait;
+
+    public function __construct(Pos $pos, int $word_id)
+    {
+       if ($pos !== Pos::Verb && $pos !== Pos::Noun)
+            $this->iter = CreateDBWordResultIterator(CreateDBWordResultIterator::SingleWordResult);
+          
+    
+       $rows = match ($pos) {
+          
+          Pos::Verb => $this->fetchRows($sql_noun, $this->word_id), 
+          Pos::Noun => $this->fetchRows($sql_verb_family, $this->word_id)
+       };
+    
+       if (count($rows) > 1) {
+           
+         // Return an iterator with more than one match if row count > 1. 
+    
+         if (pos is verb) { // We assume this is a verb family. The main verb is in row 0. 
+           
+           if (/* Test if row[1] also has Pos of Verb? and do strpos($row[1]['word'], $row[0]['word']) != 0 or false */ {
+    
+	       $result = CreateDBWordResultIterator::VerbFamilyGenerator($matches, $this->main_verb_index); 
+
+       } else {
+
+	   $result = CreateDBWordResultIterator::SimpleDictionaryResultsGenerator($matches); 
+       }    
+       } else {
+    
+          $result = CreateDBWordResultIterator::SingleWordResultGenerator($matches);
+       }
+    
+       return $result; 
+     }
+    }
+
+    private function bind(...)
+    {
+
+    }
+
+    function fetchRows(string $sql, int $word_id)
+    {
+
+       $this->get_stmt($sql);
+
+    }
+
+    function fetchNoun(int $id)
+    {
+
+
+    }
 
     public static function VerbFamilyGenerator(array $row, int $main_verb_index) : \Iterator 
     {
-       yield new DBVerb(???);
-       
-       foreach($matches as $index => $current) {          
+        yield new DBVerb(???);
+        
+        foreach($matches as $index => $current) {          
           
           if ($index == $main_verb_index) {
              
@@ -26,49 +114,7 @@ class CreateDBWordResultIterator {
 
     public static function SingleWordResultGenerator(array $arr) : \Iterator
     {
-        foreach ($arr as $key => $current) {
-
-           yield match($current['pos']) {
-
-             'noun' => new DBNoun($????),
-             'verb' => new DBVerb($????), 
-             default => new DBWord($????)
-           };
-        }
+        yield new DBWord(???);
     }
-    
-    public function __construct(Pos $pos, int $word_id)
-    {
-       $this->is_verb_family = false; // We start by assuming it is false.
- 
-       $rows = match ($pos) {
-          
-          Pos::Verb => $this->fetchVerb($this->word_id), 
-          Pos::Noun => $this->fetchNoun($this->word_id),
-          default =>  $this->fetchWord(????) // Only need definitions and expressioins.
-         
-       };
- 
-       if (count($rows) > 1) {
-           
-         // Return an iterator with more than one match if row count > 1. 
-  
-         if (pos is verb) { // We assume this is a verb family. The main verb is in row 0. 
-           
-           if (/* Test if row[1] also has Pos of Verb? and do strpos($row[1]['word'], $row[0]['word']) != 0 or false */ {
-    
-               $result = CreateDBWordResultIterator::VerbFamilyGenerator($matches, $this->main_verb_index); 
-
-           } else {
-
-               $result = CreateDBWordResultIterator::SimpleDictionaryResultsGenerator($matches); 
-           }    
-       } else {
-    
-          $result = CreateDBWordResultIterator::SingleWordResultGenerator($matches);
-       }
-
-       return $result; 
-     }
-  }
+   
 }
