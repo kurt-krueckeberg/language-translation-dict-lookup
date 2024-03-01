@@ -17,8 +17,6 @@ $row = $fetch('kommen');
  
 $iter = new CreateDBWordResultIterator($pdo, $row);
 
-//$iter = $creator->getIterator();
-
 foreach($iter as $index => $value) {
     
     var_dump($value);
