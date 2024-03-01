@@ -38,7 +38,7 @@ where defns.word_id=:word_id;";
    function __construct(\PDO $pdo, int $word_id)
    {
       $this->pdo = $pdo;
-           
+      
       $exprs_cnt_stmt = $this->get_stmt($pdo, 'sql_defns_expressions_count');
       
       // Get expressions count
@@ -82,5 +82,10 @@ where defns.word_id=:word_id;";
    public function getIterator() : \Traversable
    {
        return DBWordBase::generator_defn_exprs($this->definitions, $this->expressions, $this->expressions_cnts);
+   }
+   
+   function get_word_id() : int
+   {
+       return self::$word_id;
    }
 }

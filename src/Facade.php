@@ -121,11 +121,14 @@ class Facade {
         //list($wrface, $word_id) = $result;
    
         // TODO: Loop here?
-        $cnt = $this->html->add_definitions($wrface); 
+        foreach($resultIter as $dbword) {
+            
+          $cnt = $this->html->add_definitions($dbword); 
  
-        $sentIter = $this->db->fetch_samples($word_id); 
+          $sentIter = $this->db->fetch_samples($dbword->get_word_id()); 
   
-        $cnt = $this->html->add_samples($word, $sentIter, $this->azure); 
+          $cnt = $this->html->add_samples($word, $sentIter, $this->azure); 
+        }
      }
    }
  }

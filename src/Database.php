@@ -101,13 +101,14 @@ class Database extends DbBase implements InserterInterface {
       return true;
    } 
 
-   function fetch_db_word($word) : \Iterator
+   function fetch_db_word($word) : \Iterator | false
    {
       $fetch = $this->get_table('FetchWord'); 
       
       $row = $fetch($word); 
       
-      if ($row === false) return false; // TODO: Throw exception?
+      if ($row === false) // Word does not exist
+          return false; 
 
       $creator = new CreateDBWordResultIterator($this->pdo, $row);
 
