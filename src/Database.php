@@ -131,7 +131,7 @@ class Database extends DbBase implements InserterInterface {
 
       foreach ($sentences_iter as $sentence) {
           
-        $rc = $samplesTbl->insert($sentence, $translator->translate($sentence, 'en'), $prim_key);  
+        $rc = $samplesTbl->insert($sentence, $translator->translate($sentence, 'en', 'de'), $prim_key);  
       }
       
       return true;
