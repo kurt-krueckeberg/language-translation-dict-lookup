@@ -1,1 +1,2 @@
-See Facade ~ line 123. See TODO.
+Is my Azure translation account free and I am getting "false" translation results because I have exceeded 
+my quota?

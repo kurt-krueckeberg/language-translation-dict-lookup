@@ -7,18 +7,20 @@ include 'vendor/autoload.php';
 
 $c = new Config();
 
-$text = "Der Nachfrage nach Häusern in Krefeld will der Gladbacher Immobilienmakler aber jetzt nachkommen.";
+$arr = [ "Der Nachfrage nach Häusern in Krefeld will der Gladbacher Immobilienmakler aber jetzt nachkommen.",
+"Inwieweit man den Griechen entgegenkommen wird, ist unklar"];
 
 $azure = new AzureTranslator($c);
-$sys = new SystranTranslator($c);
 
 try {
 
-  $en =  $azure->translate($text, "en", "de");
+  foreach($arr as $text) {
+    $en =  $azure->translate($text, "en", "de");
 
-  echo "The translation of: $text.\n";
+    echo "Azure translation of:\n$text.\nis:\n";
 
-  echo "By Azure:\n.$en.\n";
+    echo "$en.\n";
+   }
 
 } catch (\Exception $e) {
 
