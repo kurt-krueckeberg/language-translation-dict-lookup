@@ -95,14 +95,7 @@ order by word_id ASC";
     {
        foreach($rows as $index => $current) {
             
-         if ($index == 0) {
-             
-            yield new DBVerb($pdo, $current);
-    
-         } else {
-             
-            yield new DBRelatedVerbResult($pdo, $current);
-         }
+          yield new DBVerb($pdo, $current); 
        }
     }   
     
