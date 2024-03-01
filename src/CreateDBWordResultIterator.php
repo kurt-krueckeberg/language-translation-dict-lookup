@@ -57,7 +57,7 @@ order by word_id ASC";
 
            $rows = $this->fetchRows($pdo, 'sql_noun', $row['word_id']);
             
-           $this->iter = CreateDBWordResultIterator::SingleWordResult(new DBNoun($pdo, $row));
+           $this->iter = CreateDBWordResultIterator::SingleWordResultGenerator(new DBNoun($pdo, $row));
 
        } else {// verb
 
