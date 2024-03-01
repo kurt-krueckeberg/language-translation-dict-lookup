@@ -4,11 +4,10 @@ namespace Vocab;
 
 class DBVerb extends DBWordBase implements VerbInterface {
     
-   private array $row
+   private array $row; 
 
    function __construct(\PDO $pdo, array $row)
    {
-      //parent::__construct($pdo, $word_id);
       parent::__construct($pdo, $row['word_id']);
       $this->row = $row;
    }

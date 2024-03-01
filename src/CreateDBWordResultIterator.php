@@ -43,63 +43,30 @@ order by w_id ASC";
     
     private \Iterator $iter;
  
-    private Pos $pos;
+    private DBWordBase $word_result; 
     
     use get_stmt_trait;
-
-    /*
-    public function __construct(\PDO $pdo, Pos $pos, int $word_id)
-    {
-       $this->pdo = $pdo;
-       $this->pos = $pos;
-       
-       if ($pos !== Pos::Verb && $pos !== Pos::Noun)
-            $this->iter = CreateDBWordResultIterator(CreateDBWordResultIterator::SingleWordResult);
-    
-       $this->rows = match ($pos) {
-          
-          Pos::Verb => $this->fetchRows($pdo, 'sql_verb_family', $word_id), 
-          Pos::Noun => $this->fetchRows($pdo, 'sql_noun', $word_id)
-       };    
-    }
-     */
-    
+ 
     public function __construct(\PDO $pdo, array $row)
     {
-       $this->row = $row;
-              
        if ($row['pos'] !== Pos::Verb && $row['pos'] !== Pos::Noun) {
 
-            $this->
-            $this->iter = CreateDBWordResultIterator::SingleWordResult;
+            $this->iter = CreateDBWordResultIterator::SingleWordResult(new DBWord($pdo, $row));
     
-       } else {     
+       } else if ($row['pos'] == Pos::Noun) {     
 
-           $this->rows = match ($pos) {
-             
-              Pos::Verb => $this->fetchRows($pdo, 'sql_verb_family', $word_id), 
-              Pos::Noun => $this->fetchRows($pdo, 'sql_noun', $word_id)
-           };
+           $rows = $this->fetchRows($pdo, 'sql_noun', $word_id);
+            
+           $this->iter = CreateDBWordResultIterator::SingleWordResult(new DBNoun($pdo, $row));
+
+       } else {// verb
+
+          $rows = $this->fetchRows($pdo, 'sql_verb_family', $word_id), 
+
+          $this->iter = CreateDBWordResultIterator::VerbGenerator($row);
        }
     }
     
-    /*
-    public function __construct(\PDO $pdo, Pos $pos, int $word_id)
-    {
-       $this->pdo = $pdo;
-       $this->pos = $pos;
-       
-       if ($pos !== Pos::Verb && $pos !== Pos::Noun)
-            $this->iter = CreateDBWordResultIterator(CreateDBWordResultIterator::SingleWordResult);
-    
-       $this->rows = match ($pos) {
-          
-          Pos::Verb => $this->fetchRows($pdo, 'sql_verb_family', $word_id), 
-          Pos::Noun => $this->fetchRows($pdo, 'sql_noun', $word_id)
-       };    
-    }     
-     */
-   
     function bind(\PDOStatement $stmt, string $str) : void
     {
         $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
@@ -152,16 +119,8 @@ order by w_id ASC";
         }
     }
 
-    public static function SingleNounResultGenerator(\PDO) : \Iterator
+    public static function SingleNounResultGenerator(DBWord $dbword) : \Iterator
     {
-        $result = match($this->pos) { // STATIC: Won't work!!!
-
-          Pos::Noun => new DBNoun($this->pdo, $this->rows[??],  function() {
-            return $this->rows['????']; }, function() {
-            return $this->rows['????']),
-         //-- default => new DBWord($this->pdo, $this->pos, $this->word_id) 
-        };
-
-        yield $result;
+        yield $dbword;
     }   
 }
