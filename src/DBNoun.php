@@ -8,7 +8,7 @@ class DBNoun extends DBWord implements NounInterface {
     
    public function __construct(\PDO $pdo, array $row) 
    {
-      parent::__construct($pdo, $row['word_id']);
+      parent::__construct($pdo, $row);
       
       $this->row = $row;
    }
