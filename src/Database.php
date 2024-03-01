@@ -111,7 +111,7 @@ class Database extends DbBase implements InserterInterface {
 
       $creator = new CreateDBWordResultIterator($this->pdo, $row);
 
-      return $creator->iter; 
+      return $creator->getIterator(); 
    }
    
    function fetch_samples(int $word_id) : \Traversable | false
