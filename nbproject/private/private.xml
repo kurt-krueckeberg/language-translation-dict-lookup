@@ -6,7 +6,10 @@
             <file>file:/home/kurt/v/vendor/composer/ClassLoader.php</file>
             <file>file:/home/kurt/v/src/CreateDBWordResultIterator.php</file>
             <file>file:/home/kurt/v/src/get_stmt_trait.php</file>
-            <file>file:/home/kurt/v/test.php</file>
+            <file>file:/home/kurt/v/src/Pos.php</file>
+            <file>file:/home/kurt/v/src/DBVerb.php</file>
+            <file>file:/home/kurt/v/src/FetchWord.php</file>
+            <file>file:/home/kurt/v/src/DBWord.php</file>
             <file>file:/home/kurt/v/src/Database.php</file>
         </group>
     </open-files>

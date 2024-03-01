@@ -8,7 +8,7 @@ class DBWord extends DBWordBase implements WordInterface {
   
    public function __construct(\PDO $pdo, array $row) 
    {
-      parent::__construct($pdo, $word_id);
+      parent::__construct($pdo, $row['word_id']);
 
       $this->row = $row;
    }

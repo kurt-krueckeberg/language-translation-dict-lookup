@@ -14,7 +14,7 @@ class DBVerb extends DBWordBase implements VerbInterface {
    
    public function get_pos() : Pos
    {
-      return Pos::fromString($this->row[$this->row['pos']);
+      return Pos::fromString($this->row['pos']);
    }
 
    function conjugation() : string

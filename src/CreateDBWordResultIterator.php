@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class CreateDBWordResultIterator { 
+class CreateDBWordResultIterator implements \IteratorAggregate { 
 
     protected static $sql_noun = "select w.word as word, w.pos as pos, n.gender as gender, n.plural as plural from
      words as w
@@ -33,7 +33,7 @@ inner join
   conjs ON conjs.id=vc.conj_id
 ) as X
 on Y.outer_conj_id=X.inner_conj_id
-order by w_id ASC";
+order by word_id ASC";
     
     static private $stmts = array();
     
@@ -49,11 +49,11 @@ order by w_id ASC";
  
     public function __construct(\PDO $pdo, array $row)
     {
-       if ($row['pos'] !== Pos::Verb && $row['pos'] !== Pos::Noun) {
+       if (Pos::fromString($row['pos']) !== Pos::Verb && Pos::fromString($row['pos']) !== Pos::Noun) {
 
-            $this->iter = CreateDBWordResultIterator::SingleWordResult(new DBWord($pdo, $row));
+            $this->iter = CreateDBWordResultIterator::SingleWordResultGenerator(new DBWord($pdo, $row));
     
-       } else if ($row['pos'] == Pos::Noun) {     
+       } else if (Pos::fromString($row['pos']) == Pos::Noun) {     
 
            $rows = $this->fetchRows($pdo, 'sql_noun', $word_id);
             
@@ -61,9 +61,9 @@ order by w_id ASC";
 
        } else {// verb
 
-          $rows = $this->fetchRows($pdo, 'sql_verb_family', $word_id);
+          $rows = $this->fetchRows($pdo, 'sql_verb_family', $row['word_id']);
 
-          $this->iter = CreateDBWordResultIterator::VerbGenerator($row);
+          $this->iter = CreateDBWordResultIterator::VerbGenerator($pdo, $rows);
        }
     }
     
@@ -91,35 +91,27 @@ order by w_id ASC";
      * because the sql result was returned 'order by words.id ASC' and the main verb always has the smallest
      * primary key.
      */
-    public static function VerbGenerator(array $rows) : \Iterator 
+    public static function VerbGenerator(\PDO $pdo, array $rows) : \Iterator 
     {
        foreach($rows as $index => $current) {
             
          if ($index == 0) {
              
-            yield new DBVerb();
+            yield new DBVerb($pdo, $current);
     
          } else {
              
-            yield new DBRelatedVerbResult($current);
+            yield new DBRelatedVerbResult($pdo, $current);
          }
        }
     }   
     
     function getIterator() : \Iterator
     {
-        if ($this->pos == Pos::Verb)
-            
-            return CreateDBWordResultIterator::VerbGenerator ($this->rows);
-        
-        else if ($this->pos == Pos::Noun) {
-            
-        } else {
-            
-        }
+        return $this->iter;
     }
 
-    public static function SingleNounResultGenerator(DBWord $dbword) : \Iterator
+    public static function SingleWordResultGenerator(DBWord $dbword) : \Iterator
     {
         yield $dbword;
     }   
