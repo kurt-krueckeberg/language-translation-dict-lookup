@@ -4,13 +4,13 @@ namespace Vocab;
 
 class CreateDBWordResultIterator { 
 
-    protected static $sql_noun = "select n.gender as gender, n.plural as plural from
+    protected static $sql_noun = "select w.word as word, w.pos as pos, n.gender as gender, n.plural as plural from
      words as w
 join
     nouns_data as n on w.id=n.word_id
 where w.id=:word_id";
 
-    protected static $sql_verb = "select w.id as word_id, w.word, w.pos, tenses.conjugation as conjugation from
+    protected static $sql_verb = "select w.id as word_id, w.pos as pos, w.word as word, tenses.conjugation as conjugation from
      words as w
 join 
     verbs_conjs as v  on w.id=v.word_id
@@ -18,11 +18,12 @@ join
     conjs as tenses on tenses.id=v.conj_id
 where w.id=:word_id";
 
-    protected static $sql_verb_family = "select w_id, w_word, conjugation FROM
+    protected static $sql_verb_family = "select word_id, word, pos, conjugation FROM
 (select vc.conj_id as outer_conj_id, vc.word_id as outer_word_id from verbs_conjs as vc where vc.word_id=:word_id) as Y
 inner join
-(select w.id as w_id,
-     w.word as w_word,
+(select w.id as word_id,
+     w.word as word,
+     w.pos as pos,
      conjs.conjugation as conjugation,
      vc.conj_id as inner_conj_id     
  from words as w

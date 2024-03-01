@@ -4,12 +4,15 @@ namespace Vocab;
 
 class DBNoun extends DBWordBase implements NounInterface {  
 
-   private callable $plural;
-
-   private gender $gender;
-   
-   private string $word_defined;
-   
+   private array $row;
+    
+   public function __construct(\PDO $pdo, array $row) 
+   {
+      parent::__construct($pdo, $row['word_id']);
+      
+      $this->row = $row;
+   }
+ /*
    public function __construct(\PDO $pdo, string $word, int $word_id, callable $plural, callable $gender)
    {
       parent::__construct($pdo, $word_id);
@@ -18,19 +21,19 @@ class DBNoun extends DBWordBase implements NounInterface {
       $this->plural = $plural;
       $this->gender;
    }
-   
+  */
    function word_defined(): string 
    {
-      return $this->word_defined;
+      return $this->row['defined'];
    }
    
    function plural() : string
    {
-     return ($this->plural)();
+     return $this->row['plural'];
    }
 
    function gender() : Gender
    {
-     return ($this->gender)(); 
+     return $this->row['gender'];
    } 
 }

@@ -103,9 +103,9 @@ class Database extends DbBase implements InserterInterface {
 
    function fetch_db_word($word) : \Iterator // array | false // where the array is: array(WordInterface $wface,int $word_id) | false
    {
-      $fetch = $this->get_table('FetchWord');
+      $fetch = $this->get_table('FetchWord'); //TODO: Should instead return a DBWord or something like an array?
       
-      list($pos, $word_id) = $fetch($word);
+      list($pos, $word_id) = $fetch($word); // 
       
       if ($pos === false) return false;
 
