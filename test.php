@@ -9,6 +9,11 @@ $c = new Config();
 
 $cred = $c->get_db_credentials();
 
-$pdo = new \PDO($cred["dsn"], $cred["user"], $cred["password"]); 
+$pdo = new \PDO($cred["dsn"], $cred["user"], $cred["password"]);
 
-$x = new CreateDBWordResultIterator($pdo, Pos::Verb, 1);
+$fetch = $new FetchWord($pdo);
+      
+$row = $fetch('kommen'); 
+ 
+$creator = CreateDBWordResultIterator($this->pdo, $row);
+
