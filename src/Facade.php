@@ -104,24 +104,23 @@ class Facade {
       $this->db->save_samples($word, $sent_iter);  
    }
 
-   // Fetch words and their definitions, pos, inflections, etc from database, and for those words found, create a web page
-   // TODO: This code does not handle fetching a prefix verbs along with the main verb.
    function create_html(array $words, string $filename) : void
    {
       $this->html = new BuildHtml($filename, "de", "en");
 
       foreach($words as $word) {
 
-        $result = $this->db->fetch_db_word($word);  
+        $resultIter = $this->db->fetch_db_word($word);  
         
-        if ($result === false) {
+        if ($resultIter === false) {
             
             echo "$word is not in database.\n";
             continue;            
         }
         
-        list($wrface, $word_id) = $result;
+        //list($wrface, $word_id) = $result;
    
+        // TODO: Loop here?
         $cnt = $this->html->add_definitions($wrface); 
  
         $sentIter = $this->db->fetch_samples($word_id); 

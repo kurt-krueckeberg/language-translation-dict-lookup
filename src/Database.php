@@ -109,20 +109,9 @@ class Database extends DbBase implements InserterInterface {
       
       if ($row === false) return false; // TODO: Throw exception?
 
-     $creator = CreateDBWordResultIterator($this->pdo, $row);
+     $creator = new CreateDBWordResultIterator($this->pdo, $row);
 
      return $creator->getIterator();
-/*
-      $result= match($pos) {
-         
-         Pos::Verb => new DBVerb($this->pdo, $pos, $word, $word_id),
-         Pos::Noun => new DBNoun($this->pdo, $pos, $word, $word_id),
-         default => new DBWord($this->pdo, $word_id)        
-         
-      };
-           
-      return array($result, $word_id);
-*/
    }
    
    function fetch_samples(int $word_id) : \Traversable | false
