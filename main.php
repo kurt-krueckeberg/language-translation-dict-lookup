@@ -13,8 +13,16 @@ if (!file_exists($c->lookup_file())) {
     die($c->lookup_file() . " not found.\n");
 }
 
-$fac = new Facade($c->lookup_file(), $c);
+try {
 
-$words = $fac->db_insert();
+ $fac = new Facade($c->lookup_file(), $c);
 
-$fac->create_html($words, 'output');
+  $words = $fac->db_insert();
+
+  $fac->create_html($words, 'output');
+
+} catch (\Exception $e) {
+
+  echo $e->getMessage();
+  echo "The code is: " . $e->getCode() . "\n";
+}
