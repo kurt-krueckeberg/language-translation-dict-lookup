@@ -61,7 +61,7 @@ order by w_id ASC";
 
        } else {// verb
 
-          $rows = $this->fetchRows($pdo, 'sql_verb_family', $word_id), 
+          $rows = $this->fetchRows($pdo, 'sql_verb_family', $word_id);
 
           $this->iter = CreateDBWordResultIterator::VerbGenerator($row);
        }
