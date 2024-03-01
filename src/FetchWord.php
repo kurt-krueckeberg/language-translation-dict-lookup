@@ -6,7 +6,7 @@ class FetchWord  {
    
    private \PDOStatement $select_word; 
    
-   private static $sql_wordselect = "select id as word_id, pos from words as w where w.word=:word";
+   private static $sql_wordselect = "select word, id as word_id, pos from words as w where w.word=:word";
                                            
    private string $word = '';
    
@@ -40,6 +40,6 @@ class FetchWord  {
 
       if ($row === false) return false;
       
-      return array(Pos::fromString($row['pos']), $row['word_id']);     
+      return $row;
    }
 }

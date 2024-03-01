@@ -101,15 +101,15 @@ class Database extends DbBase implements InserterInterface {
       return true;
    } 
 
-   function fetch_db_word($word) : \Iterator // array | false // where the array is: array(WordInterface $wface,int $word_id) | false
+   function fetch_db_word($word) : \Iterator
    {
       $fetch = $this->get_table('FetchWord'); //TODO: Should instead return a DBWord or something like an array?
       
-      list($pos, $word_id) = $fetch($word); // 
+      $row = $fetch($word); // 
       
-      if ($pos === false) return false;
+      if ($row === false) return false; // TODO: Throw exception?
 
-     $creator = CreateDBWordResultIterator($pos, $word_id);
+     $creator = CreateDBWordResultIterator($this->pdo, $row);
 
      return $creator->getIterator();
 /*

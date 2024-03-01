@@ -36,4 +36,9 @@ class DBNoun extends DBWordBase implements NounInterface {
    {
      return $this->row['gender'];
    } 
+   
+   function get_pos() : Pos
+   {
+       return $this->row['pos'];
+   }
 }

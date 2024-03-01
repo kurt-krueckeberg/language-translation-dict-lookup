@@ -47,6 +47,7 @@ order by w_id ASC";
     
     use get_stmt_trait;
 
+    /*
     public function __construct(\PDO $pdo, Pos $pos, int $word_id)
     {
        $this->pdo = $pdo;
@@ -61,6 +62,43 @@ order by w_id ASC";
           Pos::Noun => $this->fetchRows($pdo, 'sql_noun', $word_id)
        };    
     }
+     */
+    
+    public function __construct(\PDO $pdo, array $row)
+    {
+       $this->row = $row;
+              
+       if ($row['pos'] !== Pos::Verb && $row['pos'] !== Pos::Noun) {
+
+            $this->
+            $this->iter = CreateDBWordResultIterator::SingleWordResult;
+    
+       } else {     
+
+           $this->rows = match ($pos) {
+             
+              Pos::Verb => $this->fetchRows($pdo, 'sql_verb_family', $word_id), 
+              Pos::Noun => $this->fetchRows($pdo, 'sql_noun', $word_id)
+           };
+       }
+    }
+    
+    /*
+    public function __construct(\PDO $pdo, Pos $pos, int $word_id)
+    {
+       $this->pdo = $pdo;
+       $this->pos = $pos;
+       
+       if ($pos !== Pos::Verb && $pos !== Pos::Noun)
+            $this->iter = CreateDBWordResultIterator(CreateDBWordResultIterator::SingleWordResult);
+    
+       $this->rows = match ($pos) {
+          
+          Pos::Verb => $this->fetchRows($pdo, 'sql_verb_family', $word_id), 
+          Pos::Noun => $this->fetchRows($pdo, 'sql_noun', $word_id)
+       };    
+    }     
+     */
    
     function bind(\PDOStatement $stmt, string $str) : void
     {
@@ -86,7 +124,7 @@ order by w_id ASC";
      * because the sql result was returned 'order by words.id ASC' and the main verb always has the smallest
      * primary key.
      */
-    public static function VerbFamilyGenerator(array $rows) : \Iterator 
+    public static function VerbGenerator(array $rows) : \Iterator 
     {
        foreach($rows as $index => $current) {
             
@@ -104,7 +142,9 @@ order by w_id ASC";
     function getIterator() : \Iterator
     {
         if ($this->pos == Pos::Verb)
-            return CreateDBWordResultIterator::VerbFamilyGenerator ($this->rows);
+            
+            return CreateDBWordResultIterator::VerbGenerator ($this->rows);
+        
         else if ($this->pos == Pos::Noun) {
             
         } else {
@@ -114,12 +154,12 @@ order by w_id ASC";
 
     public static function SingleNounResultGenerator(\PDO) : \Iterator
     {
-        $result = match($this->pos) {
+        $result = match($this->pos) { // STATIC: Won't work!!!
 
           Pos::Noun => new DBNoun($this->pdo, $this->rows[??],  function() {
             return $this->rows['????']; }, function() {
             return $this->rows['????']),
-         default => new DBWord($this->pdo, $this->pos, $this->word_id) 
+         //-- default => new DBWord($this->pdo, $this->pos, $this->word_id) 
         };
 
         yield $result;
