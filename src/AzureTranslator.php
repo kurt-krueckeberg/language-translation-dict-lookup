@@ -107,7 +107,7 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
        $contents = $this->request($trans['method'], $trans['route'], $options);
        
        if ($contents == false)
-            throw new \Exceptioin("AzureTranslator::translate($text, 'en', 'de') returned false.\n");
+            throw new \Exception("AzureTranslator::translate($text, 'en', 'de') returned false.\n");
        
        $obj = json_decode($contents);
 
