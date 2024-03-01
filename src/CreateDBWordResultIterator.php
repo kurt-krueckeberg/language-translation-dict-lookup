@@ -55,7 +55,7 @@ order by word_id ASC";
     
        } else if (Pos::fromString($row['pos']) == Pos::Noun) {     
 
-           $rows = $this->fetchRows($pdo, 'sql_noun', $word_id);
+           $rows = $this->fetchRows($pdo, 'sql_noun', $row['word_id']);
             
            $this->iter = CreateDBWordResultIterator::SingleWordResult(new DBNoun($pdo, $row));
 
