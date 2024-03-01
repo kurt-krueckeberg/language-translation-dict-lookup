@@ -15,7 +15,7 @@ class DBWord extends DBWordBase implements WordInterface {
 
    function get_pos() : Pos
    {
-      return $this->row['pos']; 
+      return Pos::fromString($this->row['pos']); 
    }
 
    function word_defined() : string
