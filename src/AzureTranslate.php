@@ -1,26 +1,27 @@
 <?php
 
-// NOTE: Be sure to uncomment the following line in your php.ini file.
-// ;extension=php_openssl.dll
-// You might need to set the full path, for example:
-// extension="C:\Program Files\Php\ext\php_openssl.dll"
-
-if (!getenv("TRANSLATOR_TEXT_SUBSCRIPTION_KEY")) {
-    throw new Exception ("Please set/export the following environment variable: TRANSLATOR_TEXT_SUBSCRIPTION_KEY");
-} else {
-    $subscription_key = getenv("TRANSLATOR_TEXT_SUBSCRIPTION_KEY");
-}
-if (!getenv("TRANSLATOR_TEXT_ENDPOINT")) {
-    throw new Exception ("Please set/export the following environment variable: TRANSLATOR_TEXT_ENDPOINT");
-} else {
-    $endpoint = getenv("TRANSLATOR_TEXT_ENDPOINT");
-}
-
 class AzureTranslate {
 
-   static $path = "/translate?api-version=3.0";
+   static $route = "/translate?api-version=3.0";
 
-   function translate (string $text, string $host, string $path, string $key, string $dest_lang='en')
+   private string $endpoint;
+   private string $subscription_key;
+   private string $subscription_region;
+
+   function __construct(Config &c)
+   {
+      $provider_name = $id->get_provider();
+
+      $config = $c->config['providers'][$provider_name];
+
+      $this->endpoint = config['endpoint'];
+
+      $this->subcription_key = $config['header'][0];       // subscription key
+
+      $this->subscription_region = $config['header'][1];   // subscription region
+   }
+
+   function translate (string $text, string $dest_lang='en')
    {
        $requestBody = array (
           array (
@@ -31,8 +32,9 @@ class AzureTranslate {
        $content = json_encode($requestBody);
 
        $headers = "Content-type: application/json\r\n" .
-           "Content-length: " . strlen($content) . "\r\n" .
-           "Ocp-Apim-Subscription-Key: $key\r\n" .
+           "Content-length: " . strlen($text) . "\r\n" .
+           "Ocp-Apim-Subscription-Key: $this->subscription_key\r\n" .
+           "Ocp-Apim-Subscription-Region: $this->subscription_region\r\n" .
            "X-ClientTraceId: " . \com_create_guid() . "\r\n";
 
        // NOTE: Use the key 'http' even if you are making an HTTPS request. See:
@@ -49,7 +51,7 @@ class AzureTranslate {
 
        $context  = stream_context_create ($options);
  
-       $result = file_get_contents ($host . $path . $params, false, $context);
+       $result = file_get_contents ($this->endpoint . self::$route . $params, false, $context);
  
        return $result;
   }

@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class Config {
+readonly class Config {
 
    public string $lookup_file_name = "/home/kurt/vocab-german/vocab.txt";
 
