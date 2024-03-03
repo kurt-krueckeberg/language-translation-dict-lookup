@@ -24,5 +24,11 @@ try {
 } catch (\Exception $e) {
 
   echo $e->getMessage();
-  echo "The code is: " . $e->getCode() . "\n";
+
+  echo "getting Trace: \n";
+  echo $e->getTrace();
+
+  echo "-------------\n";
+  echo "getting Trace as String: \n";
+  echo $e->getTraceAsString();
 }

@@ -6,9 +6,9 @@ class Config {
 
    private string $lookup_file_name = "/home/kurt/vocab-german/vocab.txt";
 
-   public int $sentence_count = 5;
+   private int $sentence_count = 5;
    
-   public  array $config = [ 'database' => ['dsn' => 'mysql:dbname=vocab;host=127.0.0.1', 'user' => 'kurt', 'password' => 'kk0457'],
+   private  array $config = [ 'database' => ['dsn' => 'mysql:dbname=vocab;host=127.0.0.1', 'user' => 'kurt', 'password' => 'kk0457'],
                      'providers' => [ 
                                     'leipzig_de'  => [ 'endpoint' => 'https://api.wortschatz-leipzig.de/ws/sentences/deu_news_2012_1M/sentences/',
                                                        'header' => []
@@ -27,7 +27,7 @@ class Config {
            ];
    
    
-   public string $namespace = "Vocab";
+   private string $namespace = "Vocab";
 
    public function __construct()
    {   
