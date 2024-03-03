@@ -66,6 +66,7 @@ class HtmlBuilder {
    {
       static $sec_samples = "<section class='samples'>";
 
+      static $debug = 0; 
       $str = $sec_samples;
 
       //if (count($iter) === 0)
@@ -77,7 +78,12 @@ class HtmlBuilder {
 
           foreach ($iter as $s) {
           
+             ++$debug;
+             
+             echo "$debug. Translating: $s\n"; 
              $translation = $trans->translate($s, 'en', 'de');
+             
+             echo "Translation is: $translation\n";
              
              $str .= "<p>" . $s . "</p><p>" . $translation . "</p>\n";
           }

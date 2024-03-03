@@ -17,21 +17,13 @@ try {
 
  $fac = new Facade($c->lookup_file(), $c);
 
- //-- $words = $fac->db_insert();
+ $trans = new Vocab\AzureTranslator($c);
 
- $file = new FileReader("./vocab.txt");
+   $txt = "Sie schwiegen für zwei Minuten, legten am Tatort Blumen nieder und ließen Ballons steigen.";
 
- $words = [];
+   $t =  $trans->translate($txt, 'en', 'de');
 
- foreach($file as $word)
-    $words[] = $word;
- 
- $cnt = count($words);
- 
- echo "count of words = $cnt.\n";
- 
- $fac->create_html($words, 'output');
-
+   echo $t . "\n";
 } catch (\Exception $e) {
 
   echo $e->getMessage();

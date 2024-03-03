@@ -19,7 +19,7 @@ class FetchSamples {
    
    private array $rows;
    
-   public static function SamplesGenerator(array $samples) : \Traversable
+   public static function SamplesGenerator(array $samples) : \Iterator // \Traversable
    {
        foreach($samples as $index => $sample) {
            
