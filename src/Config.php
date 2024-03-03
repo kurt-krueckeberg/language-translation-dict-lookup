@@ -2,9 +2,9 @@
 declare(strict_types=1);
 namespace Vocab;
 
-readonly class Config {
+class Config {
 
-   public string $lookup_file_name = "/home/kurt/vocab-german/vocab.txt";
+   private string $lookup_file_name = "/home/kurt/vocab-german/vocab.txt";
 
    public int $sentence_count = 5;
    

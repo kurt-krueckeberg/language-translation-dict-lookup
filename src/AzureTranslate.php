@@ -1,26 +1,43 @@
 <?php
+declare(strict_types=1);
+
+namespace Vocab;
+
 
 class AzureTranslate {
 
-   static $route = "/translate?api-version=3.0";
+   static string $route = "/translate?api-version=3.0";
 
    private string $endpoint;
+   
    private string $subscription_key;
+   
    private string $subscription_region;
 
-   function __construct(Config &c)
+  private function create_guid() : string
+  {
+    return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0x0fff ) | 0x4000,
+        mt_rand( 0, 0x3fff ) | 0x8000,
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+    );
+  }
+
+
+   public function __construct(Config $c)
    {
-      $provider_name = $id->get_provider();
+      $provider_name = 'azure';
 
       $config = $c->config['providers'][$provider_name];
 
-      $this->endpoint = config['endpoint'];
+      $this->endpoint = $config['endpoint'];
 
-      $this->subcription_key = $config['header'][0];       // subscription key
-
-      $this->subscription_region = $config['header'][1];   // subscription region
+      $this->subscription_key = $config['header']['Ocp-Apim-Subscription-Key'];       
+      $this->subscription_region = $config['header']['Ocp-Apim-Subscription-Region'];       
    }
-
+   
    function translate (string $text, string $dest_lang='en')
    {
        $requestBody = array (
@@ -35,7 +52,7 @@ class AzureTranslate {
            "Content-length: " . strlen($text) . "\r\n" .
            "Ocp-Apim-Subscription-Key: $this->subscription_key\r\n" .
            "Ocp-Apim-Subscription-Region: $this->subscription_region\r\n" .
-           "X-ClientTraceId: " . \com_create_guid() . "\r\n";
+           "X-ClientTraceId: " . $this->create_guid() . "\r\n";
 
        // NOTE: Use the key 'http' even if you are making an HTTPS request. See:
        // http://php.net/manual/en/function.stream-context-create.php
@@ -51,9 +68,10 @@ class AzureTranslate {
 
        $context  = stream_context_create ($options);
  
-       $result = file_get_contents ($this->endpoint . self::$route . $params, false, $context);
+       $file = $this->endpoint . self::$route . $params;
+       
+       $result = file_get_contents ($file, false, $context);
  
        return $result;
   }
 }
-
