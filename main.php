@@ -19,7 +19,7 @@ try {
 
   $words = $fac->db_insert();
 
-  //$fac->create_html($words, 'output');
+  $fac->create_html($words, 'output');
 
 } catch (\Exception $e) {
 

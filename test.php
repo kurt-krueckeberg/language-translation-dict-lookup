@@ -17,8 +17,6 @@ try {
 
  $fac = new Facade($c->lookup_file(), $c);
 
- //-- $words = $fac->db_insert();
-
  $file = new FileReader("./vocab.txt");
 
  $words = [];
