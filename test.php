@@ -17,9 +17,20 @@ try {
 
  $fac = new Facade($c->lookup_file(), $c);
 
-  $words = $fac->db_insert();
+ //-- $words = $fac->db_insert();
 
-  $fac->create_html($words, 'output');
+ $file = new FileReader("./vocab.txt");
+
+ $words = [];
+
+ foreach($file as $word)
+    $words[] = $word;
+
+ print_r($words);
+
+ return;
+
+ $fac->create_html($words, 'output');
 
 } catch (\Exception $e) {
 

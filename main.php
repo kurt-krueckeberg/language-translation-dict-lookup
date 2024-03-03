@@ -15,11 +15,11 @@ if (!file_exists($c->lookup_file())) {
 
 try {
 
- $fac = new Facade($c->lookup_file(), $c);
+  $fac = new Facade($c->lookup_file(), $c);
 
   $words = $fac->db_insert();
 
-  $fac->create_html($words, 'output');
+  //$fac->create_html($words, 'output');
 
 } catch (\Exception $e) {
 
