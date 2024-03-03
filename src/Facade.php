@@ -125,9 +125,7 @@ class Facade {
             continue;            
         }
         
-        //list($wrface, $word_id) = $result;
-   
-        // TODO: Loop here?
+        // Someh
         foreach($resultIter as $dbword) {
             
           $cnt = $this->html->add_definitions($dbword); 

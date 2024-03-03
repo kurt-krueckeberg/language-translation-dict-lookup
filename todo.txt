@@ -1,7 +1,0 @@
-Is my Azure translation account free and I am getting "false" translation results because I have exceeded 
-my quota?
-
-todo: 
-1. Switch to pay-as-you-go
-2. Contact support
-3. Use the code in AzureTranslate. See also ~/temp/Text-Translation-PAI-V3-PHP

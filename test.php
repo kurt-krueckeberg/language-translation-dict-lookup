@@ -26,10 +26,6 @@ try {
  foreach($file as $word)
     $words[] = $word;
 
- print_r($words);
-
- return;
-
  $fac->create_html($words, 'output');
 
 } catch (\Exception $e) {
