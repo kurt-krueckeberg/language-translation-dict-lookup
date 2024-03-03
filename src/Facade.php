@@ -53,7 +53,7 @@ class Facade {
                 continue;
            }
       
-           echo "$word results:\n";
+           //--echo "$word results:\n";
 
            foreach ($iter as $lookup_result)  {
                
@@ -68,15 +68,22 @@ class Facade {
               }
                     
               $this->db->save_lookup($lookup_result);
+
+              echo "$word saved to database.\n";
+              echo "Getting samples for: $word.\n";
     
               $sentIter = $this->sentFetcher->fetch($word);  
 
               if ($sentIter !== false) {
                   
                  $this->db->save_samples($word, $this->azure, $sentIter);
+                 echo "Samples for $word saved to database.\n";
+
+              } else {
+
+                 echo "No Samples found for $word.\n";
               }
 
-              echo "$word saved to database.\n";
            }
         }                
       } catch (\PDOException $e) {
