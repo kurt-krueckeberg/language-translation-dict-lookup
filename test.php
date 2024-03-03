@@ -26,7 +26,9 @@ try {
   echo $e->getMessage();
 
   echo "getting Trace: \n";
-  echo $e->getTrace();
+  $trace = $e->getTrace();
+
+  print_r($trace); 
 
   echo "-------------\n";
   echo "getting Trace as String: \n";
