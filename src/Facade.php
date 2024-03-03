@@ -53,8 +53,6 @@ class Facade {
                 continue;
            }
       
-           //--echo "$word results:\n";
-
            foreach ($iter as $lookup_result)  {
                
               $word = $lookup_result->word_defined();
@@ -70,6 +68,7 @@ class Facade {
               $this->db->save_lookup($lookup_result);
 
               echo "$word saved to database.\n";
+              
               echo "Getting samples for: $word.\n";
     
               $sentIter = $this->sentFetcher->fetch($word);  
@@ -93,6 +92,7 @@ class Facade {
       } catch (\Exception $e) {
       
             echo "Exception: message = {$e->getMessage()}.\nError Code = {$e->getCode()}.\nException code = {$e->getCode()}.\n";
+            
       }
       
       return $results;
@@ -124,15 +124,14 @@ class Facade {
             echo "$word is not in database.\n";
             continue;            
         }
-        
-        // Someh
+       
         foreach($resultIter as $dbword) {
             
           $cnt = $this->html->add_definitions($dbword); 
  
           $sentIter = $this->db->fetch_samples($dbword->get_word_id()); 
   
-          $cnt = $this->html->add_samples($word, $sentIter, $this->azure); 
+          $this->html->add_samples($word, $sentIter, $this->azure); 
         }
      }
    }

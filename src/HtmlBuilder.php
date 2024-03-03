@@ -66,28 +66,20 @@ class HtmlBuilder {
    {
       static $sec_samples = "<section class='samples'>";
 
-      static $debug = 0; 
       $str = $sec_samples;
 
-      //if (count($iter) === 0)
-      if (!$iter->valid())
+      if (!$iter->valid()) {
 
           $str .= "<p><span class'bold'>" . trim($word) . "<span> has no sample sentsences.</p>";
 
-      else 
+      } else {
 
           foreach ($iter as $s) {
-          
-             ++$debug;
-             
-             echo "$debug. Translating: $s\n"; 
-             $translation = $trans->translate($s, 'en', 'de');
-             
-             echo "Translation is: $translation\n";
-             
-             $str .= "<p>" . $s . "</p><p>" . $translation . "</p>\n";
+                        
+             $str .= "<p>" . $s['sample'] . "</p><p>" . $s['translation'] . "</p>\n";             
           }
-
+      }
+      
       $str .= "</section>\n";
 
       $str = $this->tidy($str);

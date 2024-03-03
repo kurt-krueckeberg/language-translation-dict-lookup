@@ -6,12 +6,12 @@ class FetchSamples {
    
    private \PDOStatement $select_samples; 
    
-   private static $sql_samples = "select samples.sample as sample from 
-       words
+   private static $sql_samples = "select samples.sample as sample, samples.target as translation from 
+      words
          inner join
       samples
          on words.id=samples.word_id
-         where words.id=:word_id";
+      where words.id=:word_id";
                           
    private \PDO $pdo;
    
@@ -21,7 +21,7 @@ class FetchSamples {
    
    public static function SamplesGenerator(array $samples) : \Iterator // \Traversable
    {
-       foreach($samples as $index => $sample) {
+       foreach($samples as $sample) {
            
            yield $sample;
        }
@@ -36,7 +36,7 @@ class FetchSamples {
       $this->select_samples->bindParam(':word_id', self::$word_id, \PDO::PARAM_STR);     
    }
 
-   function __invoke(int $word_id) : \Traversable //array | false
+   function __invoke(int $word_id) : \Traversable | false
    {
       self::$word_id = $word_id;
       
@@ -44,11 +44,11 @@ class FetchSamples {
       
       if ($rc == false) {
           
-          return array(false, false);
+          return false;
       }
       
       $samples = $this->select_samples->fetchAll(\PDO::FETCH_ASSOC);
       
-      return FetchSamples::SamplesGenerator(array_column($samples, 'sample'));
+      return FetchSamples::SamplesGenerator(($samples));
    }
 }
