@@ -1,19 +1,14 @@
-Is my Azure translation account free and I am getting "false" translation results because I have exceeded 
-my quota?
+I don't think my Azure translation free account is the problem casuing createhtml() to famil. I am getting "false" translation result of a sample sentence.
+But I don't think it is  because I have exceeded my quota. There I don't think that I have to
 
-Do I: 
 1. Switch to pay-as-you-go
 2. Contact support
 3. Use the code in AzureTranslate. See also ~/temp/Text-Translation-PAI-V3-PHP
 
-Thought as of March 3 2024:
+The problem may be in the Generators that get returned when `Facade::create_htm;($words, 'output')` is called.
 
-The problem may be in the Generators that get return when `Facade::create_htm;($words, 'output')` is called.
+Are the sample sentences in the database not in unicode? Do I need to call `json_encode()` before call Azure translate?
 
-Are they timing out? Something seems to be timing out. `AzureTransate::translate()` should be be called at this point, either, as all the 
-translations have already been saved in the datbase.
+The problem seems to be in FetchSamples.php and its generator code. This is were, it appears,the return values when `false` is encountered!
 
-Look into FetchSamples.php and its generator code and return values when `false` is encountered!
-
-**Note:** Translations of the sample sentences are not save in the database. Thus they need ot be translated when the html page is build that
-has the sample in German and its tranlation in English.
+**Note:** Translations of the sample sentences are not saved in the database. They need therefore to be translated when the html page is built.
