@@ -21,6 +21,7 @@ class SamplesTable  {
       $this->insert_stmt = $pdo->prepare(self::$sql_insert);
 
       $this->insert_stmt->bindParam(':sample', self::$sample, \PDO::PARAM_STR);     
+
       $this->insert_stmt->bindParam(':target', self::$target, \PDO::PARAM_STR);     
       
       $this->insert_stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
