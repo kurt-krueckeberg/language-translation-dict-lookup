@@ -110,8 +110,10 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
             throw new \Exception("AzureTranslator::translate($text, 'en', 'de') returned false.\n");
        
        $obj = json_decode($contents);
-
-       return $obj[0]->translations[0]->text; 
+       
+       $text = trim($obj[0]->translations[0]->text, '"'); // Azure text translate returns a quoted result: '"translation here within quotes"'.
+       
+       return $text;
    }
 
    /* Azure Translator lookup response body:
