@@ -2,7 +2,7 @@
 declare(strict_types=1);
 use \SplFileObject as File;
 
-use Vocab\{FileReader, Config, Facade};
+use Vocab\{FileReader, Config, Vocab};
 
 include 'vendor/autoload.php';
   
@@ -15,7 +15,7 @@ if (!file_exists($c->lookup_file())) {
 
 try {
 
-  $fac = new Facade($c);
+  $fac = new Vocab($c);
 
   $words = [];
 
