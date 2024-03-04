@@ -15,20 +15,11 @@ if (!file_exists($c->lookup_file())) {
 
 try {
 
- $fac = new Facade($c->lookup_file(), $c);
+  $fac = new Facade($c->lookup_file(), $c);
 
- $file = new FileReader("./vocab.txt");
+  $words = $fac->db_insert();
 
- $words = [];
-
- foreach($file as $word)
-    $words[] = $word;
- 
- $cnt = count($words);
- 
- echo "count of words = $cnt.\n";
- 
- $fac->create_html($words, 'output');
+  $fac->create_html($words, 'output');
 
 } catch (\Exception $e) {
 
