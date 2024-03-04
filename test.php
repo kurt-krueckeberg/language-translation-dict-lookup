@@ -17,7 +17,14 @@ try {
 
   $fac = new Facade($c);
 
-  $words = $fac->db_insert();
+  $words = [];
+
+  $file = new FileReader($c->lookup_file(), "r");
+
+  foreach ($file as $word) 
+     $words[] = $word;
+  
+  $words = $fac->db_insert($words);
 
   $fac->create_html($words, 'output');
 
