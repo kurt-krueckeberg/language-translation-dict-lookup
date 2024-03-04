@@ -67,7 +67,7 @@ order by word_id ASC";
        }
     }
     
-    function bind(\PDOStatement $stmt, string $str) : void
+    function bind(\PDOStatement $stmt) : void
     {
         $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
     }

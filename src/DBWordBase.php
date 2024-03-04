@@ -71,12 +71,20 @@ where defns.word_id=:word_id;";
      }
    }
            
-   protected function bind(\PDOStatement $stmt, string $str='') : void
+   protected function bind(\PDOStatement $stmt) : void
    {  
+      /*
+       * Both SQL expressions self::$sql_get_expressions and self::$sql_defns_expressions_count use self::$word_id as
+       * the bound parameter.
+       */ 
+      $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);           
+      
+      /*
       match($str) {
 
        'sql_defns_expressions_count', 'sql_get_expressions' => $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT)          
-      }; 
+      };
+       */ 
    }
        
    public function getIterator() : \Traversable
