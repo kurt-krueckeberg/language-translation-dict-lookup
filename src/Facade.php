@@ -52,9 +52,7 @@ class Facade {
            foreach ($iter as $lookup_result)  {
                
               $word = $lookup_result->word_defined();
-              
-              $results[] = $word;
-                 
+                          
               if ($this->db->word_exists($word)) {
 
                   echo "$word is already in database.\n";
@@ -78,17 +76,12 @@ class Facade {
 
                  echo "No Samples found for $word.\n";
               }
-
            }
         }                
-      } catch (\PDOException $e) {
-      
-            echo "Exception: message = " . $e->getMessage() . "\nError Code = " . $e->getCode() . "\n";
-
       } catch (\Exception $e) {
       
             echo "Exception: message = {$e->getMessage()}.\nError Code = {$e->getCode()}.\nException code = {$e->getCode()}.\n";
-            
+            echo "Exception trace: " . $e->getTraceAsString();
       }
       
       return $results;
