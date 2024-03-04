@@ -27,6 +27,7 @@ create table if not exists nouns_data (
 # -- prefix and reflexive verbs share the conjuation of the 
 # -- main verb. Thus, the conjugation of ankommen is kommen's
 # -- conjugation.
+# -- 
 create table if not exists conjs (
   id int not null auto_increment primary key,
   conjugation varchar(75) not null
