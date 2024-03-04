@@ -6,8 +6,6 @@ use \SplFileObject as File;
 
 class Facade {
    
-   private FileReader $file;
-
    private SystranTranslator $sys;
 
    private AzureTranslator $azure;
@@ -18,10 +16,8 @@ class Facade {
 
    private Config $c;
 
-   function __construct(string $filename, Config $c)
+   function __construct(Config $c)
    {
-      $this->file = new FileReader($filename);
-      
       $this->sys = new SystranTranslator($c);
 
       $this->azure = new AzureTranslator($c);
@@ -36,13 +32,13 @@ class Facade {
    /*
     * Returns list of words found in dictionary and inserted into database.
     */
-   function db_insert() : array 
+   function db_insert(array $words) : array 
    {
       $results = [];
       
       try {
        
-        foreach ($this->file as $word) {
+        foreach ($words as $word) {
            
            $iter = $this->sys->lookup($word, 'de', 'en');
     
