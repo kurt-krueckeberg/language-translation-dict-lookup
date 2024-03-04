@@ -1,3 +1,5 @@
+This is just an idea that needs to be based on D.J. Date readings. It is the SSQL chnage below:
+
 The Database scheme change below will make all tables dependent on `words`, so when it is
 deleted, all other tables likewise get deleted. It seems to make the sql 
 
@@ -31,3 +33,6 @@ create table if not exists shared_conjs (
   foreign key(shared_id) references words(id) on delete cascade
 );
 ```
+
+
+ select the verb and its conjudation
