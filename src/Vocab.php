@@ -4,6 +4,9 @@ namespace Vocab;
 
 use \SplFileObject as File;
 
+/*
+ * Facade - top-level interface object.
+ */
 class Vocab {
    
    private SystranTranslator $sys;
