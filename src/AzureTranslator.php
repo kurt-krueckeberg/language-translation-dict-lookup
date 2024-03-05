@@ -17,19 +17,7 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
    private $json = array();
 
    private \Collator $collator;
-   
-   // Azure Translator REST calls can also accept a GUID
-   static private function com_create_guid() 
-   {
-       return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-           mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
-           mt_rand( 0, 0xffff ),
-           mt_rand( 0, 0x0fff ) | 0x4000,
-           mt_rand( 0, 0x3fff ) | 0x8000,
-           mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
-        );
-   }
-   
+  
    public function __construct(Config $c)
    {
       parent::__construct($c, ProviderID::Azure);        
@@ -40,8 +28,10 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
    // If no source language is given, it will be auto-detected.
    protected function setLanguages(string $dest_lang, $source_lang="")
    {
-      if ($source_lang !== "") 
-           $this->query[self::$from] = $source_lang; 
+      if ($source_lang !== "")  {
+          
+           $this->query[self::$from] = $source_lang;
+      }
 
       $this->query[self::$to] = $dest_lang; 
    }
@@ -88,19 +78,19 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
            }
        ]
    */
-   final public function translate(string $text, string $dest_lang, $source_lang="") : string 
+   final public function translate(string $text, string $dest_lang, $source_lang="de") : string 
    {
        static $trans = array('method' => "POST", 'route' => "/translate", 'query' => ['api-version' => '3.0']);
               
-       $json = [['Text' => json_encode($text)]];
-       
-       $query = ['from' => 'de', 'to' => 'en', 'api-version' => '3.0'];
-       
        $options = [];
        
-       $options['query'] = $query;
+       $options['query'] = ['from' => $source_lang, 'to' => $dest_lang, 'api-version' => '3.0'];
        
-       $options['json'] = $json;
+       /*
+        * Input text goes in message body, ie as encoded json.
+        */
+       
+       $options['json'] = [['Text' => json_encode($text)]];;
        
        $options['http_errors'] = false;
        
@@ -111,7 +101,11 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
        
        $obj = json_decode($contents);
        
-       $text = trim($obj[0]->translations[0]->text, '"'); // Azure text translate returns a quoted result: '"translation here within quotes"'.
+       /*
+        * Since Azure text translate returns a quoted result like this: '"translation here within quotes"',
+        * we remove the superfulouse quotes.
+        */
+       $text = trim($obj[0]->translations[0]->text, '"'); 
        
        return $text;
    }
@@ -164,8 +158,7 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
 
       $obj = json_decode($contents); 
 
-      return AzureTranslator::LookupGenerator($obj[0]->translations); 
-      //--return new ResultsIterator($obj[0]->translations, AzureTranslator::get_lookup_result(...));
+      return AzureTranslator::LookupGenerator($obj[0]->translations);       
    }
 
    static public function LookupGenerator(array $translation)
@@ -179,13 +172,16 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
    public static function get_lookup_result(\stdClass $x) : AzureDictResult 
    {
        /*
-        * normalizedTarget is the/a definition
+        * normalizedTarget has the definition(s).
         */
       return new AzureDictResult($x->posTag, $x->normalizedTarget);
    }
 
    /* 
+    * Returns an array of example phrases for input of word plus d particular definition:
+    
      Input: $word and its associated $definitions array. 
+    * 
      Output: Array of examples where $examples[$index]['examples'] has the example phrases for 
              $defintions[$index].
 
@@ -197,7 +193,7 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
            "normalizedTarget":"volar",
             "examples":[
                {
-                    "sourcePrefix":"They need machines to ",
+                   "sourcePrefix":"They need machines to ",
                    "sourceTerm":"fly",
                     "sourceSuffix":".",
                    "targetPrefix":"Necesitan máquinas para ",
@@ -212,9 +208,7 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
                     "targetTerm":"volar",
                    "targetSuffix":"."
              },
-            //
-                // ...list abbreviated for documentation clarity
-               //
+            //...snip
             ]
        }
     ]
@@ -237,23 +231,17 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
 
       $obj = json_decode($contents); 
       
-       return new ResultsIterator($obj, AzureTranslator::get_example_result(...)); 
+      return ExamplesGenerator($obj['examples']);
    }
+   
    /*
-    * Returns one of the results in the Results
-    *
-    *
+    * Returns an array with 'source' as the source language example  and 'target' as its translation.
     */
-
-   public static function get_example_result(\stdClass $x) : array 
-   {
-      $result = array();
-      
-      $result['examples'] = array();
-      
-      foreach ($x->examples as $ex) 
-             $result['examples'][] = ['source' => $ex->sourcePrefix . $ex->sourceTerm . $ex->sourceSuffix, 'target' => $target = $ex->targetPrefix . $ex->targetTerm . $ex->targetSuffix];
-
-      return $result;          
-   }
+   function ExamplesGenerator(array $examples) : array
+   {   
+       foreach($examples as $example) {
+          
+          yield ['source' => $example->sourcePrefix . $example->sourceTerm . $example->sourceSuffix, 'target' => $target = $example->targetPrefix . $example->targetTerm . $example->targetSuffix];
+       }     
+   }   
 }

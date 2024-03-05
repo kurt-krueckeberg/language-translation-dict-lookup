@@ -10,9 +10,8 @@ class Database extends DbBase implements InserterInterface {
 
    private InserterInterface $inserter;
 
-   //private array $tables;
-
    private $word_prim_keys = []; // maps words to primary keys
+   
    private $conjugations_prim_keys = []; // maps words to primary keys
    
    public function __construct(Config $config)
@@ -34,9 +33,9 @@ class Database extends DbBase implements InserterInterface {
   
      $nounsDataTbl = $this->get_table('NounsDataTable');
   
-     $id = $nounsDataTbl->insert($deface, $id); 
+     $word_id = $nounsDataTbl->insert($deface, $id); 
   
-     return $id;
+     return $word_id;
    }
 
    public function insert_verb(WordInterface $wrface) : int // returns words.id
@@ -107,8 +106,7 @@ class Database extends DbBase implements InserterInterface {
       
       $row = $fetch($word); 
       
-      if ($row === false) // Word does not exist
-          return false; 
+      if ($row === false) return false; 
 
       $creator = new CreateDBWordResultIterator($this->pdo, $row);
 
@@ -129,9 +127,9 @@ class Database extends DbBase implements InserterInterface {
 
       $prim_key = $this->word_prim_keys[$word];
 
-      foreach ($sentences_iter as $sentence) {
+      foreach ($sentences_iter as $sentence)  {
           
-        $rc = $samplesTbl->insert($sentence, $translator->translate($sentence, 'en', 'de'), $prim_key);  
+         $samplesTbl->insert($sentence, $translator->translate($sentence, 'en', 'de'), $prim_key);                  
       }
       
       return true;

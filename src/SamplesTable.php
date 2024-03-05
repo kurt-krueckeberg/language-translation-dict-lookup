@@ -27,7 +27,7 @@ class SamplesTable  {
       $this->insert_stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
    }
 
-   public function insert(string $sample, string $target, int $word_id) : int
+   public function insert(string $sample, string $target, int $word_id) : int 
    {
       self::$sample = $sample;
 
@@ -36,6 +36,12 @@ class SamplesTable  {
       self::$word_id  = $word_id;
       
       $rc = $this->insert_stmt->execute();
+      
+      if ($rc === false) {
+             
+          throw new \Exception("Samples for sord '$word' were not inserted successfully.");
+      }
+             
 
       /*
       Note: lastInsertId() does not return the primary key; instead it returns the name of
