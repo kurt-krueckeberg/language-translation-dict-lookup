@@ -1,3 +1,25 @@
+## Code Rationalization
+
+Add loggin of results and errors. Perhaps the interactive messages can be placed in a message queue by the
+logger which would be a new feature of the Vocab facade. 
+
+A queue would get rid of the disorganization of many echo statements. Design:
+
+```php
+ReportQueue {
+
+  function __construct(
+  function report(bool $clear_queue = true);
+  function enqueue(string $msg);
+  function clear();
+}
+```
+
+At which points in the main loop shoud the ReportQueue report be displayed. Can we design the loop
+so that the report log is sensibly displayed.
+
+## Alternate Database Schema
+
 This is just an idea that needs to be based on D.J. Date readings. It is the SSQL chnage below:
 
 The Database scheme change below will make all tables dependent on `words`, so when it is
