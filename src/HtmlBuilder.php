@@ -42,17 +42,16 @@ class HtmlBuilder {
 
          $dds .= sprintf($defn_fmt, $defn);
 
-         if (count($expressions) == 0) continue;
+         if (count($expressions) == 0) { continue; }
               
          // We have exprrssion to adda. We use a nested <dl> for the expressions.
          $exps = "  <dd class='expressions'>\n   <dl>\n"; 
          
          foreach ($expressions as $expression) {
 
-             // TODO: <-- source and targe only apply to Systran lookup results
-             // not to words in the database.
                 $exps .= sprintf($exp_fmt, $expression['source'], $expression['target']); 
          }
+         
          $exps .= "  </dl>\n  </dd>\n";
          
          $dds .=  $exps ;              
@@ -62,7 +61,7 @@ class HtmlBuilder {
    }
  
    // to do: make sure the array has both 1.) sample and 2.) its translation.
-   public function add_samples_section(string $word, \Traversable $iter, TranslateInterface $trans) : string 
+   public function add_samples_section(string $word, \Traversable $iter) : string 
    {
       static $sec_samples = "<section class='samples'>";
 
@@ -82,9 +81,9 @@ class HtmlBuilder {
       
       $str .= "</section>\n";
 
-      $str = $this->tidy($str);
+      $result = $this->tidy($str);
 
-      return $str;
+      return $result;
    }
 
    private function tidy(string $out) : string

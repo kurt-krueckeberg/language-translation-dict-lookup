@@ -1,26 +1,6 @@
 # ToDo
 
-Add back inserting into `$results[]` the database insertions.
-
-## Code Rationalization
-
-Add loggin of results and errors. Perhaps the interactive messages can be placed in a message queue by the
-logger which would be a new feature of the Vocab facade. 
-
-A queue would get rid of the disorganization of many echo statements. Design:
-
-```php
-ReportQueue {
-
-  function __construct(
-  function report(bool $clear_queue = true);
-  function enqueue(string $msg);
-  function clear();
-}
-```
-
-At which points in the main loop shoud the ReportQueue report be displayed. Can we design the loop
-so that the report log is sensibly displayed.
+Sign up for Azure text translation pay-as-go.
 
 ## Alternate Database Schema
 
