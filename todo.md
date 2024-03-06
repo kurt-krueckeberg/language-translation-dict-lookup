@@ -1,5 +1,6 @@
 # ToDo
 
+* Log both: messages and words actually added to database.:wq
 * Sign up for Azure text translation pay-as-go.
 * The AzureTranslator::lookup() result should result results similiar to SystranTranslator::lookup(), which
 returns SystranNoun/Verb/RelatedVerb/or Word.

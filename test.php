@@ -28,6 +28,10 @@ try {
 
   $fac->create_html($words, 'output');
 
+  $file_put_contents("words_inserted.txt", implode("\n", $words));
+
+  echo "See 'log.txt' and 'words_inserted.txt.\n";
+
 } catch (\Exception $e) {
 
   echo $e->getMessage();

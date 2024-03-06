@@ -28,6 +28,7 @@ class MessageLog {
       return (string) $this->queue;
    }
 
+   // Reports messages
    function report() : void
    {
       $str = (string) $this->queue;
