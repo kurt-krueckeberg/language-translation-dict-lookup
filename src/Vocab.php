@@ -9,7 +9,7 @@ use \SplFileObject as File;
  */
 class Vocab {
    
-   private SystranTranslator $sys;
+   private SystranTranslator $trans;
 
    private AzureTranslator $azure;
 
@@ -23,7 +23,7 @@ class Vocab {
 
    function __construct(Config $c)
    {
-      $this->sys = new SystranTranslator($c);
+      $this->trans = new SystranTranslator($c);
 
       $this->azure = new AzureTranslator($c);
      
@@ -69,7 +69,7 @@ class Vocab {
     */
    function db_insert_word(string $word, MessageLog $log) : array
    {      
-      $iter = $this->sys->lookup($word, 'de', 'en');
+      $iter = $this->trans->lookup($word, 'de', 'en');
  
       if (!$iter->valid()) {
           
@@ -106,7 +106,7 @@ class Vocab {
 
        $log->log("$word saved to database.");
 
-       $this->insert_samples($word, $this->log);
+       $this->insertdb_samples($word, $log);
    }
 
    private function insertdb_samples(string $word, MessageLog $log) : bool
@@ -119,7 +119,7 @@ class Vocab {
            return false;
       }
 
-      return $this->db->save_samples($word, $sent_iter);  
+      return $this->db->save_samples($word, $this->????, $sent_iter);  
    }
 
    function create_html(array $words, string $filename, MessageLog $log) : void
