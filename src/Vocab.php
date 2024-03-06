@@ -86,9 +86,7 @@ class Vocab {
           
           $results[] = $word;
           
-          $this->insertdb_lookup_result($lookup_result, $log); 
-         
-         $this->insertdb_samples($word, $log);       
+          $this->insertdb_lookup_result($lookup_result, $log);          
       }
    
       return $results;
