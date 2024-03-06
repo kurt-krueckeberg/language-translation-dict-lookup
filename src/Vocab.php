@@ -81,18 +81,20 @@ class Vocab {
       $results = [];
    
       foreach ($iter as $lookup_result)  {
+           
+          $word = $lookup_result->word_defined();
           
-         $r = $this->insertdb_lookup_result($lookup_result, $log); 
- 
-         $results = \array_merge($results, $r);
-        
+          $results[] = $word;
+          
+          $this->insertdb_lookup_result($lookup_result, $log); 
+         
          $this->insertdb_samples($word, $log);       
       }
    
       return $results;
    } 
  
-   private function insertdb_lookup_result(WordInterface $lookup_result, MessageLog $log)
+   private function insertdb_lookup_result(WordInterface $lookup_result, MessageLog $log) : void
    {
        $word = $lookup_result->word_defined();
                    
@@ -119,7 +121,7 @@ class Vocab {
            return false;
       }
 
-      return $this->db->save_samples($word, $this->????, $sent_iter);  
+      return $this->db->save_samples($word, $this->trans, $sent_iter);  
    }
 
    function create_html(array $words, string $filename, MessageLog $log) : void
