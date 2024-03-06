@@ -54,7 +54,48 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
       $contents = $this->request(self::$languages['method'], self::$languages['route'],  ['headers' => $this->headers, 'query' => $this->query]);
              
       return json_decode($contents, true);    
-   } 
+   }
+   
+   final public function lookup(string $word, string $src_lang, string $dest_lang, bool $exact_match=false) : \Iterator //-- ResultsIterator
+   {      
+      $this->setLanguages($dest_lang, $src_lang); 
+       
+      $this->json = [['Text' => $word]];       
+    
+      $contents = $this->request(self::$lookup['method'], self::$lookup['route'], ['headers' => $this->headers, 'query' => $this->query, 'json' => $this->json]);
+
+      $obj = json_decode($contents); 
+
+      //--return AzureTranslator::LookupGenerator($obj[0]->translations);       
+      $generator = function (array $translations) {
+        
+          foreach($translations as $translation) {
+              
+           echo "Returning " .  $translation->normalizedTarget . " from AzureTranslator generator closure.\n";   
+
+           yield  $translation->normalizedTarget;
+          }
+      };
+              
+      return $generator($obj[0]->translations);       
+   }
+
+   
+   static public function LookupGenerator(array $translations) : \Iterator
+   {
+        foreach($translations as $translation) { 
+
+           yield  $translation->normalizedTarget;
+        }
+   }
+
+   public static function get_lookup_result(\stdClass $x) : AzureDictResult 
+   {
+       /*
+        * normalizedTarget has the definition(s).
+        */
+      return new AzureDictResult($x->posTag, $x->normalizedTarget);
+   }
 
    /*
      Azure Translation response contents:
@@ -105,9 +146,10 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
         * Since Azure text translate returns a quoted result like this: '"translation here within quotes"',
         * we remove the superfulouse quotes.
         */
-       $text = trim($obj[0]->translations[0]->text, '"'); 
+       $result = \trim($obj[0]->translations[0]->text, '"'); 
        
-       return $text;
+       echo "Translation: $result\n";
+       return $result;
    }
 
    /* Azure Translator lookup response body:
@@ -148,34 +190,6 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
       }
      ]
    */
-   final public function lookup(string $word, string $src_lang, string $dest_lang, bool $exact_match=false) : \Iterator //-- ResultsIterator
-   {      
-      $this->setLanguages($dest_lang, $src_lang); 
-       
-      $this->json = [['Text' => $word]];       
-    
-      $contents = $this->request(self::$lookup['method'], self::$lookup['route'], ['headers' => $this->headers, 'query' => $this->query, 'json' => $this->json]);
-
-      $obj = json_decode($contents); 
-
-      return AzureTranslator::LookupGenerator($obj[0]->translations);       
-   }
-
-   static public function LookupGenerator(array $translation)
-   {
-        foreach($translations as $translation) { 
-
-           yield  $translation->normalizedTarget;
-        }
-   }
-
-   public static function get_lookup_result(\stdClass $x) : AzureDictResult 
-   {
-       /*
-        * normalizedTarget has the definition(s).
-        */
-      return new AzureDictResult($x->posTag, $x->normalizedTarget);
-   }
 
    /* 
     * Returns an array of example phrases for input of word plus d particular definition:

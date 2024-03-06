@@ -9,7 +9,7 @@ use \SplFileObject as File;
  */
 class Vocab {
    
-   private SystranTranslator $trans;
+   //--private SystranTranslator $trans;
 
    private AzureTranslator $azure;
 
@@ -23,9 +23,9 @@ class Vocab {
 
    function __construct(Config $c)
    {
-      $this->trans = new SystranTranslator($c);
+      //--$this->trans = new SystranTranslator($c);
 
-      $this->azure = new AzureTranslator($c);
+      $this->trans = new AzureTranslator($c);
      
       $this->db = new Database($c); 
   
@@ -80,22 +80,20 @@ class Vocab {
 
       $results = [];
    
-      foreach ($iter as $lookup_result)  {
+      foreach ($iter as $result)  {
            
-          $word = $lookup_result->word_defined();
-          
           $results[] = $word;
           
-          $this->insertdb_lookup_result($lookup_result, $log);          
+          var_dump($result);
+          
+          $this->insertdb_lookup_result($word, $result, $log);          
       }
    
       return $results;
    } 
  
-   private function insertdb_lookup_result(WordInterface $lookup_result, MessageLog $log) : void
-   {
-       $word = $lookup_result->word_defined();
-                   
+   private function insertdb_lookup_result(string $word, WordInterface $lookup_result, MessageLog $log) : void
+   {               
        if ($this->db->word_exists($word)) {
 
            $log->log("$word is already in database.");
