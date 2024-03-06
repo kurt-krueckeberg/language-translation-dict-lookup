@@ -146,30 +146,4 @@ class Vocab {
         }
      }
    }
-
-   function create_html(array $words, string $filename, MessageLog $log) : void
-   {
-      $this->html = new BuildHtml($filename, "de", "en");
-
-      foreach($words as $word) {
-
-        $resultIter = $this->db->fetch_db_word($word);  
-        
-        if ($resultIter === false) {
-            
-            $log->log("$word is not in database.");;
-            continue;            
-        }
-       
-        foreach($resultIter as $dbword) {
-            
-          $cnt = $this->html->add_definitions($dbword); 
- 
-          $sentIter = $this->db->fetch_samples($dbword->get_word_id()); 
-  
-          $this->html->add_samples($word, $sentIter); 
-        }
-     }
-   }
-
  }
