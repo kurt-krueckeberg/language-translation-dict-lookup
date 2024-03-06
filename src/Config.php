@@ -4,7 +4,7 @@ namespace Vocab;
 
 class Config {
 
-   private string $lookup_file_name = "/home/kurt/vocab-german/vocab.txt";
+   private string $lookup_file_name = "/home/kurt/language-translation-dict-lookup/vocab.txt";
 
    private int $sentence_count = 5;
    

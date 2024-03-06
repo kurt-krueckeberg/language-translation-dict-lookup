@@ -237,7 +237,7 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
    /*
     * Returns an array with 'source' as the source language example  and 'target' as its translation.
     */
-   function ExamplesGenerator(array $examples) : array
+   function ExamplesGenerator(array $examples) : \Iterator
    {   
        foreach($examples as $example) {
           
