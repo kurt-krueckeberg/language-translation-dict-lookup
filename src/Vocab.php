@@ -9,9 +9,9 @@ use \SplFileObject as File;
  */
 class Vocab {
    
-   //--private SystranTranslator $trans;
+   private SystranTranslator $dictiontary; // Used for definition lookup
 
-   private AzureTranslator $azure;
+   private AzureTranslator $azure;  // Used for translation of text
 
    private Database $db;
 
@@ -23,9 +23,9 @@ class Vocab {
 
    function __construct(Config $c)
    {
-      //--$this->trans = new SystranTranslator($c);
+      $this->dictionary = new SystranTranslator($c);
 
-      $this->trans = new AzureTranslator($c);
+      $this->translator = new AzureTranslator($c);
      
       $this->db = new Database($c); 
   
@@ -69,7 +69,7 @@ class Vocab {
     */
    function db_insert_word(string $word, MessageLog $log) : array
    {      
-      $iter = $this->trans->lookup($word, 'de', 'en');
+      $iter = $this->dictionary->lookup($word, 'de', 'en');
  
       if (!$iter->valid()) {
           
@@ -82,18 +82,20 @@ class Vocab {
    
       foreach ($iter as $result)  {
            
-          $results[] = $word;
+          $word_defined = $result->word_defined();
           
-          var_dump($result);
+          $results[] = $word_defined;
           
-          $this->insertdb_lookup_result($word, $result, $log);          
+          $this->insertdb_lookup_result($result, $log);          
       }
    
       return $results;
    } 
  
-   private function insertdb_lookup_result(string $word, WordInterface $lookup_result, MessageLog $log) : void
+   private function insertdb_lookup_result(WordInterface $lookup_result, MessageLog $log) : void
    {               
+       $word = $lookup_result->word_defined();
+       
        if ($this->db->word_exists($word)) {
 
            $log->log("$word is already in database.");
@@ -117,7 +119,7 @@ class Vocab {
            return false;
       }
 
-      return $this->db->save_samples($word, $this->trans, $sent_iter);  
+      return $this->db->save_samples($word, $this->translator, $sent_iter);  
    }
 
    function create_html(array $words, string $filename, MessageLog $log) : void

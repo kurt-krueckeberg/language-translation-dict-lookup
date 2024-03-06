@@ -56,7 +56,11 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
       return json_decode($contents, true);    
    }
    
-   final public function lookup(string $word, string $src_lang, string $dest_lang, bool $exact_match=false) : \Iterator //-- ResultsIterator
+   /*
+    * TODO: Bug. This method needs to return results identical to what SystranTranslator::lookup returns. SystranTranslator::lookup calls
+    * CreateDBWrodResultIterator, which returns a generator whose yield expression retuns one of: SystranVerb, SystranNoun, SystranRelatedVerb or SystranWord.
+    */
+   final public function lookup(string $word, string $src_lang, string $dest_lang, bool $exact_match=false) : \Iterator
    {      
       $this->setLanguages($dest_lang, $src_lang); 
        
@@ -65,8 +69,7 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
       $contents = $this->request(self::$lookup['method'], self::$lookup['route'], ['headers' => $this->headers, 'query' => $this->query, 'json' => $this->json]);
 
       $obj = json_decode($contents); 
-
-      //--return AzureTranslator::LookupGenerator($obj[0]->translations);       
+     
       $generator = function (array $translations) {
         
           foreach($translations as $translation) {
@@ -79,7 +82,6 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
               
       return $generator($obj[0]->translations);       
    }
-
    
    static public function LookupGenerator(array $translations) : \Iterator
    {
@@ -148,7 +150,6 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
         */
        $result = \trim($obj[0]->translations[0]->text, '"'); 
        
-       echo "Translation: $result\n";
        return $result;
    }
 

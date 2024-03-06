@@ -20,7 +20,7 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
       }
    }
    
-   public function fetch(string $word, int $count=3) : \Iterator //\Traversable | false
+   public function fetch(string $word, int $count=3) : \Iterator | false
    {
       $route = urlencode($word);
 

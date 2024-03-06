@@ -28,10 +28,10 @@ class MessageLog {
       return (string) $this->queue;
    }
 
-   function report() : string
+   function report() : void
    {
       $str = (string) $this->queue;
-      return $str;
+      echo $str;
    }
 
    function reset()
