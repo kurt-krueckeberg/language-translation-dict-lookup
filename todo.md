@@ -1,6 +1,8 @@
 # ToDo
 
-Sign up for Azure text translation pay-as-go.
+* Sign up for Azure text translation pay-as-go.
+* The AzureTranslator::lookup() result should result results similiar to SystranTranslator::lookup(), which
+returns SystranNoun/Verb/RelatedVerb/or Word.
 
 ## Alternate Database Schema
 
