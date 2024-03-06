@@ -123,7 +123,9 @@ class Database extends DbBase implements InserterInterface {
 
    function save_samples(string $word, TranslateInterface $translator, \Traversable $sentences_iter) : bool
    {
-      $samplesTbl = new SamplesTable($this->pdo);
+      $samplesTbl = $this->get_table('SamplesTable'); 
+      
+      //--$samplesTbl = new SamplesTable($this->pdo);
 
       $prim_key = $this->word_prim_keys[$word];
 

@@ -4,11 +4,11 @@ namespace Vocab;
 
 class Queue {
 
-    private $queue;
+    private array $queue;
 
     public function __construct() 
     {
-        $this->queue = [];
+       $this->queue = [];
     }
 
     public function enqueue(string $item) : void
@@ -45,8 +45,13 @@ class Queue {
               });
     }
     
-    public function isEmpty()
+    public function isEmpty() : bool
     {
         return empty($this->queue);
+    }
+    
+    public function empty() : void
+    {
+        unset($this->queue);
     }
 }

@@ -12,7 +12,7 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
       parent::__construct($c, ProviderID::Leipzig_de);    
    }
 
-   static public function SentencesGenerator(array $sentences)
+   static public function SentencesGenerator(array $sentences) : \Iterator
    {
       foreach($sentences as $object) {
 
@@ -20,7 +20,7 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
       }
    }
    
-   public function fetch(string $word, int $count=3) : \Traversable | false
+   public function fetch(string $word, int $count=3) : \Iterator //\Traversable | false
    {
       $route = urlencode($word);
 
