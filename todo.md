@@ -1,3 +1,7 @@
+# ToDo
+
+Add back inserting into `$results[]` the database insertions.
+
 ## Code Rationalization
 
 Add loggin of results and errors. Perhaps the interactive messages can be placed in a message queue by the
