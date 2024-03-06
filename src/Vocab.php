@@ -73,7 +73,7 @@ class Vocab {
  
       if (!$iter->valid()) {
           
-           $this->log("$word has no definitions");
+           $log->log("$word has no definitions");
                 
            return array();
       }

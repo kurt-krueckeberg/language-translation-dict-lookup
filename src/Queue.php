@@ -13,7 +13,9 @@ class Queue {
 
     public function enqueue(string $item) : void
     {
-        array_push($this->queue, $item);
+        //--array_push($this->queue, $item);
+        
+        $this->queue[] = $item;
     }
 
     public function dequeue() : string
