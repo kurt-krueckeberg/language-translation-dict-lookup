@@ -26,7 +26,7 @@ class CreateSystranLookupResultsIterator {
     
           } else {
              
-             yield new SystranRelatedVerbResult($current);
+             yield new SystranRelatedVerb($current);
           }
        }
     }   

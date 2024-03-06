@@ -10,15 +10,17 @@ class MessageLog {
 
    private Queue $queue;
 
-   function __construct()
+   function __construct(File $file)
    {
-      $this->file = new File("log.txt", "w");
+      $this->file = $file;
       $this->queue = new Queue();  
    }  
 
-   function add(string $msg)
+   function log(string $msg)
    {
       $this->queue->enqueue($msg);
+      
+      $this->file->fwrite($msg);
    }
 
    function __toString() : string

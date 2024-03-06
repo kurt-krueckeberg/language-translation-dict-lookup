@@ -19,6 +19,8 @@ class Vocab {
 
    private Config $c;
 
+   private File $logFile;
+
    function __construct(Config $c)
    {
       $this->sys = new SystranTranslator($c);
@@ -30,80 +32,97 @@ class Vocab {
       $this->sentFetcher = new LeipzigSentenceFetcher($c);
 
       $this->c = $c; 
+      
+      $this->logFile = new File("log.txt", "w");
    }
   
+   function db_insert(array $words) : array
+   {
+      $results = [];
+
+      $log = new MessageLog($this->logFile);
+      
+      try {
+      
+        foreach($words as $word) {
+               
+           $r = $this->db_insert_word($word, $log);
+
+           $results = \array_merge($results, $r);
+       
+           $log->report(); // Display all messages
+            
+           $log->reset();       
+        }
+        
+      } catch (\Exception $e) {
+      
+          echo  "Exception: {$e->getMessage()}.\nError Code = {$e->getCode()}.\nException code = {$e->getCode()} \n";
+          echo  "Exception trace: {$e->getTraceAsString()} \n";
+      }
+      
+      return $results;             
+   }
+   
    /*
     * Returns list of words found in dictionary and inserted into database.
     */
-   function db_insert(array $words) : array 
-   {
-      $results = [];
-      
-      try {
-       
-        foreach ($words as $word) {
-           
-           $iter = $this->sys->lookup($word, 'de', 'en');
-    
-           if (!$iter->valid()) {
-               
-                echo "$word has no definitions\n";
-                     
-                continue;
-           }
-      
-           foreach ($iter as $lookup_result)  {
-               
-              $word = $lookup_result->word_defined();
-                          
-              if ($this->db->word_exists($word)) {
-
-                  echo "$word is already in database.\n";
-                  continue;
-              }
-                    
-              $this->db->save_lookup($lookup_result);
-
-              echo "$word saved to database.\n";
-              
-              echo "Getting samples for: $word.\n";
-    
-              $sentIter = $this->sentFetcher->fetch($word);  
-
-              if ($sentIter !== false) {
-                  
-                 $this->db->save_samples($word, $this->azure, $sentIter);
-                 echo "Samples for $word saved to database.\n";
-
-              } else {
-
-                 echo "No Samples found for $word.\n";
-              }
-           }
-        }                
-      } catch (\Exception $e) {
-      
-            echo "Exception: message = {$e->getMessage()}.\nError Code = {$e->getCode()}.\nException code = {$e->getCode()}.\n";
-            echo "Exception trace: " . $e->getTraceAsString();
+   function db_insert_word(string $word, MessageLog $log) : array
+   {      
+      $iter = $this->sys->lookup($word, 'de', 'en');
+ 
+      if (!$iter->valid()) {
+          
+           $this->log("$word has no definitions");
+                
+           return array();
       }
-      
+
+      $results = [];
+   
+      foreach ($iter as $lookup_result)  {
+          
+         $r = $this->insertdb_lookup_result($lookup_result, $log); 
+ 
+         $results = \array_merge($results, $r);
+        
+         $this->insertdb_samples($word, $log);       
+      }
+   
       return $results;
    } 
  
-   private function insert_samples(string $word) : bool
+   private function insertdb_lookup_result(WordInterface $lookup_result, MessageLog $log)
+   {
+       $word = $lookup_result->word_defined();
+                   
+       if ($this->db->word_exists($word)) {
+
+           $log->log("$word is already in database.");
+           return;
+       }
+             
+       $this->db->save_lookup($lookup_result);
+
+       $log->log("$word saved to database.");
+
+       $this->insert_samples($word, $this->log);
+   }
+
+   private function insertdb_samples(string $word, MessageLog $log) : bool
    { 
       $sent_iter = $this->sentFetcher->fetch($word, $this->c->sentence_count());
       
       if ($sent_iter == false) { 
           
-           echo "No sample sentences available for '$word'\n";
+           $log->log("No sample sentences available for '$word'.");
            return false;
       }
 
-      $this->db->save_samples($word, $sent_iter);  
+      return $this->db->save_samples($word, $sent_iter);  
    }
 
-   function create_html(array $words, string $filename) : void
+   function create_html(array $words, string $filename, MessageLog $log) : void
    {
       $this->html = new BuildHtml($filename, "de", "en");
 
@@ -113,7 +132,7 @@ class Vocab {
         
         if ($resultIter === false) {
             
-            echo "$word is not in database.\n";
+            $log->log("$word is not in database.");;
             continue;            
         }
        
