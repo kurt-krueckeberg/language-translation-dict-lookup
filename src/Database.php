@@ -95,8 +95,16 @@ class Database extends DbBase implements InserterInterface {
 
    public function save_lookup(WordInterface $wdResultFace)   
    {
+      // begin transaction
+      $this->pdo->beginTransaction();
+
+      // Pass the insert to the word, noun or verb object. It will then
+      // pass itself (this) to the appropriate inserter's insert-into-database method.
       $wdResultFace->accept($this->inserter); 
-     
+
+      // commit transaction.
+      $this->pdo->commit();
+
       return true;
    } 
 
