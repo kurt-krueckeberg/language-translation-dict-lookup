@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class AzureTranslator extends RestApi implements DictionaryInterface, TranslateInterface {
+class AzureTranslator extends RestApi implements TranslateInterface {
 
    static private array  $lookup = array('method' => "POST", 'route' => "dictionary/lookup");
    static private array  $examples = array('method' => "POST", 'route' => "dictionary/examples");
@@ -45,7 +45,8 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
       $arr = json_decode($contents, true);
     
       return $arr["translation"]; 
-    } 
+   } 
+
 
    final public function getDictionaryLanguages() : array 
    {
@@ -57,9 +58,12 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
    }
    
    /*
-    * TODO: Bug. This method needs to return results identical to what SystranTranslator::lookup returns. SystranTranslator::lookup calls
-    * CreateDBWrodResultIterator, which returns a generator whose yield expression retuns one of: SystranVerb, SystranNoun, SystranRelatedVerb or SystranWord.
-    */
+This is the implmentation fo DictionaryInterface::lookup(). It needs to return a result(s) like that of SystranTranslator::lookup();
+that is, it needs to return an \Iterator than when derefderenced returns the Azure equivalent of SystranWord/Noun/Verb/RelatedVerb. 
+
+The easiest way to return an \Iterator is to write a Generator that implements \Iterator) whose yeild expression returns an object
+that implmentseither WordInterface/NounInterface/VerbInterface just like SystranWord/Noun/Verb/RelatedVerb do.
+ 
    final public function lookup(string $word, string $src_lang, string $dest_lang, bool $exact_match=false) : \Iterator
    {      
       $this->setLanguages($dest_lang, $src_lang); 
@@ -86,18 +90,17 @@ class AzureTranslator extends RestApi implements DictionaryInterface, TranslateI
    static public function LookupGenerator(array $translations) : \Iterator
    {
         foreach($translations as $translation) { 
-
-           yield  $translation->normalizedTarget;
+           $translation->posTag,????
+           yield  $translation->normalizedTarget; //TODO: Needs to return an implementation object for the Word-, Noun- or VerbInterface, as appropriate.
         }
    }
 
    public static function get_lookup_result(\stdClass $x) : AzureDictResult 
    {
-       /*
-        * normalizedTarget has the definition(s).
-        */
+       
       return new AzureDictResult($x->posTag, $x->normalizedTarget);
    }
+*/
 
    /*
      Azure Translation response contents:
