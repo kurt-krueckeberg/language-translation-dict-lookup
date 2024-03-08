@@ -2,8 +2,9 @@
 
 * Log both: messages and words actually added to database.:wq
 * Sign up for Azure text translation pay-as-go.
-* The AzureTranslator::lookup() result should result results similiar to SystranTranslator::lookup(), which
-returns SystranNoun/Verb/RelatedVerb/or Word.
+* The AzureTranslator::lookup() return value should a result(s) like what SystranTranslator::lookup() returns, namely
+a SystranNoun/Verb/RelatedVerb/or Word. There might be a way to make a generic Word/Noun/Verb object that is
+comfigure to implement the respective WordInterface/NounInterface/VerbInterface functions.
 
 ## Alternate Database Schema
 
