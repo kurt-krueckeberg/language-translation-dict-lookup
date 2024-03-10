@@ -5,7 +5,7 @@ namespace Vocab;
 use \SplFileObject as File;
 
 /*
- * Facade - top-level interface object.
+ * This is a facade class, top-level interface coordinator object.
  */
 class Vocab {
    
