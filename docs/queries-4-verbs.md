@@ -26,10 +26,10 @@ left join
 
 ## Select those `verbs_conjs.conj_id`'s that are part of prefix verb families
 
-Select only those `conj_id` in  `verbs_conjs.conj_id`'s where `count(conj_id) > 1`:
+Select only `conj_id` in  `verbs_conjs.conj_id`'s where `count(conj_id) > 1`:
 
 ```sql
-select vc.conj_id
+select vc.conj_id, conjs.conjugation 
  from 
      words as w
  inner join verbs_conjs as vc

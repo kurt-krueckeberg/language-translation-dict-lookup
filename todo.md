@@ -1,10 +1,12 @@
 # ToDo
 
-* Log both: messages and words actually added to database.:wq
+* BUG: Some verb conjuations are empty--why?
+
 * Sign up for Azure text translation pay-as-go.
-* The AzureTranslator::lookup() return value should a result(s) like what SystranTranslator::lookup() returns, namely
-a SystranNoun/Verb/RelatedVerb/or Word. There might be a way to make a generic Word/Noun/Verb object that is
-comfigure to implement the respective WordInterface/NounInterface/VerbInterface functions.
+
+* The `AzureTranslator::lookup()` does not return the expected result. It should return a result(s) like `SystranTranslator::lookup()`, namely
+a `SystranNoun/Verb/RelatedVerb/Word`. There might be a way to make a generic Word/Noun/Verb object that is
+comfigured to implement the respective `WordInterface/NounInterface/VerbInterface`.
 
 ## Alternate Database Schema
 

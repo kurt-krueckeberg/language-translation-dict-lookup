@@ -1,0 +1,5 @@
+These github repos of mine have German vocabulary:
+
+* link:https://github.com/kurt-krueckeberg/501-verbs[501-verbs] has the PDF of the verbs in **501 German Verbs**. I think I also have a PDF.
+* link:https://github.com/kurt-krueckeberg/Germ201[Germ201] has all my completed assignments from BYU's German 201, and it has each chapter's cirriculum (including probably its vocabulary).
+

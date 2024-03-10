@@ -68,7 +68,7 @@ To select the entire verb prefix family for a verb whose `word.id=:word_id`, we 
 
 #### Select those `verbs_conjs.conj_id` s that are verb families
 
-We select `verbs_conjs.conj_id` s where the number of `conj_id` appears more than once:
+This query selects `verbs_conjs.conj_id` s where `count(verbs_conjs.conj_id) > 1`, that is, where `verbs_conjs.conj_id` appears more than once:
 
 ```sql
 select vc.conj_id,
