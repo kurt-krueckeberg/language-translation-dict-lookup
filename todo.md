@@ -1,6 +1,6 @@
 # ToDo
 
-* Remove 'sich' from verb before searching for samples.
+* Try AzureTranslate instead of AzureTranslator -- when encounter exceptions.
 
 * Sign up for Azure text translation pay-as-go.
 
