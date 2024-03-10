@@ -22,7 +22,7 @@ class FetchConjugation  {
 
    protected function bind(\PDOStatement $stmt) : void
    {
-      $stmt->bindParam(':word', wlef::$word, \PDO::PARAM_STR);     
+      $stmt->bindParam(':word', self::$word, \PDO::PARAM_STR);     
    }
 
    /*
@@ -30,7 +30,7 @@ class FetchConjugation  {
     */
    function __invoke(string $word) : array | false  
    {
-      $stmt = $this->get_stmt($pdo, 'sql_select');
+      $stmt = $this->get_stmt($this->pdo, 'sql_select');
 
       self::$word = $word;
       
