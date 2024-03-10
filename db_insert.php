@@ -29,17 +29,7 @@ function insert_word(string $word)
 
            echo "$word saved to database.\n";
        }
-
-       $sent_iter = $sentFetcher->fetch($word, $c->sentence_count());
-       
-       if ($sent_iter == false) { 
-           
-            echo "No sample sentences available for '$word'\n";
-            continue;
-       }
-
-       $db->save_samples($word, $sent_iter);  
-   }       
+    }       
 }
 
 try {

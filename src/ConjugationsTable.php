@@ -23,6 +23,8 @@ class ConjugationsTable {
    public function insert(WordInterface $wrface) : int 
    {
       $this->conjugation = $wrface->conjugation();
+      
+      echo "DEBUG Conjugation: " . $this->conjugation . "\n";
 
       $this->insert_stmt->execute(); 
 
