@@ -61,7 +61,7 @@ class Database extends DbBase implements InserterInterface {
 
       $conjugatedVerbsTbl = $this->get_table('VerbsConjugationsTable');
        
-      $conj_id = $this->conjugations_prim_keys[$wrface->get_main_verb()]; 
+      $conj_id = $this->conjugations_prim_keys[$wrface->main_verb()]; 
   
       $conjugatedVerbsTbl->insert($conj_id, $word_id);
       

@@ -4,5 +4,6 @@ namespace Vocab;
 
 interface RelatedVerbInterface extends WordInterface {
 
-  public function get_main_verb() : string;
+  public function main_verb() : string;
+  public function main_word_id() : int
 }
