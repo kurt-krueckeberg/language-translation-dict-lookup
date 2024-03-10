@@ -4,7 +4,7 @@ namespace Vocab;
 
 class binary_search { // Enables binary search from Linux command line.
 
-   public static function find(array | \ArrayAccess $arr, mixed $key, callable $comparator)
+   public static function find(array | \ArrayAccess $arr, mixed $key, callable $comparator) : int | false
    {
      $lo = 0;  
      $hi = count($arr) - 1; 
@@ -27,10 +27,11 @@ class binary_search { // Enables binary search from Linux command line.
               return $mid; 
           
       }
-      return -1;
+
+      return false;
    }
 
-   public function __invoke(array | \ArrayAccess $arr, mixed $key, callable $cmp)
+   public function __invoke(array | \ArrayAccess $arr, mixed $key, callable $cmp) : int | false
    {
       return binary_search::find($arr, $key, $cmp);
    }
