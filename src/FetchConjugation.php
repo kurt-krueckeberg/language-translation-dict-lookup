@@ -4,20 +4,20 @@ namespace Vocab;
 
 class FetchConjugation  {  
    
-   private static $sql_select =  "select vc.conj_id, vc.conjutation from words as w inner join verbs_conjs as vc on w.id=vc.word_id inner join conjs on conjs.id=vc.conj_id where w.word=:word";
+   //--private static $sql_select =  "select vc.conj_id, vc.conjutation from words as w inner join verbs_conjs as vc on w.id=vc.word_id inner join conjs on conjs.id=vc.conj_id where w.word=:word";
+   private static $sql_select =  "select vc.conj_id from words as w inner join verbs_conjs as vc on w.id=vc.word_id where w.word=:word";
                                            
    private static string $word = '';
 
    private $stmt; 
    
-   //--private \PDO $pdo;
+   private \PDO $pdo;
    
    use get_stmt_trait;
 
    public function __construct(\PDO $pdo)
    {
       $this->pdo = $pdo;
-
    }
 
    protected function bind(\PDOStatment $stmt)
