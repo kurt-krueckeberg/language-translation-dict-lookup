@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class SystranWord implements WordInterface, VisitorInterface {
+readonly class SystranWord implements WordInterface, VisitorInterface {
 
    public array $match;
 

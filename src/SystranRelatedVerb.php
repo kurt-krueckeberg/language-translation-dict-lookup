@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class SystranRelatedVerb extends SystranWord implements RelatedVerbInterface  {
+readonly class SystranRelatedVerb extends SystranWord implements RelatedVerbInterface  {
 
    private string $main_verb;
 
