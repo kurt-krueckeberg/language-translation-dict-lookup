@@ -43,7 +43,7 @@ order by word_id ASC";
     
     private \Iterator $iter;
  
-    private DBWordBase $word_result; 
+   //-- private DBWordBase $word_result; 
     
     use get_stmt_trait;
  

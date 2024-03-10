@@ -12,8 +12,6 @@ class Database extends DbBase implements InserterInterface {
 
    private $word_prim_keys = []; // maps words to primary keys
    
-   //--private $conjugations_prim_keys = []; // maps words to primary keys
-   
    public function __construct(Config $config)
    {
      $cred = $config->get_db_credentials();
@@ -46,8 +44,6 @@ class Database extends DbBase implements InserterInterface {
 
      $conj_id = $conjsTbl->insert($wrface, $word_id);
      
-     //--$this->conjugations_prim_keys[$wrface->word_defined()] = $conj_id;  
-
      $conjugatedVerbsTbl = $this->get_table('VerbsConjugationsTable');
 
      $conjugatedVerbsTbl->insert($conj_id, $word_id);
