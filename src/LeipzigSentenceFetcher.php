@@ -22,9 +22,10 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
    
    public function fetch(string $word, int $count=3) : \Iterator | false
    {
+
       $route = urlencode($word);
 
-      $contents = $this->request(self::$method, $route , ['query' => ['offset' => 0, 'limit' => $count]]);
+      $contents = $this->request(self::$method, $route, ['query' => ['offset' => 0, 'limit' => $count]]);
 
       if ($contents === false)
           return $contents;
