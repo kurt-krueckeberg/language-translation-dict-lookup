@@ -2,15 +2,15 @@
 declare(strict_types=1);
 namespace Vocab;
 
-readonly class SystranRelatedVerb extends SystranWord implements RelatedVerbInterface  {
+class SystranRelatedVerb extends SystranWord implements RelatedVerbInterface  {
 
    private string $main_verb;
 
-   private static $select_main_verb_id = "select w.id as id from words as w where w.words=:word";
+   private static string $select_main_verb_id = "select w.id as id from words as w where w.words=:word";
 
-   private static $word = '';
+   private static string $word = '';
 
-   private $word_id;
+   private int $word_id;
 
    use get_stmt_trait;
 
