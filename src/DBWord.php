@@ -68,7 +68,7 @@ where defns.word_id=:word_id;";
       
       $get_expressions->execute();
       
-      $this->expressions = $get_expressions->fetchAll(\PDO::FETCH_ASSOC);
+      return $get_expressions->fetchAll(\PDO::FETCH_ASSOC);
    }  
 
    function get_pos() : Pos
