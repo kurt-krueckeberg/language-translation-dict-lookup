@@ -1,7 +1,5 @@
 # ToDo
 
-Test changes to `Datbase::insert_related_verb()`
-
 * Sign up for Azure text translation pay-as-go.
 
 * The `AzureTranslator::lookup()` does not return the expected result. It should return a result(s) like `SystranTranslator::lookup()`, namely
