@@ -1,19 +1,6 @@
 # ToDo
 
-. BUG: `SystranRelatedVerb` constructor needs `\PDO` instance, but it isn't available because it ulimtately...
-
-TODO: 
-
-Add this query capabilitiy to `Database::insert_related_verb()`:
-
-I need to get the `conj_id` of the main verb from the `conjs`, and the query to obtain it is: 
-
-```sql      
-select vc.conj_id from words as w inner join verbs_conjs as vc on w.id=vc.word_id inner join conjs on conjs.id=vc.conj_id where w.word=:word;
-```
-
-Prospectively, create FetchConjId PDOStatement class similiar to FetchWord class.
-
+Test changes to `Datbase::insert_related_verb()`
 
 * Sign up for Azure text translation pay-as-go.
 
