@@ -4,13 +4,13 @@ namespace Vocab;
 
 class SystranRelatedVerb extends SystranWord implements RelatedVerbInterface  {
 
-   private string $main_verb;
-
    private static string $select_main_verb_id = "select w.id as id from words as w where w.words=:word";
 
    private static string $word = '';
 
    private int $word_id;
+
+   private string $main_verb;
 
    use get_stmt_trait;
 
