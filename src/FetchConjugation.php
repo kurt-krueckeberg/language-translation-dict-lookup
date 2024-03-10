@@ -27,7 +27,7 @@ class FetchConjugation  {
    }
 
    /*
-      Returns: array with 'conj_id' and 'onjugation'.
+      Returns: array with 'conj_id' and 'conjugation'.
     */
    function __invoke(string $word) : array | false  
    {
@@ -42,7 +42,7 @@ class FetchConjugation  {
           return array(false, false);
       }
       
-      $row = $this->select_word->fetch(\PDO::FETCH_ASSOC);
+      $row = $stmt->fetch(\PDO::FETCH_ASSOC);
 
       if ($row === false) return false;
       

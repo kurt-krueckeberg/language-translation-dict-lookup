@@ -61,12 +61,6 @@ class Database extends DbBase implements InserterInterface {
 
       $conjugatedVerbsTbl = $this->get_table('VerbsConjugationsTable');
 
-      /*
-       The code in FetchConjugation is used to get conj_id of the main verb, which is obtained from this SQL: 
-      
-         select vc.conj_id  from words as w inner join verbs_conjs as vc on w.id=vc.word_id inner join conjs on conjs.id=vc.conj_id where w.word='rechnen';
-      */
-      
       $fetch = $this->get_table('FetchConjugation');
 
       $row = $fetch($wrface->main_verb()); 
