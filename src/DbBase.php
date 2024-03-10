@@ -21,7 +21,7 @@ class DbBase implements WordExistsInterface {
       $this->pdo = $pdo;
    }
 
-   function bind(\PDOStatement $pdostmt, string $str='') : void
+   function bind(\PDOStatement $pdostmt) : void
    {
       $pdostmt->bindParam(':new_word', self::$new_word, \PDO::PARAM_STR); 
    }
