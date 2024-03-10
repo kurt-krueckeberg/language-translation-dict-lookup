@@ -6,23 +6,8 @@ use Vocab\{Database, SystranTranslator, LeipzigSentenceFetcher, DbTablesMediator
 
 include 'vendor/autoload.php';
 
-try {
-    
-    $c = new Config();
-            
-    if (!file_exists($c->lookup_file())) {
-        
-        die($c->lookup_file() . " not found.\n");
-    }
-
-    $sys = new SystranTranslator($c);
-   
-    $db = new Database($c); 
-
-    $sentFetcher = new LeipzigSentenceFetcher($c);
-    
-    $word = "verursachen";
-
+function insert_word(string $word)
+{
     $iter = $sys->lookup($word, 'de', 'en');
 
     if (!$iter->valid()) {
@@ -54,7 +39,30 @@ try {
        }
 
        $db->save_samples($word, $sent_iter);  
-     }       
+   }       
+}
+
+try {
+    
+    $c = new Config();
+            
+    if (!file_exists($c->lookup_file())) {
+        
+        die($c->lookup_file() . " not found.\n");
+    }
+
+    $sys = new SystranTranslator($c);
+   
+    $db = new Database($c); 
+
+    $sentFetcher = new LeipzigSentenceFetcher($c);
+    
+    $words = $c->fetch_words();
+    
+    foreach($words as $verb) {
+
+       insert_word($verb);
+    }
 
 } catch (PDOException $e) {
 
