@@ -24,8 +24,6 @@ class ConjugationsTable {
    {
       $this->conjugation = $wrface->conjugation();
       
-      echo "DEBUG Conjugation: " . $this->conjugation . "\n";
-
       $this->insert_stmt->execute(); 
 
       return (int) $this->pdo->lastInsertId();
