@@ -42,9 +42,9 @@ class Database extends DbBase implements InserterInterface {
    {
      $word_id = $this->insert_word($wrface);
      
-     $conjTensesTbl = $this->get_table('ConjugationsTable');
+     $conjsTbl = $this->get_table('ConjugationsTable');
 
-     $conj_id = $conjTensesTbl->insert($wrface, $word_id);
+     $conj_id = $conjsTbl->insert($wrface, $word_id);
      
      $this->conjugations_prim_keys[$wrface->word_defined()] = $conj_id;  
 

@@ -1,6 +1,7 @@
 # ToDo
 
-* BUG: Some verb conjuations are empty--why?
+. BUG: Some verb conjuations are empty--why?
+. BUG: MessageLog::__toString() seems not to insert "\n" between strings?
 
 * Sign up for Azure text translation pay-as-go.
 

@@ -1,5 +1,3 @@
-
-#!/usr/bin/env php
 <?php
 declare(strict_types=1);
 use \SplFileObject as File;
@@ -27,11 +25,11 @@ try {
 
     $iter = $sys->lookup($word, 'de', 'en');
 
-    if (count($iter) == 0) {
+    if (!$iter->valid()) {
         
          echo "$word has no definitions\n";
               
-         continue;
+         return;
     }
     
     echo "$word results:\n";
