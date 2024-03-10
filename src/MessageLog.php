@@ -2,15 +2,13 @@
 declare(strict_types=1);
 namespace Vocab;
 
-use \SplFileObject as File;
-
 class MessageLog { 
  
-   private File $file;
+   private \SplFileObject $file;
 
    private Queue $queue;
 
-   function __construct(File $file)
+   function __construct(\SplFileObject $file)
    {
       $this->file = $file;
       $this->queue = new Queue();  
