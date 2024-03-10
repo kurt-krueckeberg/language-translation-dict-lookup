@@ -1,6 +1,6 @@
 # ToDo
 
-. BUG: Some verb conjuations are empty--why?
+. BUG: `SystranRelatedVerb` constructor needs `\PDO` instance, but it isn't available because it ulimtately...
 
 * Sign up for Azure text translation pay-as-go.
 
