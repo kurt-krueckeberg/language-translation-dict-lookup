@@ -33,7 +33,7 @@ class Vocab {
 
       $this->c = $c; 
       
-      $this->logFile = new File("log.txt", "w");
+      $this->logFile = new File("results.log", "w");
    }
   
    function db_insert(array $words) : array
@@ -60,7 +60,8 @@ class Vocab {
           echo  "Exception: {$e->getMessage()}.\nError Code = {$e->getCode()}.\nException code = {$e->getCode()} \n";
           echo  "Exception trace: {$e->getTraceAsString()} \n";
       }
-      
+
+      echo "Results of words inserted is in: results.log.\n";      
       return $results;             
    }
    

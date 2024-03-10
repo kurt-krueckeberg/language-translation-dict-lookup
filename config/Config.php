@@ -65,6 +65,18 @@ class Config {
    {
       return $this->lookup_file_name;
    }
+
+   function fetch_words() : array
+   {
+     $words = [];
+
+     $file = new FileReader($this->lookup_file(), "r");
+    
+      foreach ($file as $word) 
+         $words[] = $word;
+     
+      return $words;
+   }
  
    function sentence_count() : int
    {
