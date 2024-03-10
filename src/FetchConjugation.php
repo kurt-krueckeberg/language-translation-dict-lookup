@@ -20,7 +20,7 @@ class FetchConjugation  {
       $this->pdo = $pdo;
    }
 
-   protected function bind(\PDOStatment $stmt) : void
+   protected function bind(\PDOStatement $stmt) : void
    {
       $stmt->bindParm(':word', wlef::$word, \PDO::PARAM_STR);     
    }

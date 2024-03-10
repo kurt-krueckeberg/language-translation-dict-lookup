@@ -14,7 +14,7 @@ trait get_stmt_trait {
           
          $stmt = $pdo->prepare( $sql ); 
 
-         $this->bind($stmt, $str);
+         $this->bind($stmt);//, $str);
 
          self::$stmts[$str] = $stmt;
       }
