@@ -27,7 +27,7 @@ class FetchConjugation  {
    }
 
    /*
-      Returns: array with 'conj_id' and 'conjugation'.
+      Returns: ['conj_id' => , 'conjugation' => ].
     */
    function __invoke(string $word) : array | false  
    {

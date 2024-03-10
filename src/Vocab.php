@@ -112,11 +112,13 @@ class Vocab {
 
    private function insertdb_samples(string $word, MessageLog $log) : bool
    { 
-      /*
-       * TODO: For reflexsive verbs remove the 'sich'.
-       */
-      
-      $sent_iter = $this->sentFetcher->fetch($word, $this->c->sentence_count());
+      // Skip the 1st space, if present, returning the remainder, ie, the 2nd word. 
+      $get_word = function(string $word) : string {
+
+         return (($pos = \strpos($word, " ")) !== false) ? substr($word, $pos + 1) : $word;
+      };
+       
+      $sent_iter = $this->sentFetcher->fetch($get_word($word), $this->c->sentence_count());
       
       if ($sent_iter == false) { 
           
