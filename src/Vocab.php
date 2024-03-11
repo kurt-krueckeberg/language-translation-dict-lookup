@@ -25,8 +25,7 @@ class Vocab {
    {
       $this->dictionary = new SystranTranslator($c);
 
-     //-- $this->translator = new AzureTranslator($c);
-      $this->translator = new AzureTranslate($c);
+      $this->translator = new AzureTranslator($c);
      
       $this->db = new Database($c); 
   
