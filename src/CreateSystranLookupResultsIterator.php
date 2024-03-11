@@ -70,6 +70,9 @@ class CreateSystranLookupResultsIterator {
                          
                return $collator->compare($left['source']['lemma'], $key);
            });
+
+           if ($main_verb_index === false)
+               $debug = 10;
     
            /*
              Next, determine whether we have a prefix-verbs family result or individual results.
