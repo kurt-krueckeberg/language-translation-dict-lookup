@@ -45,6 +45,3 @@ create table if not exists shared_conjs (
   foreign key(shared_id) references words(id) on delete cascade
 );
 ```
-
-
- select the verb and its conjudation
