@@ -4,7 +4,7 @@ namespace Vocab;
 
 class CreateDBWordResultIterator implements \IteratorAggregate { 
 
-    protected static $sql_noun = "select w.word as word, w.pos as pos, n.gender as gender, n.plural as plural from
+    protected static $sql_noun = "select w.word as word, w.id as word_id, w.pos as pos, n.gender as gender, n.plural as plural from
      words as w
 join
     nouns_data as n on w.id=n.word_id
@@ -43,54 +43,27 @@ order by word_id ASC";
     
     private \Iterator $iter;
  
-    use get_stmt_trait;
-
-/*  Prior constructor
-
-    public function __construct(\PDO $pdo, array $row)
-    {
-       if (Pos::fromString($row['pos']) !== Pos::Verb && Pos::fromString($row['pos']) !== Pos::Noun) {
-
-            $this->iter = CreateDBWordResultIterator::SingleWordResultGenerator(new DBWord($pdo, $row));
+    private DBWordBase $word_result; 
     
-       } else if (Pos::fromString($row['pos']) == Pos::Noun) {     
-
-           $rows = $this->fetchRows($pdo, 'sql_noun', $row['word_id']);
-            
-           $this->iter = CreateDBWordResultIterator::SingleResultGenerator(new DBNoun($pdo, $rows));
-
-       } else {// verb
-
-          $rows = $this->fetchRows($pdo, 'sql_verb_family', $row['word_id']);
-
-          $this->iter = CreateDBWordResultIterator::VerbGenerator($pdo, $rows);
-       }
-    }
-  */  
-
+    use get_stmt_trait;
+ 
     public function __construct(\PDO $pdo, array $row)
     {
-       switch (Pos::fromString($row['pos']) {
+       $this->iter = match(Pos::from($row['pos'])) {
 
-         case Pos::Noun:  
-                   $rows = $this->fetchRows($pdo, 'sql_noun', $row['word_id'];
-                     
-                   $this->iter = CreateDBWordResultIterator::SingleResultGenerator(new DBNoun($pdo, $rows));
-                   break;
- 
-         case Pos::Verb:
-                   $rows = $this->fetchRows($pdo, 'sql_verb_family', $row['word_id']);
-  
-                   $this->iter = CreateDBWordResultIterator::VerbGenerator($pdo, $rows);
-                   break;
-         default: 
- 
-                   $this->iter = CreateDBWordResultIterator::SingleResultGenerator(new DBWord($pdo, $row));
-                   break;
-        }
+           Pos::noun => $this->get_noun_iterator($pdo, $row),
+           Pos::verb => CreateDBWordResultIterator::VerbGenerator($pdo, $this->fetchRows($pdo, 'sql_verb_family', $row['word_id'])),
+           default => CreateDBWordResultIterator::SingleWordResultGenerator(new DBWord($pdo, $row))
+       };
     }
-
-
+    
+    function get_noun_iterator(\PDO $pdo, array $row) : \Iterator
+    {
+        $rows = $this->fetchRows($pdo, 'sql_noun', $row['word_id']);
+        
+        return CreateDBWordResultIterator::SingleWordResultGenerator(new DBNoun($pdo, $rows[0]));
+    }
+   
     function bind(\PDOStatement $stmt) : void
     {
         $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
@@ -111,9 +84,9 @@ order by word_id ASC";
     }
 
     /*
-     * The main verb -- if this is a verb family, and  even if it is not -- will be in the first row
-     * because the sql result was returned 'order by words.id ASC', and since the main verb always has the smallest
-     * primary key it will be in the first tuple in the results relvar.
+     * The main verb -- if this is a verb family (and if it is not) -- will be in the first row
+     * because the sql result was returned 'order by words.id ASC' and the main verb always has the smallest
+     * primary key.
      */
     public static function VerbGenerator(\PDO $pdo, array $rows) : \Iterator 
     {
@@ -128,7 +101,7 @@ order by word_id ASC";
         return $this->iter;
     }
 
-    public static function SingleResultGenerator(DBWord $dbword) : \Iterator
+    public static function SingleWordResultGenerator(DBWord $dbword) : \Iterator
     {
         yield $dbword;
     }   

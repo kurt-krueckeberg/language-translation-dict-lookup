@@ -55,9 +55,7 @@ class CreateSystranLookupResultsIterator {
     {
        $this->is_verb_family = false; // We start by assuming it is false.
         
-       $is_noun = \ctype_upper($word_lookedup[0]); // Is upper case -> not a verb
-       
-       if (!$is_noun && count($matches) > 1) {
+       if (count($matches) > 1) {
            
            // Remainder of code is to determine if we have a family of prefix vebs (and one main verb),
            // To determine main_verb_index, first sort the array using German collation sequence
@@ -72,7 +70,7 @@ class CreateSystranLookupResultsIterator {
                          
                return $collator->compare($left['source']['lemma'], $key);
            });
-           
+    
            /*
              Next, determine whether we have a prefix-verbs family result or individual results.
             */

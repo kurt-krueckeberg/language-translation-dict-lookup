@@ -2,19 +2,19 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class DBVerb extends DBWord implements VerbInterface {
+class DBVerb extends DBWordBase implements VerbInterface {
     
    private array $row; 
 
    function __construct(\PDO $pdo, array $row)
    {
-      parent::__construct($pdo, $row);
+      parent::__construct($pdo, $row['word_id']);
       $this->row = $row;
    }
    
    public function get_pos() : Pos
    {
-      return Pos::fromString($this->row['pos']);
+      return Pos::from($this->row['pos']);
    }
 
    function conjugation() : string

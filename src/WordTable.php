@@ -28,7 +28,7 @@ class WordTable implements TableInsertInterface {
    {
       $this->word = $wrface->word_defined();
       
-      $this->pos  = $wrface->get_pos()->getString();
+      $this->pos  = $wrface->get_pos()->value;
       
       $rc = $this->insert_stmt->execute();
 

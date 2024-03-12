@@ -1,73 +1,77 @@
 <?php
 declare(strict_types=1);
+
 namespace Vocab;
 
-class AzureTranslate implements TranslateInterface {
 
-    private string $base_uri;
+class AzureTranslate {
 
-    private string $headers;
+   static string $route = "/translate?api-version=3.0";
 
-    private function com_create_guid() 
-    {
-      return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-          mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
-          mt_rand( 0, 0xffff ),
-          mt_rand( 0, 0x0fff ) | 0x4000,
-          mt_rand( 0, 0x3fff ) | 0x8000,
-          mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
-      );
-    }
+   private string $endpoint;
+   
+   private string $subscription_key;
+   
+   private string $subscription_region;
 
-    function __construct(Config $c)
-    {
-       $config = $c->get_config(ProviderID::Azure);
+  private function create_guid() : string
+  {
+    return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0x0fff ) | 0x4000,
+        mt_rand( 0, 0x3fff ) | 0x8000,
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+    );
+  }
 
-       $this->base_uri = $config['base_uri']; 
 
-       $this->key_and_region = '';
+   public function __construct(Config $c)
+   {
+      $provider_name = 'azure';
 
-       $this->headers = "Content-type: application/json\r\n";
- 
-       foreach($config['headers'] as $key => $value) {
+      $config = $c->config['providers'][$provider_name];
 
-           $this->headers .= "$key: $value\r\n";
-       }
-    }
+      $this->endpoint = $config['endpoint'];
 
-    //--function translate (string $key, string $text, string $dest_lang, string $src_lang='de') : string
-    function translate (string $text, string $dest_lang, string $src_lang='de') : string
-    {
-       static $route = '/translate?api-version=3.0';
+      $this->subscription_key = $config['header']['Ocp-Apim-Subscription-Key'];       
+      $this->subscription_region = $config['header']['Ocp-Apim-Subscription-Region'];       
+   }
+   
+   function translate (string $text, string $dest_lang='en')
+   {
+       $requestBody = array (
+          array (
+            'Text' => $text,
+          ),
+       );
 
-       $requestBody = [
-           [ 'Text' => $text ]
-       ];
-     
        $content = json_encode($requestBody);
 
-       // Append to headers the content length and the trace id.
-       $this->headers .= "Content-length: " . strlen($content) . "\r\n" .
-           "X-ClientTraceId: " . $this->com_create_guid() . "\r\n";
+       $headers = "Content-type: application/json\r\n" .
+           "Content-length: " . strlen($text) . "\r\n" .
+           "Ocp-Apim-Subscription-Key: $this->subscription_key\r\n" .
+           "Ocp-Apim-Subscription-Region: $this->subscription_region\r\n" .
+           "X-ClientTraceId: " . $this->create_guid() . "\r\n";
 
+       // NOTE: Use the key 'http' even if you are making an HTTPS request. See:
+       // http://php.net/manual/en/function.stream-context-create.php
        $options = array (
            'http' => array (
-               'header' => $this->headers,
+               'header' => $headers,
                'method' => 'POST',
                'content' => $content
            )
        );
-   
+ 
+       $params = "&to=" . $dest_lang;
+
        $context  = stream_context_create ($options);
-
-       $params = "&from" . $src_lang . "&to=" . $dest_lang;
-   
-       $result = file_get_contents ($this->base_uri . $route . $params, false, $context);
-
-       $obj = json_decode($result);
-
-       $text = trim($obj[0]->translations[0]->text, '"'); 
-
-       return $text;
-    }
+ 
+       $file = $this->endpoint . self::$route . $params;
+       
+       $result = file_get_contents ($file, false, $context);
+ 
+       return $result;
+  }
 }

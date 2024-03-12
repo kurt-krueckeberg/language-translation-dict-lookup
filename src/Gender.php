@@ -7,15 +7,5 @@ enum Gender : string {
    case Fem = 'f'; 
    case Neu = 'n';
    case Unknown = 'u';
-   
-   public static function fromString(string $str) : static
-   {
-       return match($str) {
-          'm' =>   static::Mas,
-          'f' =>   static::Fem,
-          'n'  =>  static::Neu,
-          default => static::Unknown
-       };
-   }
 }
 

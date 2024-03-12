@@ -5,7 +5,7 @@ namespace Vocab;
 use \SplFileObject as File;
 
 /*
- * This is a facade class, top-level interface coordinator object.
+ * Facade - top-level interface object.
  */
 class Vocab {
    
@@ -21,6 +21,8 @@ class Vocab {
 
    private File $logFile;
 
+   private MessageLog $log;
+
    function __construct(Config $c)
    {
       $this->dictionary = new SystranTranslator($c);
@@ -34,25 +36,25 @@ class Vocab {
       $this->c = $c; 
       
       $this->logFile = new File("results.log", "w");
+
+      $this->log = new MessageLog($this->logFile);
    }
   
    function db_insert(array $words) : array
    {
       $results = [];
-
-      $log = new MessageLog($this->logFile);
       
       try {
       
         foreach($words as $word) {
                
-           $r = $this->db_insert_word($word, $log);
+           $r = $this->db_insert_word($word, $this->log);
 
            $results = \array_merge($results, $r);
        
-           $log->report(); // Display all messages
+           $this->log->report(); // Display all messages
             
-           $log->reset();       
+           $this->log->reset();       
         }
         
       } catch (\Exception $e) {
@@ -112,13 +114,7 @@ class Vocab {
 
    private function insertdb_samples(string $word, MessageLog $log) : bool
    { 
-      // Skip the 1st space, if present, returning the remainder, ie, the 2nd word. 
-      $get_word = function(string $word) : string {
-
-         return (($pos = \strpos($word, " ")) !== false) ? substr($word, $pos + 1) : $word;
-      };
-       
-      $sent_iter = $this->sentFetcher->fetch($get_word($word), $this->c->sentence_count());
+      $sent_iter = $this->sentFetcher->fetch($word, $this->c->sentence_count());
       
       if ($sent_iter == false) { 
           

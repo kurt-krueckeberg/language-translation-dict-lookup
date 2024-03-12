@@ -19,7 +19,7 @@ class HtmlBuilder {
  
       $dl = $dl_start;
 
-      $dl .= sprintf($fmt, $wrface->word_defined(), strtoupper($wrface->get_pos()->getString()));
+      $dl .= sprintf($fmt, $wrface->word_defined(), strtoupper($wrface->get_pos()->value));
 
       $defns = $this->add_defn($wrface); 
           
