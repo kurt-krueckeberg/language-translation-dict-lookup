@@ -8,4 +8,3 @@ enum Gender : string {
    case Neu = 'n';
    case Unknown = 'u';   
 }
-

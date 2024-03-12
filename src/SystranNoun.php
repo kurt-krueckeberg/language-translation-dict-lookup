@@ -15,7 +15,9 @@ readonly class SystranNoun extends SystranWord implements NounInterface {
       // Strip "(pl:" at the beginning and the ")" at the end.
       $this->plural = substr($this->match['source']['inflection'], strpos($this->match['source']['inflection'], ':') + 1, -1); 
  
-      $this->gender = ($this->match['source']['info'] == '') ? Gender::Unknown : Gender::from($this->match['source']['info']);      
+      $gender = Gender::tryFrom(match['source']['info']);
+
+      $this->gender = (is_null($gender)) ? Gender::Unknown : $gender;
    }
  
    public function gender() : Gender
