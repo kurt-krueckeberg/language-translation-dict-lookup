@@ -43,10 +43,10 @@ order by word_id ASC";
     
     private \Iterator $iter;
  
-   //-- private DBWordBase $word_result; 
-    
     use get_stmt_trait;
- 
+
+/*  Prior constructor
+
     public function __construct(\PDO $pdo, array $row)
     {
        if (Pos::fromString($row['pos']) !== Pos::Verb && Pos::fromString($row['pos']) !== Pos::Noun) {
@@ -57,7 +57,7 @@ order by word_id ASC";
 
            $rows = $this->fetchRows($pdo, 'sql_noun', $row['word_id']);
             
-           $this->iter = CreateDBWordResultIterator::SingleWordResultGenerator(new DBNoun($pdo, $row));
+           $this->iter = CreateDBWordResultIterator::SingleResultGenerator(new DBNoun($pdo, $rows));
 
        } else {// verb
 
@@ -66,7 +66,31 @@ order by word_id ASC";
           $this->iter = CreateDBWordResultIterator::VerbGenerator($pdo, $rows);
        }
     }
-    
+  */  
+
+    public function __construct(\PDO $pdo, array $row)
+    {
+       switch (Pos::fromString($row['pos']) {
+
+         Pos::Noun:  
+                   $rows = $this->fetchRows($pdo, 'sql_noun', $row['word_id'];
+                     
+                   $this->iter = CreateDBWordResultIterator::SingleResultGenerator(new DBNoun($pdo, $rows));
+                   break;
+ 
+         Pos::Verb:
+                   $rows = $this->fetchRows($pdo, 'sql_verb_family', $row['word_id']);
+  
+                   $this->iter = CreateDBWordResultIterator::VerbGenerator($pdo, $rows);
+                   break;
+         default: 
+ 
+                   $this->iter = CreateDBWordResultIterator::SingleResultGenerator(new DBWord($pdo, $row));
+                   break;
+        }
+    }
+
+
     function bind(\PDOStatement $stmt) : void
     {
         $stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
@@ -87,9 +111,9 @@ order by word_id ASC";
     }
 
     /*
-     * The main verb -- if this is a verb family (and if it is not) -- will be in the first row
-     * because the sql result was returned 'order by words.id ASC' and the main verb always has the smallest
-     * primary key.
+     * The main verb -- if this is a verb family, and  even if it is not -- will be in the first row
+     * because the sql result was returned 'order by words.id ASC', and since the main verb always has the smallest
+     * primary key it will be in the first tuple in the results relvar.
      */
     public static function VerbGenerator(\PDO $pdo, array $rows) : \Iterator 
     {
@@ -104,7 +128,7 @@ order by word_id ASC";
         return $this->iter;
     }
 
-    public static function SingleWordResultGenerator(DBWord $dbword) : \Iterator
+    public static function SingleResultGenerator(DBWord $dbword) : \Iterator
     {
         yield $dbword;
     }   

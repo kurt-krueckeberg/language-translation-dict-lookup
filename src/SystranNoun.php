@@ -12,7 +12,7 @@ readonly class SystranNoun extends SystranWord implements NounInterface {
    {
       parent::__construct($match);     
  
-      // Strip of the beginning "(pl:" and the ending ")"
+      // Strip "(pl:" at the beginning and the ")" at the end.
       $this->plural = substr($this->match['source']['inflection'], strpos($this->match['source']['inflection'], ':') + 1, -1); 
  
       $this->gender = Gender::fromString($this->match['source']['info']);
@@ -33,4 +33,3 @@ readonly class SystranNoun extends SystranWord implements NounInterface {
        return $inserter->insert_noun($this);
    } 
  }
- 

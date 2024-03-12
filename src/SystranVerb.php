@@ -16,9 +16,9 @@ readonly class SystranVerb extends SystranWord implements VerbInterface {
    public function conjugation() : string
    {
        $temp = ($this->conjugator)();       
+
        /* 
-          Convert conjugations of the form '(arbeit/arbeite/gearbeitet)' to
-          'arbeit,arbeite,gearbeitet' 
+        * Converts '(arbeit/arbeite/gearbeitet)' to 'arbeit,arbeite,gearbeitet' 
         */   
         $temp = trim($temp, "()");
         return str_replace("/", ",", $temp); 
