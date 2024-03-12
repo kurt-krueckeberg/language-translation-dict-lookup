@@ -6,6 +6,6 @@ enum Gender : string {
    case Mas = 'm'; 
    case Fem = 'f'; 
    case Neu = 'n';
-   case Unknown = 'u';
+   case Unknown = 'u';   
 }
 
