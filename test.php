@@ -23,7 +23,7 @@ try {
 
   $fac->create_html($words_inserted, 'output');
 
-  file_put_contents("words_inserted.txt", implode("\n", $words_inserted));
+  file_put_contents("words-inserted.txt", implode("\n", $words_inserted));
 
 } catch (\Exception $e) {
 
