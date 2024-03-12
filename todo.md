@@ -17,7 +17,7 @@ deleted, all other tables likewise get deleted. It seems to make the sql
 
 As a result of the table alteration and the introduction of a new table, I will need to:
 
-1. Change b.sql and drop.sql
+1. Change db.sql and drop.sql
 2. Change the code so it inserts into these new tables instead of the old. 
 3. And I need to change the SQL query that selects conjugations from the old scheme to
 use the new scheme.
