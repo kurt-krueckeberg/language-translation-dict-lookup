@@ -72,13 +72,13 @@ order by word_id ASC";
     {
        switch (Pos::fromString($row['pos']) {
 
-         Pos::Noun:  
+         case Pos::Noun:  
                    $rows = $this->fetchRows($pdo, 'sql_noun', $row['word_id'];
                      
                    $this->iter = CreateDBWordResultIterator::SingleResultGenerator(new DBNoun($pdo, $rows));
                    break;
  
-         Pos::Verb:
+         case Pos::Verb:
                    $rows = $this->fetchRows($pdo, 'sql_verb_family', $row['word_id']);
   
                    $this->iter = CreateDBWordResultIterator::VerbGenerator($pdo, $rows);

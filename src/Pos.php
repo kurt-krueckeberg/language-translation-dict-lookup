@@ -8,6 +8,7 @@ interface PosInterface {
    function getString() : string;
 }
 
+/*
 enum Pos implements PosInterface { 
  
    case Noun;
@@ -29,7 +30,8 @@ enum Pos implements PosInterface {
             default =>  static::Other
           };
    }
-
+   
+// Q: Isn't this the same as using: $pos->name ??
    public function getString() : string
    {
        return match($this) {
@@ -40,5 +42,29 @@ enum Pos implements PosInterface {
            Pos::Conj => 'conj',
            Pos::Other => 'other'
        }; 
+   }
+}
+*/
+
+enum Pos  { 
+ 
+   case noun;
+   case verb;
+   case adj;
+   case adv;
+   case conj;
+   case other;
+
+   public static function fromString(string $pos) : static
+   {
+        return match($pos) {
+            'noun' =>   static::noun,
+            'verb' =>   static::verb,
+            'adj'  =>   static::adj,
+            'adv'  =>   static::adv,
+            'conj'  =>  static::conj,
+            'other' =>  static::other,
+            default =>  static::other
+          };
    }
 }
