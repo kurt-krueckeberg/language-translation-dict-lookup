@@ -53,7 +53,7 @@ order by word_id ASC";
 
            Pos::noun => $this->get_noun_iterator($pdo, $row),
            Pos::verb => CreateDBWordResultIterator::VerbGenerator($pdo, $this->fetchRows($pdo, 'sql_verb_family', $row['word_id'])),
-           default => CreateDBWordResultIterator::SingleWordResultGenerator(new DBWord($pdo, $row))
+           default => CreateDBWordResultIterator::SingleResultGenerator(new DBWord($pdo, $row))
        };
     }
     
@@ -61,7 +61,7 @@ order by word_id ASC";
     {
         $rows = $this->fetchRows($pdo, 'sql_noun', $row['word_id']);
         
-        return CreateDBWordResultIterator::SingleWordResultGenerator(new DBNoun($pdo, $rows[0]));
+        return CreateDBWordResultIterator::SingleResultGenerator(new DBNoun($pdo, $rows[0]));
     }
    
     function bind(\PDOStatement $stmt) : void
@@ -101,7 +101,7 @@ order by word_id ASC";
         return $this->iter;
     }
 
-    public static function SingleWordResultGenerator(DBWord $dbword) : \Iterator
+    public static function SingleResultGenerator(DBWord $dbword) : \Iterator
     {
         yield $dbword;
     }   
