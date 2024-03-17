@@ -22,10 +22,22 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
    
    public function fetch(string $word, int $count=3) : \Iterator | false
    {
-
       $route = urlencode($word);
 
-      $contents = $this->request(self::$method, $route, ['query' => ['offset' => 0, 'limit' => $count]]);
+      try {
+         $contents = $this->request(self::$method, $route , ['query' => ['offset' => 0, 'limit' => $count]]);
+
+      } catch (ClientException $e) {
+
+
+            echo "Guzzle request encountered a 400 or 500 http error.\n";
+            echo Psr7\Message::toString($e->getRequest());
+            echo Psr7\Message::toString($e->getResponse());
+            var_dump($e);
+            throw $e;
+       }
+
+
 
       if ($contents === false)
           return $contents;
