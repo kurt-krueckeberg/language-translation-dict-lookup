@@ -1,6 +1,6 @@
 # ToDo
 
-* Try AzureTranslate instead of AzureTranslator -- when encounter exceptions.
+* Change the exception handling according to what is in ~/v/guzele-exeptions-design.md and the comments in ~/v/main.php.
 
 * Sign up for Azure text translation pay-as-go.
 

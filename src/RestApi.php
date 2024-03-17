@@ -32,11 +32,11 @@ class RestApi {
        
        $code = $response->getStatusCode();
        
-       //$reason = $response->getReasonPhrase();
+       $reason = $response->getReasonPhrase();
        
        if ($code != 200) {
            
-          return false;
+          return false; // TODO: See guzzle-exceptions-design.adoc and class newRestApi.
           
        } else {
 

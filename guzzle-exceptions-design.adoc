@@ -1,57 +1,37 @@
-According to one of the answers on how to link:https://stackoverflow.com/questions/19748105/handle-guzzle-exception-and-get-http-body[Handle Guzzle exceptionx] asked on stackoverflow:
+According to the Guzzle link:https://docs.guzzlephp.org/en/stable/quickstart.html?highlight=ClientException#exceptions[Exceptions] documentation:
 
-Requests that receive a **4xx** or **5xx** response will throw a `Guzzle\Http\Exception\BadResponseException`. More specifically, 4xx errors throw a 
-`Guzzle\Http\Exception\ClientErrorResponseException`, and 5xx errors throw a `Guzzle\Http\Exception\ServerErrorResponseException`.
+The following tree view describes how the Guzzle Exceptions depend on each other.
 
-You can catch the specific exceptions or just catch the BadResponseException to deal with either type of error:
+----
+. \RuntimeException
+└── TransferException (implements GuzzleException)
+    ├── ConnectException (implements NetworkExceptionInterface)
+    └── RequestException
+        ├── BadResponseException
+        │   ├── ServerException
+        │   └── ClientException
+        └── TooManyRedirectsException
+----
 
+Guzzle throws exceptions for errors that occur during a transfer.
 
+* A `GuzzleHttp\Exception\ConnectException` exception is thrown in the event of a networking error. This exception extends from `GuzzleHttp\Exception\TransferException`.
+* A `GuzzleHttp\Exception\ClientException` is thrown for **400** level errors if the `http_errors` request option is set to `true`. This exception extends from 
+`GuzzleHttp\Exception\BadResponseException` and `GuzzleHttp\Exception\BadResponseException` extends from `GuzzleHttp\Exception\RequestException`. +
++
 ```php
-use GuzzleHttp\Exception\TooManyRedirectsException; I de
+use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
-use GuzzleHttp\Exception\ConnectException;
-
-// ...
 
 try {
-    $response = $client->request('GET', $url);
-    if ($response->getStatusCode() >= 300) {
-       // is HTTP status code (for non-exceptions) 
-       $statusCode = $response->getStatusCode();
-       // handle error 
-    } else {
-      // is valid URL
-    }
-            
-} catch (TooManyRedirectsException $e) {
-    // handle too many redirects
-} catch (ClientException | ServerException $e) {
-    // ClientException is thrown for 400 level errors if the http_errors request option is set to true.
-    // ServerException is thrown for 500 level errors if the http_errors request option is set to true.
-    if ($e->hasResponse()) {
-       // is HTTP status code, e.g. 500 
-       $statusCode = $e->getResponse()->getStatusCode();
-    }
-} catch (ConnectException $e) {
-    // ConnectException is thrown in the event of a networking error.
-    // This may be an error reported by lowlevel functionality 
-    // (e.g.  cURL error)
-    $handlerContext = $e->getHandlerContext();
-    if ($handlerContext['errno'] ?? 0) {
-       // this is the lowlevel error code, not the HTTP status code!!!
-       // for example 6 for "Couldn't resolve host" (for libcurl)
-       $errno = (int)($handlerContext['errno']);
-    } 
-    // get a description of the error
-    $errorMessage = $handlerContext['error'] ?? $e->getMessage();
-         
-} catch (\Exception $e) {
-    // fallback, in case of other exception
+    $client->request('GET', 'https://github.com/_abc_123_404');
+} catch (ClientException $e) {
+    echo Psr7\Message::toString($e->getRequest());
+    echo Psr7\Message::toString($e->getResponse());
 }
 ```
+* A `GuzzleHttp\Exception\ServerException` is thrown for **500** level errors if the http_errors request option is set to true. This exception extends from `GuzzleHttp\Exception\BadResponseException`.
+* A `GuzzleHttp\Exception\TooManyRedirectsException` is thrown when too many redirects are followed. This exception extends from `GuzzleHttp\Exception\RequestException`.
 
-
-So we need a top-level function that handles these Guzzle errors. Where should it go?
-In my RestApi client? In the top-level Vocab facade class?
+All of the above exceptions extend from `GuzzleHttp\Exception\TransferException`.
 
