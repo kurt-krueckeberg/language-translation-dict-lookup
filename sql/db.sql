@@ -71,7 +71,7 @@ create table if not exists exprs (
 create table if not exists samples (
   id int not null auto_increment primary key,
   sample text not null,
-  target text not null,
+  trans text not null,
   word_id int not null,
   foreign key(word_id) references words(id) on delete cascade
 );

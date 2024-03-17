@@ -6,7 +6,7 @@ class FetchSamples {
    
    private \PDOStatement $select_samples; 
    
-   private static $sql_samples = "select samples.sample as sample, samples.target as translation from 
+   private static $sql_samples = "select samples.sample as sample, samples.trans as translation from 
       words
          inner join
       samples

@@ -6,10 +6,10 @@ class SamplesTable  {
    
    //private \PDO $pdo;
    private \PDOStatement $insert_stmt; 
-   private static $sql_insert = "insert into samples(sample, target, word_id) values(:sample, :target, :word_id)";
+   private static $sql_insert = "insert into samples(sample, trans, word_id) values(:sample, :trans, :word_id)";
 
    private static string $sample = '';
-   private static string $target = '';
+   private static string $trans = '';
    private static int $word_id = -1;
 
    private \PDO $pdo;
@@ -22,16 +22,16 @@ class SamplesTable  {
 
       $this->insert_stmt->bindParam(':sample', self::$sample, \PDO::PARAM_STR);     
 
-      $this->insert_stmt->bindParam(':target', self::$target, \PDO::PARAM_STR);     
+      $this->insert_stmt->bindParam(':trans', self::$trans, \PDO::PARAM_STR);     
       
       $this->insert_stmt->bindParam(':word_id', self::$word_id, \PDO::PARAM_INT);
    }
 
-   public function insert(string $sample, string $target, int $word_id) : int 
+   public function insert(string $sample, string $trans, int $word_id) : int 
    {
       self::$sample = $sample;
 
-      self::$target = $target;
+      self::$trans = $trans;
       
       self::$word_id  = $word_id;
       
