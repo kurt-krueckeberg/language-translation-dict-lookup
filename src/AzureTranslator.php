@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 namespace Vocab;
+use GuzzleHttp\{Psr7, Exception\ClientException};
 
 class AzureTranslator extends RestApi implements TranslateInterface {
 
@@ -124,7 +125,7 @@ that implmentseither WordInterface/NounInterface/VerbInterface just like Systran
            }
        ]
    */
-   final public function translate(string $text, string $dest_lang, $source_lang="de") : string 
+   final public function prior_translate(string $text, string $dest_lang, $source_lang="de") : string 
    {
        static $trans = array('method' => "POST", 'route' => "/translate", 'query' => ['api-version' => '3.0']);
               
@@ -155,6 +156,52 @@ that implmentseither WordInterface/NounInterface/VerbInterface just like Systran
        
        return $result;
    }
+ 
+   final public function translate(string $text, string $dest_lang, $source_lang="de") : string 
+   {
+       static $trans = array('method' => "POST", 'route' => "/translate", 'query' => ['api-version' => '3.0']);
+              
+       $options = [];
+       
+       $options['query'] = ['from' => $source_lang, 'to' => $dest_lang, 'api-version' => '3.0'];
+       
+       /*
+        * Input text goes in message body, ie as encoded json.
+        */
+       
+       $options['json'] = [['Text' => json_encode($text)]];;
+       
+       try { 
+
+          $contents = $this->request($trans['method'], $trans['route'], $options);
+
+       } catch (catch (ClientException $e) {
+
+            $response = $e->getResponse();
+
+            if ($response->getStatusCode() == self::$too_many_requests) {
+
+                echo Psr7\Message::toString($e->getResponse());
+                throw $e;
+
+            } else {
+
+                throw $e;
+            }
+       }
+
+
+       $obj = json_decode($contents);
+       
+       /*
+        * Since Azure text translate returns a quoted result like this: '"translation here within quotes"',
+        * we remove the superfulouse quotes.
+        */
+       $result = \trim($obj[0]->translations[0]->text, '"'); 
+       
+       return $result;
+   }
+
 
    /* Azure Translator lookup response body:
      [ 

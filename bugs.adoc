@@ -1,6 +1,6 @@
-# Bugs
+= Bugs
 
-Surround both insert_db($word) and insert_samples($word) with the same commit/rollback
+Surround both `insert_db($word)` and `insert_samples($word)` with the same commit/rollback.
 
 New code under development is in ~/temp:
 
@@ -23,3 +23,8 @@ Changed RestApi.php to enable setting http_errors in ctor.
 
 * A Status code of 429
 * The associated message is: "The server rejected the request because the client has exceeded request limits."
+
+For this, do:
+
+* Research all AzureTranslate response codes.
+* catch the 429 error, print a message and rethrow, enusre no commit!

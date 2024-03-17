@@ -23,10 +23,17 @@ Guzzle throws exceptions for errors that occur during a transfer.
 use GuzzleHttp\{Psr7, Exception\ClientException};
 
 try {
+
     $client->request('GET', 'https://github.com/_abc_123_404');
+
 } catch (ClientException $e) {
+
     echo Psr7\Message::toString($e->getRequest());
     echo Psr7\Message::toString($e->getResponse());
+
+    $response = $e->getResponse();
+
+    echo "The response code is: " . $response->getStatusCode() . "\n";
 }
 ```
 
