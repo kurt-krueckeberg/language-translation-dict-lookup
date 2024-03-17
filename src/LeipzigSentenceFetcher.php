@@ -1,11 +1,13 @@
 <?php
 declare(strict_types=1);
 namespace Vocab;
-
+use GuzzleHttp\{Psr7, Exception\ClientException};
 
 class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
 
    private static $method = 'GET';
+
+   static int $bad_request = 404;
  
    public function __construct(Config $c)
    {       
@@ -20,15 +22,29 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
       }
    }
    
-   public function fetch(string $word, int $count=3) : \Iterator | false
+   public function fetch(string $word, int $count=3) : \Iterator
    {
-
       $route = urlencode($word);
 
-      $contents = $this->request(self::$method, $route, ['query' => ['offset' => 0, 'limit' => $count]]);
+      try {
 
-      if ($contents === false)
-          return $contents;
+          $contents = $this->request(self::$method, $route, ['query' => ['offset' => 0, 'limit' => $count]]);
+
+      } catch (ClientException $e) {
+
+        //echo Psr7\Message::toString($e->getResponse());
+
+        $response = $e->getResponse();
+
+        if ($response->getStatusCode() == self::$bad_request) {
+
+           // Return null iterator
+           return LeipzigSentenceFetcher::SentencesGenerator(array());
+
+        } else {
+           throw $e;
+        }
+     }
 
       $obj = json_decode($contents);
 

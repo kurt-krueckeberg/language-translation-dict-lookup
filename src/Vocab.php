@@ -114,16 +114,10 @@ class Vocab {
 
    private function insertdb_samples(string $word, MessageLog $log) : bool
    { 
-      // Skip the 1st space, if present, returning the remainder, ie, the 2nd word. 
-      $get_word = function(string $word) : string {
-
-         return (($pos = \strpos($word, " ")) !== false) ? substr($word, $pos + 1) : $word;
-      };
-       
 
       $sent_iter = $this->sentFetcher->fetch($word, $this->c->sentence_count());
       
-      if ($sent_iter == false) { 
+      if ($sent_iter == false) { //TODO: Change  
           
            $log->log("No sample sentences available for '$word'.");
            return false;

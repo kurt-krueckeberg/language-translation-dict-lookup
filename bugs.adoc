@@ -1,12 +1,25 @@
 # Bugs
 
-Surround both the insert into db of words and insertion of samples with one commit and rollback.
+Surround both insert_db($word) and insert_samples($word) with the same commit/rollback
 
 New code under development is in ~/temp:
 
-* If Leipzig can't find any sample sentences for a word, say, 'sich äußern', it will return a 404 "not found" error. 
+1. If Leipzig can't find any sample sentences for a word, say, 'sich äußern', it will return a 404 "not found" error.  
 
-* If SystranTranslator::lookup() can't find a definition for a word, what does it return?
+2. If SystranTranslator::lookup() can't find a definition for a word, what does it return?
 
-* What happens if AzureTranslate::translator() can't translate a string? What exception does it throw?
+3. What happens if AzureTranslate::translator() can't translate a string? What exception does it throw?
 
+
+Changes:
+
+Changed RestApi.php to enable setting http_errors in ctor.
+
+#1 is now handled above for the case where no samples are found.
+
+#2 may be handles as the code correctly detects the case of "no definitions".
+
+#3 What I expected for this case is happening. I am getting:
+
+* A Status code of 429
+* The associated message is: "The server rejected the request because the client has exceeded request limits."
