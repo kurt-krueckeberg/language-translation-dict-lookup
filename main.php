@@ -15,29 +15,27 @@ if (!file_exists($c->lookup_file())) {
     die($c->lookup_file() . " not found.\n");
 }
 
-try {
 
-  $fac = new Vocab($c);
+ $fac = new Vocab($c);
 
-  $words = $c->fetch_words();
+ $words = $c->fetch_words();
 
-  try {
-    
-  $words_inserted = $fac->db_insert($words); // TODO: Add the exception logic to db_inset($word)  and  insert_samples--or whatever it is called?
+ try {
 
-  $fac->create_html($words_inserted, 'output');
-  
-  file_put_contents("words-inserted.txt", implode("\n", $words_inserted));
+ /*
+  RestApi now thwrows 400 and 500 http errors; it print to stderr  the cause of the error. 
+   Based on what gets thrown, I can decide if I really have a coding error or I need a differenet Azure payment plan.
+  */
+ $words_inserted = $fac->db_insert($words); /
 
- } catch (ClientException $e) {  // catch 400 and 500 http erros thrown by Guzzle.
-
-      echo Psr7\Message::toString($e->getRequest());
-      echo Psr7\Message::toString($e->getResponse());
+ $fac->create_html($words_inserted, 'output');
  
-} catch (\Exception $e) {
+ file_put_contents("words-inserted.txt", implode("\n", $words_inserted));
 
-  echo $e->getMessage();
+}  catch (\Exception $e) {
 
-  echo "-----\ngetting Trace as String: \n";
-  echo $e->getTraceAsString();
-}
+   echo $e->getMessage();
+
+   echo "-----\ngetting Trace as String: \n";
+   echo $e->getTraceAsString();
+ }
