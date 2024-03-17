@@ -3,6 +3,8 @@ declare(strict_types=1);
 use \SplFileObject as File;
 
 use Vocab\{FileReader, Config, Vocab};
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\ClientException;
 
 include 'vendor/autoload.php';
   
@@ -13,22 +15,27 @@ if (!file_exists($c->lookup_file())) {
     die($c->lookup_file() . " not found.\n");
 }
 
-try {
 
-  $fac = new Vocab($c);
+ $fac = new Vocab($c);
 
-  $words = $c->fetch_words();
-    
-  $words_inserted = $fac->db_insert($words);
+ $words = $c->fetch_words();
 
-  $fac->create_html($words_inserted, 'output');
+ try {
 
-  file_put_contents("words-inserted.txt", implode("\n", $words_inserted));
+ /*
+  RestApi now thwrows 400 and 500 http errors; it print to stderr  the cause of the error. 
+   Based on what gets thrown, I can decide if I really have a coding error or I need a differenet Azure payment plan.
+  */
+ $words_inserted = $fac->db_insert($words); /
 
-} catch (\Exception $e) {
+ $fac->create_html($words_inserted, 'output');
+ 
+ file_put_contents("words-inserted.txt", implode("\n", $words_inserted));
 
-  echo $e->getMessage();
+}  catch (\Exception $e) {
 
-  echo "-----\ngetting Trace as String: \n";
-  echo $e->getTraceAsString();
-}
+   echo $e->getMessage();
+
+   echo "-----\ngetting Trace as String: \n";
+   echo $e->getTraceAsString();
+ }
