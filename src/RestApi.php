@@ -2,7 +2,8 @@
 declare(strict_types=1);
 namespace Vocab;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\{Client, Psr7, Exception\ClientException};
+
 
 class RestApi {
 
@@ -54,7 +55,7 @@ class RestApi {
    {
       $options['headers'] = $this->headers;
 
-      $options['http_errors'] = $this->http_errors; // Set to false to turn off Guzzle throwing of exceptions.
+      //$options['http_errors'] = $this->http_errors; // Set to false to turn off Guzzle throwing of exceptions.
 
       try {
 
@@ -68,7 +69,10 @@ class RestApi {
 
             echo "Guzzle request encountered a 400 or 500 http error.\n";
 
-            $debug = $e->getRequest();
+            $d1 = $e->getRequest();
+            
+            $d2 = $e->getResponse();
+            
 
             echo Psr7\Message::toString($e->getRequest());
             echo Psr7\Message::toString($e->getResponse());
