@@ -26,7 +26,7 @@ if (!file_exists($c->lookup_file())) {
   RestApi now thwrows 400 and 500 http errors; it print to stderr  the cause of the error. 
    Based on what gets thrown, I can decide if I really have a coding error or I need a differenet Azure payment plan.
   */
- $words_inserted = $fac->db_insert($words); /
+ $words_inserted = $fac->db_insert($words); 
 
  $fac->create_html($words_inserted, 'output');
  
