@@ -28,3 +28,8 @@ For this, do:
 
 * Research all AzureTranslate response codes.
 * catch the 429 error, print a message and rethrow, enusre no commit!
+
+Azure Pricing Tiers:
+
+* link:https://azure.microsoft.com/en-us/pricing/details/cognitive-services/translator/[Translator Pricing Tiers]
+* link:https://learn.microsoft.com/en-us/azure/ai-services/Translator/service-limits[Rate Limits] -- how often you can request text translation.
