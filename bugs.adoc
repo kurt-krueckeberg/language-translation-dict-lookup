@@ -8,4 +8,11 @@ We could surround the sample sentence request with a check for 404, and translat
 
 * What about AzureTranslate::translator() exceptions?
 
+OR; 
+
+I could use http_eroors = false and simply check for the particular reason codes. If Leipzip returns 20, I know there are no samples sentences. If
+SystrnaTranslator::lookup returns 400, this means--correct?--that there are no definitions....
+
+...and if AzureTranslatoe::translate() returns -- what? -- thios means what?
+
 
