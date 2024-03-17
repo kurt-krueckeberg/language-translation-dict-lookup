@@ -3,6 +3,10 @@
 * If Leipzig can't find any sample sentences for a word, say, 'sich äußernä, it will return a 404 "not found" error. 
 
 We could surround the sample sentence request with a check for 404, and translate that into an error message nad simply continue.
+Since reflexsive verbs never have samepls , you can't  find samples for"sich XXXX", just skip the, instead of trying to remove, as is
+currently done, the "sich" from the reflexive form
+Since reflexsive verbs never have samepls , you can't  find samples for"sich XXXX", just skip the, instead of trying to remove, as is
+currently done, the "sich" from the reflexive form
 
 * If SystranTranslator::lookup() can't find a definition for a word, it, too, returns a 4xxx error--correct?
 
