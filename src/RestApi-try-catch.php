@@ -4,7 +4,6 @@ namespace Vocab;
 
 use GuzzleHttp\{Client, Psr7, Exception\ClientException};
 
-
 class RestApi {
 
    protected Client $client;  

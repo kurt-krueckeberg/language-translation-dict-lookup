@@ -3,6 +3,7 @@ declare(strict_types=1);
 use \SplFileObject as File;
 
 use Vocab\{FileReader, Config, Vocab};
+use GuzzleHttp\{Psr7, Exception\ClientException};
 
 include 'vendor/autoload.php';
   
@@ -12,7 +13,6 @@ if (!file_exists($c->lookup_file())) {
      
     die($c->lookup_file() . " not found.\n");
 }
-
 
  $fac = new Vocab($c);
 
@@ -30,7 +30,18 @@ if (!file_exists($c->lookup_file())) {
  
  file_put_contents("words-inserted.txt", implode("\n", $words_inserted));
 
-}  catch (\Exception $e) {
+ } catch (ClientException $e) {
+
+            echo "Guzzle request encountered a 400 or 500 http error.\n";
+
+            $d1 = $e->getRequest();
+            
+            $d2 = $e->getResponse();
+
+            echo Psr7\Message::toString($e->getRequest());
+            echo Psr7\Message::toString($e->getResponse());
+
+ } catch (\Exception $e) {
 
    echo $e->getMessage();
 
