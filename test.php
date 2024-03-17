@@ -3,8 +3,6 @@ declare(strict_types=1);
 use \SplFileObject as File;
 
 use Vocab\{FileReader, Config, Vocab};
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Exception\ClientException;
 
 include 'vendor/autoload.php';
   
