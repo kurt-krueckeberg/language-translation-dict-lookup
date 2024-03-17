@@ -1,22 +1,12 @@
 # Bugs
 
-* If Leipzig can't find any sample sentences for a word, say, 'sich äußernä, it will return a 404 "not found" error. 
+Surround both the insert into db of words and insertion of samples with one commit and rollback.
 
-We could surround the sample sentence request with a check for 404, and translate that into an error message nad simply continue.
-Since reflexsive verbs never have samepls , you can't  find samples for"sich XXXX", just skip the, instead of trying to remove, as is
-currently done, the "sich" from the reflexive form
-Since reflexsive verbs never have samepls , you can't  find samples for"sich XXXX", just skip the, instead of trying to remove, as is
-currently done, the "sich" from the reflexive form
+New code under development is in ~/temp:
 
-* If SystranTranslator::lookup() can't find a definition for a word, it, too, returns a 4xxx error--correct?
+* If Leipzig can't find any sample sentences for a word, say, 'sich äußern', it will return a 404 "not found" error. 
 
-* What about AzureTranslate::translator() exceptions?
+* If SystranTranslator::lookup() can't find a definition for a word, what does it return?
 
-OR; 
-
-I could use http_eroors = false and simply check for the particular reason codes. If Leipzip returns 20, I know there are no samples sentences. If
-SystrnaTranslator::lookup returns 400, this means--correct?--that there are no definitions....
-
-...and if AzureTranslatoe::translate() returns -- what? -- thios means what?
-
+* What happens if AzureTranslate::translator() can't translate a string? What exception does it throw?
 
