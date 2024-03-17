@@ -1,0 +1,11 @@
+# Bugs
+
+* If Leipzig can't find any sample sentences for a word, say, 'sich äußernä, it will return a 404 "not found" error. 
+
+We could surround the sample sentence request with a check for 404, and translate that into an error message nad simply continue.
+
+* If SystranTranslator::lookup() can't find a definition for a word, it, too, returns a 4xxx error--correct?
+
+* What about AzureTranslate::translator() exceptions?
+
+
