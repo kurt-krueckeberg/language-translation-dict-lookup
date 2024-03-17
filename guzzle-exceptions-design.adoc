@@ -1,6 +1,6 @@
 According to one of the answers on how to link:https://stackoverflow.com/questions/19748105/handle-guzzle-exception-and-get-http-body[Handle Guzzle exceptionx] asked on stackoverflow:
 
-Requests that receive a 4xx or 5xx response will throw a `Guzzle\Http\Exception\BadResponseException`. More specifically, 4xx errors throw a 
+Requests that receive a **4xx** or **5xx** response will throw a `Guzzle\Http\Exception\BadResponseException`. More specifically, 4xx errors throw a 
 `Guzzle\Http\Exception\ClientErrorResponseException`, and 5xx errors throw a `Guzzle\Http\Exception\ServerErrorResponseException`.
 
 You can catch the specific exceptions or just catch the BadResponseException to deal with either type of error:
@@ -50,3 +50,8 @@ try {
     // fallback, in case of other exception
 }
 ```
+
+
+So we need a top-level function that handles these Guzzle errors. Where should it go?
+In my RestApi client? In the top-level Vocab facade class?
+
