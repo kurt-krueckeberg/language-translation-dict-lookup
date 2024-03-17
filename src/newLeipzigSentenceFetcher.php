@@ -25,6 +25,7 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
       $route = urlencode($word);
 
       try {
+
          $contents = $this->request(self::$method, $route , ['query' => ['offset' => 0, 'limit' => $count]]);
 
       } catch (ClientException $e) {
