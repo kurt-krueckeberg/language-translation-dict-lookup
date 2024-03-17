@@ -13,7 +13,6 @@ if (!file_exists($c->lookup_file())) {
     die($c->lookup_file() . " not found.\n");
 }
 
-
  $fac = new Vocab($c);
 
  $words = $c->fetch_words();

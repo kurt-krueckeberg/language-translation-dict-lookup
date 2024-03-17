@@ -28,7 +28,7 @@ class RestApi {
    {
       $options['headers'] = $this->headers;
 
-      //$options['http_errors'] = $this->http_errors; // Set to false to turn off Guzzle throwing of exceptions.
+      $options['http_errors'] = $this->http_errors; // Set to false to turn off Guzzle throwing of exceptions.
 
       try {
 
@@ -45,10 +45,10 @@ class RestApi {
             $d1 = $e->getRequest();
             
             $d2 = $e->getResponse();
-            
 
             echo Psr7\Message::toString($e->getRequest());
             echo Psr7\Message::toString($e->getResponse());
+
             throw $e;
        }
 
