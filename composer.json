@@ -14,7 +14,8 @@
         "ext-simplexml": "^8.2",
         "ext-curl": "^8.2",
         "ext-json": "^8.2",
-        "ext-tidy": "^8.2"
+        "ext-tidy": "^8.2",
+        "deeplcom/deepl-php": "^1.7"
     },
     "license": "MIT",
     "authors": [
@@ -22,5 +23,10 @@
             "name": "Kurt Krueckeberg",
             "email": "kurt.krueckeberg@gmail.com"
         }
-    ]
+    ],
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
 }
