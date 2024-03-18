@@ -1,0 +1,92 @@
+= General Thoughts
+
+* No need to sign up for Azure text translation pay-as-go since I am using Deepl API Pro.
+
+* The `AzureTranslator::lookup()` does not return the expected result. It should return a result(s) like `SystranTranslator::lookup()`, namely
+a `SystranNoun/Verb/RelatedVerb/Word`. There might be a way to make a generic Word/Noun/Verb object that is
+comfigured to implement the respective `WordInterface/NounInterface/VerbInterface`.
+
+
+== Guzzle Exceptions Design
+
+According to the Guzzle link:https://docs.guzzlephp.org/en/stable/quickstart.html?highlight=ClientException#exceptions[Exceptions] documentation:
+
+The following tree view describes the Guzzle Exceptions hierachy:
+
+----
+. \RuntimeException
+└── TransferException (implements GuzzleException)
+    ├── ConnectException (implements NetworkExceptionInterface)
+    └── RequestException
+        ├── BadResponseException
+        │   ├── ServerException
+        │   └── ClientException
+        └── TooManyRedirectsException
+----
+
+Guzzle throws exceptions for errors that occur during a transfer.
+
+* A `GuzzleHttp\Exception\ConnectException` exception is thrown in the event of a networking error. This exception extends from `GuzzleHttp\Exception\TransferException`.
+* A `GuzzleHttp\Exception\ClientException` is thrown for **400** level errors if the `http_errors` request option is set to `true`. This exception extends from 
+`GuzzleHttp\Exception\BadResponseException` and `GuzzleHttp\Exception\BadResponseException` extends from `GuzzleHttp\Exception\RequestException`. +
+
+```php
+use GuzzleHttp\{Psr7, Exception\ClientException};
+
+try {
+
+    $client->request('GET', 'https://github.com/_abc_123_404');
+
+} catch (ClientException $e) {
+
+    echo Psr7\Message::toString($e->getRequest());
+    echo Psr7\Message::toString($e->getResponse());
+
+    $response = $e->getResponse();
+
+    echo "The response code is: " . $response->getStatusCode() . "\n";
+}
+```
+
+* A `GuzzleHttp\Exception\ServerException` is thrown for **500** level errors if the http_errors request option is set to true. This exception extends from `GuzzleHttp\Exception\BadResponseException`.
+* A `GuzzleHttp\Exception\TooManyRedirectsException` is thrown when too many redirects are followed. This exception extends from `GuzzleHttp\Exception\RequestException`.
+
+All of the above exceptions extend from `GuzzleHttp\Exception\TransferException`.
+
+== Alternate Database Schema
+
+This is just an idea that needs to be based on D.J. Date readings. It is the SSQL chnage below:
+
+The Database scheme change below will make all tables dependent on `words`, so when it is
+deleted, all other tables likewise get deleted. It seems to make the sql 
+
+As a result of the table alteration and the introduction of a new table, I will need to:
+
+1. Change db.sql and drop.sql
+2. Change the code so it inserts into these new tables instead of the old. 
+3. And I need to change the SQL query that selects conjugations from the old scheme to
+use the new scheme.
+
+```sql
+# -- The actual verb conjs are in this table
+# -- prefix and reflexive verbs share the conjuation of the 
+# -- main verb. Thus, the conjugation of ankommen is kommen's
+# -- conjugation.
+create table if not exists conjs (
+  id int not null auto_increment primary key,
+  conjugation varchar(75) not null
+  verb_id int not null,
+  foreign key(verb_id) references words(id) on delete cascade
+);
+
+# -- main verb is main_id. Prefix or reflexsive that shared its conjugation
+# -- shared_id. Example: kommen, say, has words.id of 1 and ankommen has
+# -- words.id of 2, then we have row with: {1, 2}
+create table if not exists shared_conjs (
+  shared_id int not null primary key,
+  main_id int not null primary key,
+  unique (main_id, shared_id),
+  foreign key(main_id) references words(id) on delete cascade,
+  foreign key(shared_id) references words(id) on delete cascade
+);
+```
