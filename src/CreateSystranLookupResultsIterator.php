@@ -34,10 +34,7 @@ class CreateSystranLookupResultsIterator {
     public static function SimpleDictionaryResultsGenerator(array $arr) : \Iterator
     {
         foreach ($arr as $key => $current) {
-            
-           if ($current['source']['pos'] == '') 
-               $debug = 10;
-
+           
            yield match($current['source']['pos']) {
 
              'noun' => new SystranNoun($current),
@@ -57,11 +54,84 @@ class CreateSystranLookupResultsIterator {
     public function __invoke(string $word_lookedup, array $matches, \Collator $collator) 
     {
        $this->is_verb_family = false; // We start by assuming it is false.
-        
-       $is_noun = \ctype_upper($word_lookedup[0]); // Is upper case -> not a verb
+       
+       // If the first thing returned is a verb and more than match was returned, we might have a verb family      
+       if (count($matches) > 1 && $matches[0]['source']['pos'] == 'verb') {
+           
+           // Remainder of code is to determine if we have a family of prefix vebs (and one main verb),
+           // To determine main_verb_index, first sort the array using German collation sequence
+           $cmp = function (array $left, array $right) use($collator) { 
+    
+               return $collator->compare($left['source']['lemma'], $right['source']['lemma']);
+           };
+    
+           usort($matches, $cmp);
+           
+           $main_verb_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) { 
+                         
+               return $collator->compare($left['source']['lemma'], $key);
+           });
+           
+           /*
+             Next, determine whether we have a prefix-verbs family result or individual results.
+            */
+           $this->is_verb_family = $this->isPrefixVerbFamily($matches, $main_verb_index, $word_lookedup);
+           
+           if ($this->is_verb_family) {       
+    
+               $matches = $this->merge_verbs($matches);           
+     
+               $this->main_verb_index = binary_search::find($matches, $word_lookedup, function(array $left, string $key) use($collator) {
+                         
+                                              return $collator->compare($left['source']['lemma'], $key);
+                                             });
+
+               $result = CreateSystranLookupResultsIterator::VerbFamilyGenerator($matches, $this->main_verb_index); 
+
+           } else {
+
+               $result = CreateSystranLookupResultsIterator::SimpleDictionaryResultsGenerator($matches); 
+           }    
+           
+           /*
+            *  If the word looked up was a nount like 'Macht', this will be the first match returned, but a verb or verb family might follow
+            *  in subsequent matches. This is too complicated to handle. Verb families are handled in the if test above, where the main
+            *  verb is located in matches and saved first, so that its conjugation can be shared with its prefix variants.
+            * 
+            *  To do so here for cases like the noun 'Macht' (that returns all the prefix forms of 'machen'), meams adding additional code to
+            *  this already complex method.
+            */
+           
+       } else if (count($matches) > 1 && $matches[0]['source']['pos'] == 'noun') {
+           
+          /*
+           * If the first match is a noun because the input word was a noun like 'macht', and if there is more than one match, strip out any matches that are verbs.
+           * Why? Because a noun like 'Macht' will also return the prefix verb family for machen, and this was not anticipated, and handling this would make
+           * require adding to this method's already complex logic, along with added documentation.
+           */ 
+          $results = array_filter($matches, function (array $match) : bool {
+              return ($match['source']['pos'] !== 'verb') ? true : false;
+          });
+    
+          $result = CreateSystranLookupResultsIterator::SimpleDictionaryResultsGenerator($results);
+          
+       } else {
+    
+          $result = CreateSystranLookupResultsIterator::SimpleDictionaryResultsGenerator($matches);
+       }
+
+       return $result; 
+   }
+      
+   
+    public function __invoke_prior(string $word_lookedup, array $matches, \Collator $collator) 
+    {
+       $this->is_verb_family = false; // We start by assuming it is false.
+              
+       $is_noun = \ctype_upper($word_lookedup[0]); // If 1st letter is upper case, it is not a verb that was looked up.
        
        if (!$is_noun && count($matches) > 1) {
-           
+                   
            // Remainder of code is to determine if we have a family of prefix vebs (and one main verb),
            // To determine main_verb_index, first sort the array using German collation sequence
            $cmp = function (array $left, array $right) use($collator) { 
@@ -103,7 +173,7 @@ class CreateSystranLookupResultsIterator {
 
        return $result; 
    }
-      
+       
     /*
      Determine if the verb looked up, whose index in $matches is $this->lookedup_index, has other related verbs:
       1. count($matches) > 1 && word looked up is a verb. If so, is the verb looked up...
