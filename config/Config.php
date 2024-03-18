@@ -4,34 +4,38 @@ namespace Vocab;
 
 readonly class Config {
 
-   private string $lookup_file_name;
+   public string $lookup_file_name;
 
-   private int $sentence_count;
+   public int $sentence_count;
    
-   private  array $config; 
+   public  array $config; 
    
-   private string $namespace;
+   public string $namespace;
 
-   public function __construct(string $lookup_file_name = "/home/kurt/language-translation-dict-lookup/vocab.txt",
-         int $sentence_count = 5,
-         array $config = [ 'database' => ['dsn' => 'mysql:dbname=vocab;host=127.0.0.1', 'user' => 'kurt', 'password' => 'kk0457'],
-                           'providers' => [ 
-                                          'leipzig_de'  => [ 'endpoint' => 'https://api.wortschatz-leipzig.de/ws/sentences/deu_news_2012_1M/sentences/',
-                                                             'header' => []
-                                                           ],
-                                             "deepl"    => [ 'endpoint' => 'https://api-free.deepl.com/v2',
-                                                              'header' => ["Authorization" => 'DeepL-Auth-Key 7482c761-0429-6c34-766e-fddd88c247f9:fx']
-                                                           ],
-                                            "systran"   => [ 'endpoint' => 'https://api-translate.systran.net',
-                                                               'header' => ["Authorization" => 'Key bf31a6fd-f202-4eef-bc0e-1236f7e33be4']
-                                                           ],
-                                            "azure"   =>   [  'endpoint' => 'https://api-nam.cognitive.microsofttranslator.com',
-                                                               'header' => [ 'Ocp-Apim-Subscription-Key' => '8fd23d4521904848acccec18e8d8ab18', 'Ocp-Apim-Subscription-Region' => 'eastus'] 
-                                                           ],
-                                          ],
-                           'language' =>   [ 'source'   => "English", 'destination' => 'Deutsch', 'locale' => 'de_DE'] ],
-         string $namespace = "Vocab")
+   public function __construct() 
    {
+      $this->lookup_file_name = "vocab.txt";
+
+      $this->sentence_count = 5;
+
+      $this->config = [ 'database' => ['dsn' => 'mysql:dbname=vocab;host=127.0.0.1', 'user' => 'kurt', 'password' => 'kk0457'],
+                        'providers' => [ 
+                                       'leipzig_de'  => [ 'endpoint' => 'https://api.wortschatz-leipzig.de/ws/sentences/deu_news_2012_1M/sentences/',
+                                                          'header' => []
+                                                        ],
+                                          "deepl"    => [ 'endpoint' => 'https://api-free.deepl.com/v2',
+                                                           'header' => ["Authorization" => 'DeepL-Auth-Key ca3e03e3-7377-4601-8ce1-bd5f3af2d660']
+                                                        ],
+                                         "systran"   => [ 'endpoint' => 'https://api-translate.systran.net',
+                                                            'header' => ["Authorization" => 'Key bf31a6fd-f202-4eef-bc0e-1236f7e33be4']
+                                                        ],
+                                         "azure"   =>   [  'endpoint' => 'https://api-nam.cognitive.microsofttranslator.com',
+                                                           'header' => [ 'Ocp-Apim-Subscription-Key' => '8fd23d4521904848acccec18e8d8ab18', 'Ocp-Apim-Subscription-Region' => 'eastus'] 
+                                                        ],
+                                       ],
+                        'language' =>   [ 'source'   => "English", 'destination' => 'Deutsch', 'locale' => 'de_DE'] ];
+
+      $this->namespace = "Vocab";
    }
 
    public function get_config(ProviderID $id) : array
@@ -43,8 +47,8 @@ readonly class Config {
       $r['base_uri'] = $this->config['providers'][$provider_name]['endpoint'];
       
       $r['headers'] = $this->config['providers'][$provider_name]['header'];
- 
-       return $r;
+
+      return $r;
    }
  
    public function get_db_credentials() : array // returns: array('dsn' =>, 'user' => . 'password' =>);
