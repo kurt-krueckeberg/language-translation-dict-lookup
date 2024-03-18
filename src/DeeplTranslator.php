@@ -4,7 +4,7 @@ namespace Vocab;
 
 class DeeplTranslator implements TranslatorInterface {
 
-    \DeepL\Translator $translator;
+    private \DeepL\Translator $translator;
 
     function __construct(Config $c)
     {
@@ -13,7 +13,7 @@ class DeeplTranslator implements TranslatorInterface {
         $this->translator = new \DeepL\Translator($apikey);
     }
 
-    function translate(string $text, string $src, string $dest) : use the TranslatorInterface return type here.
+    function translate(string $text, string $src, string $dest) : string 
     {
        $result =  $translator->translateText($text, $src, $dest, ['formatlity' => 'less']);
 
