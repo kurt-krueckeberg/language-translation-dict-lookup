@@ -11,7 +11,7 @@ class Vocab {
    
    private SystranTranslator $dictiontary; // Used for definition lookup
 
-   private AzureTranslator $azure;  // Used for translation of text
+   private TranslateInterface $translator;  // Used for translation of text
 
    private Database $db;
 
@@ -27,7 +27,7 @@ class Vocab {
    {
       $this->dictionary = new SystranTranslator($c);
 
-      $this->translator = new AzureTranslator($c);
+      $this->translator = new DeeplTranslator($c);
      
       $this->db = new Database($c); 
   

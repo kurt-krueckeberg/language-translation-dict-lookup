@@ -15,14 +15,13 @@ New code under development is in ~/temp:
 
 3. What happens if AzureTranslate::translator() can't translate a string? What exception does it throw?
 
-
 Changes:
 
 Changed RestApi.php to enable setting http_errors in ctor.
 
 #1 is now handled above for the case where no samples are found.
 
-#2 may be handles as the code correctly detects the case of "no definitions".
+#2 It handles "no definitions" o.k..
 
 #3 What I expected for this case is happening. I am getting:
 
