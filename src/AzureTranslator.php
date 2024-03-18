@@ -175,7 +175,7 @@ that implmentseither WordInterface/NounInterface/VerbInterface just like Systran
 
           $contents = $this->request($trans['method'], $trans['route'], $options);
 
-       } catch (catch (ClientException $e) {
+       } catch (ClientException $e) {
 
             $response = $e->getResponse();
 
@@ -189,8 +189,7 @@ that implmentseither WordInterface/NounInterface/VerbInterface just like Systran
                 throw $e;
             }
        }
-
-
+     
        $obj = json_decode($contents);
        
        /*
