@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class DeeplTranslator implements TranslatorInterface {
+class DeeplTranslator implements TranslateInterface {
 
     private \DeepL\Translator $translator;
 
