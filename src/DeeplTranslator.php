@@ -2,11 +2,15 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class DeeplTranslator extends \DeepL\Translator implements TranslatorInterface {
+class DeeplTranslator implements TranslatorInterface {
 
-    function __construct(??)
+    \DeepL\Translator $translator;
+
+    function __construct(Config $c)
     {
+        $apikey = $c->config['providers']['deepl']['apikey'];
 
+        $this->translator = new \DeepL\Translator($apikey);
     }
 
     function translate(string $text, string $src, string $dest) : use the TranslatorInterface return type here.
