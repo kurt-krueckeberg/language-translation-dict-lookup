@@ -49,7 +49,7 @@ if (!file_exists($c->lookup_file())) {
 
    foreach ($samples as $sample) {
 
-      $translation = $trans->translate($sample, "en", "de");
+      $translation = $trans->translate($sample);
  
       echo "Input: $sample\n";
       echo "Input: $translation\n";
