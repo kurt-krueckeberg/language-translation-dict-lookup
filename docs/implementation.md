@@ -17,8 +17,17 @@ This repository contains PHP classes that support:
 These classes implement [TranslateInterface](src/TranslateInterface.php):
 
 - [AzureTranslator](src/AzureTranslator.php) an [Azure Translator API](https://learn.microsoft.com/en-us/azure/cognitive-services/translator/translator-text-apis?tabs=csharp) client.
-- [DeeplTranslator](src/DeeplTranslator.php) a [DEEPL translate API](https://www.deepl.com/en/docs-api/) client.
 - [SystranTranslator](src/SystranTranslator.php) a [Systran Pro translate API](https://docs.systran.net/translateAPI/en/) client.
+
+### Deepl PHP Composer Package
+
+The Deepl PHP client can be installed using `composer`. Composer will automatically update the `composer.json` file. The composer command to do this is:
+
+```bash
+ composer require deeplcom/deepl-php
+```
+
+The [documentation for the Deepl PHP client](https://github.com/DeepLcom/deepl-php) is in its github repo.
 
 ### Dictionary Lookup Classes
 
