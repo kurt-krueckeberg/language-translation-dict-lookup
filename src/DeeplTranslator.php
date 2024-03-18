@@ -23,7 +23,7 @@ class DeeplTranslator implements TranslateInterface {
        $dest = \strtoupper($dest);
        $src = \strtoupper($src);
   
-       $result =  $this->translator->translateText($text, $src, $dest, ['formatlity' => 'less']);
+       $result =  $this->translator->translateText($text, $src, $dest, ['formatlity' => 'prefer_less']);
 
        return $result->text; 
     }
