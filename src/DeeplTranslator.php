@@ -13,9 +13,13 @@ class DeeplTranslator implements TranslateInterface {
         $this->translator = new \DeepL\Translator($apikey);
     }
 
-    function translate(string $text, string $src, string $dest) : string 
+    function translate(string $text, string $src, string $dest="de") : string 
     {
-       $result =  $translator->translateText($text, $src, $dest, ['formatlity' => 'less']);
+
+       $dest = \strtoupper($dest);
+       $src = \strtoupper($src);
+  
+       $result =  $this->translator->translateText($text, $src, $dest, ['formatlity' => 'less']);
 
        return $result->text; 
     }
