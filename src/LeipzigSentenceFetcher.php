@@ -11,7 +11,7 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
  
    public function __construct(Config $c)
    {       
-      parent::__construct($c, ProviderID::Leipzig_de);    
+      parent::__construct($c, ProviderID::leipzig_de);    
    }
 
    static public function SentencesGenerator(array $sentences) : \Iterator
