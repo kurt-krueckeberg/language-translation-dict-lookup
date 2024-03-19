@@ -23,8 +23,8 @@ readonly class Config {
                                        'leipzig_de'  => [ 'endpoint' => 'https://api.wortschatz-leipzig.de/ws/sentences/deu_news_2012_1M/sentences/',
                                                           'header' => []
                                                         ],
-                                          "deepl"    => [ 'endpoint' => 'https://api-free.deepl.com/v2',
-                                                           'header' => ["Authorization" => 'DeepL-Auth-Key ca3e03e3-7377-4601-8ce1-bd5f3af2d660']
+                                          "deepl"    => [ 'endpoint' => 'https://api.deepl.com',
+                                                           'apikey' => 'ca3e03e3-7377-4601-8ce1-bd5f3af2d660',
                                                         ],
                                          "systran"   => [ 'endpoint' => 'https://api-translate.systran.net',
                                                             'header' => ["Authorization" => 'Key bf31a6fd-f202-4eef-bc0e-1236f7e33be4']
@@ -40,7 +40,7 @@ readonly class Config {
 
    public function get_config(ProviderID $id) : array
    {
-      $provider_name = $id->get_provider();
+      $provider_name = $id->name; // ProviderID::cases() returns a numeric array of all the names in the ProvideerID enum.
     
       $r = [];
  
@@ -56,7 +56,7 @@ readonly class Config {
      return $this->config['database'];
    }
 
-   public function get_locale()
+   public function get_locale() : string
    {
      return $this->config['language']['locale'];
    }
