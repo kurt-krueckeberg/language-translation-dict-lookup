@@ -125,38 +125,8 @@ that implmentseither WordInterface/NounInterface/VerbInterface just like Systran
            }
        ]
    */
-   final public function prior_translate(string $text, string $dest_lang, $source_lang="de") : string 
-   {
-       static $trans = array('method' => "POST", 'route' => "/translate", 'query' => ['api-version' => '3.0']);
-              
-       $options = [];
-       
-       $options['query'] = ['from' => $source_lang, 'to' => $dest_lang, 'api-version' => '3.0'];
-       
-       /*
-        * Input text goes in message body, ie as encoded json.
-        */
-       
-       $options['json'] = [['Text' => json_encode($text)]];;
-       
-       $options['http_errors'] = false;
-       
-       $contents = $this->request($trans['method'], $trans['route'], $options);
-       
-       if ($contents == false)
-            throw new \Exception("AzureTranslator::translate($text, 'en', 'de') returned false.\n");
-       
-       $obj = json_decode($contents);
-       
-       /*
-        * Since Azure text translate returns a quoted result like this: '"translation here within quotes"',
-        * we remove the superfulouse quotes.
-        */
-       $result = \trim($obj[0]->translations[0]->text, '"'); 
-       
-       return $result;
-   }
  
+   // An Azure text translate Status code of 429 means: "The server rejected the request because the client has exceeded request limits."
    final public function translate(string $text, string $dest_lang, $source_lang="de") : string 
    {
        static $trans = array('method' => "POST", 'route' => "/translate", 'query' => ['api-version' => '3.0']);

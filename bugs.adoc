@@ -1,32 +1,6 @@
 = Bugs
 
-1. When a noun like **Macht** is looked up, the verb machen and its prefix versions are also returned; however, the current code does not handle this. Not expecting
-any verbs or a verb family, it does not detect this as a prefix verb family.
-
-The "solution" is not to save any verb definitions that accompany a noun that is looked up, but rather to filter it out.
-
-2. Surround both `insert_db($word)` and `insert_samples($word)` with the same commit/rollback.
-
-New code under development is in ~/temp:
-
-1. If Leipzig can't find any sample sentences for a word, say, 'sich äußern', it will return a 404 "not found" error.  
-
-2. If SystranTranslator::lookup() can't find a definition for a word, what does it return?
-
-3. What happens if AzureTranslate::translator() can't translate a string? What exception does it throw?
-
-Changes:
-
-Changed RestApi.php to enable setting http_errors in ctor.
-
-#1 is now handled above for the case where no samples are found.
-
-#2 It handles "no definitions" o.k..
-
-#3 What I expected for this case is happening. I am getting:
-
-* A Status code of 429
-* The associated message is: "The server rejected the request because the client has exceeded request limits."
+An Azure text translate Status code of 429 means: "The server rejected the request because the client has exceeded request limits."
 
 For this, do:
 

@@ -14,15 +14,13 @@ class Database extends DbBase implements InserterInterface {
    
    //--private $conjugations_prim_keys = []; // maps words to primary keys
    
-   public function __construct(Config $config)
+   public function __construct(\PDO $pdo, string $locale)
    {
-     $cred = $config->get_db_credentials();
-     
-     $this->pdo = new \PDO($cred["dsn"], $cred["user"], $cred["password"]); 
-       
+     $this->pdo = $pdo;
+ 
      parent::__construct($this->pdo);
        
-     $this->locale = $config->get_locale();
+     $this->locale = $locale;
 
      $this->inserter = new WordResultInserter($this);
    }
@@ -46,8 +44,6 @@ class Database extends DbBase implements InserterInterface {
 
      $conj_id = $conjsTbl->insert($wrface, $word_id);
      
-     //--$this->conjugations_prim_keys[$wrface->word_defined()] = $conj_id;  
-
      $conjugatedVerbsTbl = $this->get_table('VerbsConjugationsTable');
 
      $conjugatedVerbsTbl->insert($conj_id, $word_id);
@@ -105,15 +101,9 @@ class Database extends DbBase implements InserterInterface {
 
    public function save_lookup(WordInterface $wdResultFace)   
    {
-      // Begin transaction
-      $this->pdo->beginTransaction();
-
       // Pass the inserter to the word, noun or verb object, which will then
       // pass itself (this) to the appropriate Database insertion method.
       $wdResultFace->accept($this->inserter); 
-
-      // Commit transaction.
-      $this->pdo->commit();
 
       return true;
    } 

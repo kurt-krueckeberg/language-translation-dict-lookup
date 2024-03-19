@@ -21,19 +21,25 @@ class Vocab {
 
    private File $logFile;
 
+   private \PDO $pdo;
+
    private MessageLog $log;
 
-   function __construct(Config $c)
+   function __construct(Config $config)
    {
-      $this->dictionary = new SystranTranslator($c);
+      $this->dictionary = new SystranTranslator($config);
 
-      $this->translator = new DeeplTranslator($c);
+      $this->translator = new DeeplTranslator($config);
+
+      $cred = $config->get_db_credentials();
      
-      $this->db = new Database($c); 
+      $this->pdo = new \PDO($cred["dsn"], $cred["user"], $cred["password"]); 
+     
+      $this->db = new Database($this->pdo, $config->get_locale()); 
   
-      $this->sentFetcher = new LeipzigSentenceFetcher($c);
+      $this->sentFetcher = new LeipzigSentenceFetcher($config);
 
-      $this->c = $c; 
+      $this->c = $config; 
       
       $this->logFile = new File("results.log", "w");
 
@@ -104,12 +110,16 @@ class Vocab {
            $log->log("$word is already in database.");
            return;
        }
-             
+
+       $this->pdo->beginTransaction();
+
        $this->db->save_lookup($lookup_result);
 
        $log->log("$word saved to database.");
 
        $this->insertdb_samples($word, $log);
+
+       $this->pdo->commit();
    }
 
    private function insertdb_samples(string $word, MessageLog $log) : bool
