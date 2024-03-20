@@ -1,13 +1,32 @@
 = Bugs
 
-An Azure text translate Status code of 429 means: "The server rejected the request because the client has exceeded request limits."
+A general design to handle exceptions catching is needed. Deepl and Azure both return http erro of 429 when the client
+has issues to many requests; ie, the request rate is too high. One must dealy before resending the next translation request.
 
 For this, do:
 
-* Research all AzureTranslate response codes.
+* Research all Azure and Deepl text translate response codes.
 * catch the 429 error, print a message and rethrow, enusre no commit!
 
 Azure Pricing Tiers:
 
 * link:https://azure.microsoft.com/en-us/pricing/details/cognitive-services/translator/[Translator Pricing Tiers]
 * link:https://learn.microsoft.com/en-us/azure/ai-services/Translator/service-limits[Rate Limits] -- how often you can request text translation.
+
+== Deepl Translation Http Error Response Codes
+
+See link:https://www.deepl.com/docs-api/api-access/error-handling[Error Handling]:
+
+> Errors are indicated by standard HTTP status codes. It is important to make sure that your application handles errors in an appropriate way. To that end, please consult the list of expected status code results that is provided with each endpoint's documentation.
+>
+> Special care should be taken to ensure proper handling of:
+
+> HTTP 429: too many requests. Your application should be configured to resend the request after some delay, rather than constantly resending the request.
+
+> HTTP 456: quota exceeded. The translation limit of your account has been reached. Consider upgrading your subscription.
+
+> HTTP 500 and higher: temporary errors in the DeepL service. Your application should be configured to resend the request after some delay, rather than constantly resending the request.
+
+> If the error persists for a long time, please contact support@DeepL.com.
+
+When retrying failed requests, your application should implement an exponential-backoff strategy: increasing the delay time with each further failed request. All official DeepL client libraries implement this strategy, so they can be used as a reference.
