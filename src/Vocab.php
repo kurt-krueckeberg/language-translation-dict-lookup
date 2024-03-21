@@ -29,7 +29,7 @@ class Vocab {
    {
       $this->dictionary = new SystranTranslator($config);
 
-      $this->translator = new DeeplTranslator($config);
+      $this->translator = new AzureTranslator($config);
 
       $cred = $config->get_db_credentials();
      
