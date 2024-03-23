@@ -32,19 +32,17 @@ if (!file_exists($c->lookup_file())) {
 
  } catch (ClientException $e) {
 
-            echo "Guzzle request encountered a 400 or 500 http error.\n";
+      echo "Guzzle request encountered a 400 or 500 http error response.\n";
 
-            $d1 = $e->getRequest();
-            
-            $d2 = $e->getResponse();
+      echo Psr7\Message::toString($e->getRequest());
 
-            echo Psr7\Message::toString($e->getRequest());
-            echo Psr7\Message::toString($e->getResponse());
+      echo Psr7\Message::toString($e->getResponse());
 
  } catch (\Exception $e) {
 
-   echo $e->getMessage();
+      echo $e->getMessage();
+  
+      echo "-----\ngetting Trace as String: \n";
 
-   echo "-----\ngetting Trace as String: \n";
-   echo $e->getTraceAsString();
+      echo $e->getTraceAsString();
  }
