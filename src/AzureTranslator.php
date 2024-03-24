@@ -18,12 +18,24 @@ class AzureTranslator extends RestApi implements TranslateInterface {
    private $json = array();
 
    private \Collator $collator;
+
+   static private \CharacterCounter $charCounter;
   
    public function __construct(Config $c)
    {
       parent::__construct($c, ProviderID::azure);        
 
       $this->collator = $c->getCollator(); 
+
+      if (!isset(self::$charCounter)) {
+
+          self::$charCounter = new CharacterCounter();
+      }
+   }
+
+   function limitReached() : bool
+   {
+
    }
 
    // If no source language is given, it will be auto-detected.
@@ -130,6 +142,11 @@ that implmentseither WordInterface/NounInterface/VerbInterface just like Systran
    final public function translate(string $text, string $dest_lang, $source_lang="de") : string 
    {
        static $trans = array('method' => "POST", 'route' => "/translate", 'query' => ['api-version' => '3.0']);
+
+       // Update the number of character requested from Text Translation and check if we have exceeded our tier's request lime
+       if ($this->limitTest($text)) {
+
+       }
               
        $options = [];
        
