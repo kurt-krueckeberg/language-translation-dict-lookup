@@ -47,6 +47,9 @@ These limits are restricted to Microsoft's standard translation models. Custom t
 
 This link discussses link:https://learn.microsoft.com/en-us/answers/questions/1434488/why-has-this-azure-ai-translate-request-exceeded-r[Requests Exceeded].
 
+**TODO:** I need to determine how many characters I am requesting to be translated by the Text Translation REST API. There isn't an easy way to determine how fast to send requests. 
+So I will just throw an exception and log a "Character Count of XX per hour was exceeded for my tier of FXX. Try again in one hour. Your monthly quoted is XXX".
+
 == Deepl Translation Response Status Codes
 
 See link:https://www.deepl.com/docs-api/api-access/error-handling[Error Handling]:
