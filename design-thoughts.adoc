@@ -1,12 +1,7 @@
 = General Thoughts
 
-* No need to sign up for Azure text translation pay-as-go since I am using Deepl API Pro.
-
-* The `AzureTranslator::lookup()` does not return the expected result. It should return a result(s) like `SystranTranslator::lookup()`, namely
-a `SystranNoun/Verb/RelatedVerb/Word`. There might be a way to make a generic Word/Noun/Verb object that is
-comfigured to implement the respective `WordInterface/NounInterface/VerbInterface`.
-
-
+* The `AzureTranslator::lookup()`, the dictionary word look up, does not return the expected result; howerver, I am using Systran instead. Azure
+should return a result(s) similiar to `SystranTranslator::lookup()`, namely, a `WordInterface` of either `SystranNoun-`, `-Verb`, or `RelatedVerb`. 
 == Guzzle Exceptions Design
 
 According to the Guzzle link:https://docs.guzzlephp.org/en/stable/quickstart.html?highlight=ClientException#exceptions[Exceptions] documentation:
