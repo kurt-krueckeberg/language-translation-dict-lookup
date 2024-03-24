@@ -13,6 +13,8 @@ class SystranTranslator extends RestApi implements TranslateInterface, Dictionar
       parent::__construct($c, ProviderID::systran); 
 
       $this->collator = $c->getCollator(); 
+
+      $this->createLookupIterator = new CreateSystranLookupResultsIterator;
    }
 
    public function getTranslationLanguages() : array
@@ -87,9 +89,7 @@ class SystranTranslator extends RestApi implements TranslateInterface, Dictionar
 
       $matches = $r['outputs'][0]['output']['matches']; 
 
-      $createIterator = new CreateSystranLookupResultsIterator;
-  
-      return $createIterator($word, $matches, $this->collator);
+      return $this->createLookupIterator($word, $matches, $this->collator);
     }
     
      /*
