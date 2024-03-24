@@ -129,30 +129,13 @@ class Database extends DbBase implements InserterInterface {
        return $fetch($word_id);
    }
 
-   function save_samples(string $word, TranslateInterface $translator, \Traversable $sentences_iter) : bool
+   function save_sample(string $word, string $sentence, string $translation) : bool
    {
       $samplesTbl = $this->get_table('SamplesTable'); 
    
       $prim_key = $this->word_prim_keys[$word];
 
-      foreach ($sentences_iter as $sentence)  {
-
-           // Will this exceed the rate limit 
-          if ($this->$rate_limit($text) == false) {
-
-           $msg =  "Azure hourly character limit will be exceeded. Waiting...." . self::$rate_limit->wait_time() . "\n";
-
-           $this->log($msg);
-
-            echo $msg;
-
-            $this->rate_limit->wait(); // Do we want to wait?
-         }
-
-         $trans = $translator->translate($sentence, 'en', 'de'); 
-         
-         $samplesTbl->insert($sentence, $trans, $prim_key);                  
-      }
+      $samplesTbl->insert($sentence, $translation, $prim_key);                  
       
       return true;
    }

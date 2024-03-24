@@ -128,18 +128,60 @@ class Vocab {
        $this->pdo->commit();
    }
 
+   function save_samples(string $word, \Traversable $sentences_iter) : bool
+   {
+      foreach ($sentences_iter as $sentence)  {
+
+           // Will this exceed the rate limit 
+          if ($this->$rate_limit($text) == false) {
+
+           $msg =  "Azure hourly character limit will be exceeded. Waiting...." . self::$rate_limit->wait_time() . "\n";
+
+           $this->log($msg);
+
+            echo $msg;
+
+            $this->rate_limit->wait(); // Do we want to wait?
+         }
+
+         $trans = $translator->translate($sentence, 'en', 'de'); 
+         
+         $this->db->save_sample($sentence, $trans, $prim_key);                  
+      }
+      
+      return true;
+   }
+
    private function insertdb_samples(string $word, MessageLog $log) : bool
    { 
-
       $sent_iter = $this->sentFetcher->fetch($word, $this->c->sentence_count());
       
-      if ($sent_iter == false) { //TODO: Change  
+      if ($sent_iter == false) { 
           
            $log->log("No sample sentences available for '$word'.");
            return false;
       }
 
-      return $this->db->save_samples($word, $this->translator, $sent_iter);  
+      foreach ($sentences_iter as $sentence)  {
+
+        if ($this->$rate_limit($text) == false) {
+
+           $msg =  "Azure hourly character limit will be exceeded. Waiting to translate sample sentences for $word...." . self::$rate_limit->wait_time() . "\n";
+
+           $log($msg);
+
+           echo $msg;
+
+           $this->rate_limit->wait(); 
+        }
+
+        $translation = $translator->translate($sentence, 'en', 'de'); 
+
+        $this->db->save_sample($word, $sentence, $translation);  
+
+      }
+
+      return true;
    }
 
    function create_html(array $words, string $filename) : void
