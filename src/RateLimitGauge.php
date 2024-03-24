@@ -34,6 +34,22 @@ class RateLimitGauge  {
      return ($str_length + $this->char_cnt >= $this->hourly_limit) ? true: false;
   }
 
+  function wait_time() : int
+  {
+    $cur_time = \time();
+    return $cur_time = $this->start_time;
+  }
+
+  function wait() : void
+  {
+    $cur_time = \time();
+    $wait = $cur_time = $this->start_time;
+
+    \sleep($wait);
+
+    $this->reset();
+  }
+
   function __invoke(string $input) : bool
   {
       $this->char_cnt += \strlen($input);

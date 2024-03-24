@@ -19,7 +19,9 @@ class AzureTranslator extends RestApi implements TranslateInterface {
 
    private \Collator $collator;
 
-   static private \CharacterCounter $charCounter;
+   static private RateLimitGauge $rate_limit;
+
+   static private $s1_hourly_limit = 2000000;
   
    public function __construct(Config $c)
    {
@@ -29,7 +31,7 @@ class AzureTranslator extends RestApi implements TranslateInterface {
 
       if (!isset(self::$charCounter)) {
 
-          self::$charCounter = new CharacterCounter();
+          self::$rate_limit = new RateLimitGauge(self::$s1_hourly_limit;
       }
    }
 
@@ -143,9 +145,13 @@ that implmentseither WordInterface/NounInterface/VerbInterface just like Systran
    {
        static $trans = array('method' => "POST", 'route' => "/translate", 'query' => ['api-version' => '3.0']);
 
-       // Update the number of character requested from Text Translation and check if we have exceeded our tier's request lime
-       if ($this->limitTest($text)) {
+       // Will this exceed the rate limit 
+       if (self::$rate_limit($text) == false) {
 
+           //TODO: Echo a message of some sort
+
+           echo "Azure hourly character limit will be exceeded. Waiting...." . self::$rate_limit->wait_time() . "\n";
+           self::$rate_limit->wait(); // Do we want to wait?
        }
               
        $options = [];
