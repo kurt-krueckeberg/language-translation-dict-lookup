@@ -1,4 +1,65 @@
-= General Thoughts
+== Azure Translation Overview
+
+My **kurt-text-translation** service is the pay-as-you-go **S1 Standard**. It cost (see link:https://azure.microsoft.com/en-us/pricing/details/cognitive-services/translator/[Azure AI Translator Pricing])
+$10 per million chars of standard translation.
+
+In addtion to text translation, Document translation is supported, but it uses a different endpoint. 
+
+=== Hourly Translation Request Limits
+
+There is an limit on how many **characters can be translated per hour**. This hourly limit is based on your translation tier. For my **S1 pay-as-you-go** tier. The character limit oer
+hour is 40 million charactes.
+
+Azure Text Translate
+ink:https://learn.microsoft.com/en-us/azure/ai-services/translator/service-limits[Rate Limits] explains how often you can request text translation:
+
+Your character limit per hour is based on your Translator subscription tier.
+
+The hourly quota should be consumed evenly throughout the hour. For example, at the F0 tier limit of 2 million characters per hour, characters should be consumed no faster than roughly 33,300 characters per minute. The sliding window range is 2 million characters divided by 60 minutes.
+
+You're likely to receive an out-of-quota response under the following circumstances:
+
+* You reached or surpassed the quota limit.
+* You sent a large portion of the quota in too short a period of time.
+
+There are no limits on concurrent requests.
+
+|===
+|Tier|	Character limit
+
+|F0     
+|2 million characters per hour
+
+|S1     
+|40 million characters per hour
+
+|S2 / C2
+|40 million characters per hour
+
+|S3 / C3
+|120 million characters per hour
+
+|S4 / C4
+|200 million characters per hour
+|===
+
+Limits for multi-service subscriptions are the same as the S1 tier.
+
+These limits are restricted to Microsoft's standard translation models. Custom translation models that use Custom Translator are limited to 3,600 characters per second, per model.
+
+See these links
+
+* link:https://learn.microsoft.com/en-us/answers/questions/1434488/why-has-this-azure-ai-translate-request-exceeded-r[Requests Exceeded].
+* link:https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling#error-code[Request Limits and Throttling]
+
+**TODO:** I need to determine how many characters I am requesting to be translated by the Text Translation REST API. There isn't an easy way to determine how fast to send requests. 
+So I will just throw an exception and log a "Character Count of XX per hour was exceeded for my tier of FXX. Try again in one hour. Your monthly quoted is XXX".
+
+* See `AzureTranslator::limitReached() : bool` and the new logic in `AzureTranslator::translate(string $inout, ...)`
+
+
+
+== Guzzle Exceptions Overview 
 
 * The `AzureTranslator::lookup()`, the dictionary word look up, does not return the expected result; howerver, I am using Systran instead. Azure
 should return a result(s) similiar to `SystranTranslator::lookup()`, namely, a `WordInterface` of either `SystranNoun-`, `-Verb`, or `RelatedVerb`. 
