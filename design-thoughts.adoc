@@ -5,6 +5,9 @@ $10 per million chars of standard translation.
 
 In addtion to text translation, Document translation is supported, but it uses a different endpoint. 
 
+
+TODO: Put the `Vocab\RateLimitGauge` in `Vocab\Vocob`?
+
 === Hourly Translation Request Limits
 
 There is an limit on how many **characters can be translated per hour**. This hourly limit is based on your translation tier. For my **S1 pay-as-you-go** tier. The character limit oer
