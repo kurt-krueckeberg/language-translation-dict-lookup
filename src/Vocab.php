@@ -25,6 +25,10 @@ class Vocab {
 
    private MessageLog $log;
 
+   private RateLimitGauge $rate_limit;
+
+   private $s1_hourly_limit = 2000000; // This should go in Config.php
+
    function __construct(Config $config)
    {
       $this->dictionary = new SystranTranslator($config);
@@ -44,6 +48,8 @@ class Vocab {
       $this->logFile = new File("results.log", "w");
 
       $this->log = new MessageLog($this->logFile);
+
+      $this->rate_limit = new RateLimitGauge($config['config']['providers']['azure']['limit']);
    }
   
    function db_insert(array $words) : array
@@ -95,6 +101,7 @@ class Vocab {
           
           $results[] = $word_defined;
           
+           
           $this->insertdb_lookup_result($result, $log);          
       }
    

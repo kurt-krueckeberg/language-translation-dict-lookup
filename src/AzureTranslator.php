@@ -18,11 +18,7 @@ class AzureTranslator extends RestApi implements TranslateInterface {
    private $json = array();
 
    private \Collator $collator;
-
-   static private RateLimitGauge $rate_limit;
-
-   static private $s1_hourly_limit = 2000000;
-  
+ 
    public function __construct(Config $c)
    {
       parent::__construct($c, ProviderID::azure);        
