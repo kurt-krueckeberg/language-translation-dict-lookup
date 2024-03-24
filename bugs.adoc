@@ -45,7 +45,7 @@ Limits for multi-service subscriptions are the same as the S1 tier.
 
 These limits are restricted to Microsoft's standard translation models. Custom translation models that use Custom Translator are limited to 3,600 characters per second, per model.
 
-This link discussses link:https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling[Request Limits and Throttling].
+This link discussses link:https://learn.microsoft.com/en-us/answers/questions/1434488/why-has-this-azure-ai-translate-request-exceeded-r[Requests Exceeded].
 
 == Deepl Translation Response Status Codes
 
