@@ -1,3 +1,5 @@
+= Design
+
 == Azure Translation Overview
 
 My **kurt-text-translation** service is the pay-as-you-go **S1 Standard**. It cost (see link:https://azure.microsoft.com/en-us/pricing/details/cognitive-services/translator/[Azure AI Translator Pricing])
@@ -5,10 +7,7 @@ $10 per million chars of standard translation.
 
 In addtion to text translation, Document translation is supported, but it uses a different endpoint. 
 
-
-TODO: Put the `Vocab\RateLimitGauge` in `Vocab\Vocob`?
-
-=== Hourly Translation Request Limits
+=== Azure Hourly Translation Request Limits
 
 There is an limit on how many **characters can be translated per hour**. This hourly limit is based on your translation tier. For my **S1 pay-as-you-go** tier. The character limit oer
 hour is 40 million charactes.
@@ -55,12 +54,62 @@ See these links
 * link:https://learn.microsoft.com/en-us/answers/questions/1434488/why-has-this-azure-ai-translate-request-exceeded-r[Requests Exceeded].
 * link:https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling#error-code[Request Limits and Throttling]
 
-**TODO:** I need to determine how many characters I am requesting to be translated by the Text Translation REST API. There isn't an easy way to determine how fast to send requests. 
-So I will just throw an exception and log a "Character Count of XX per hour was exceeded for my tier of FXX. Try again in one hour. Your monthly quoted is XXX".
+===  Azure Text Translation Response Status Codes
 
-* See `AzureTranslator::limitReached() : bool` and the new logic in `AzureTranslator::translate(string $inout, ...)`
+See link:https://learn.microsoft.com/en-us/azure/ai-services/translator/reference/v3-0-translate#response-status-codes[Response Status Codes]
 
+The following are the possible HTTP status codes that a request returns.
 
+[caption="Azure"]
+.Status codes
+|===
+|Code|Description
+
+|200
+|Success.
+
+|400
+|One of the query parameters is missing or not valid. Correct request parameters before retrying.
+
+|401
+|The request couldn't be authenticated. Check that credentials are specified and valid.
+
+|403
+|The request isn't authorized. Check the details error message. This status code often indicates that you used all the free translations provided with a trial subscription.
+
+|408
+|The request couldn't be fulfilled because a resource is missing. Check the details error message. When the request includes a custom category, this status code often indicates that the custom translation system isn't yet available to serve requests. The request should be retried after a waiting period (for example, 1 minute).
+
+|429
+|The server rejected the request because the client exceeded request limits.
+
+|500
+|An unexpected error occurred. If the error persists, report it with: date and time of the failure, request identifier from response header X-RequestId, and client identifier from request header X-ClientTraceId.
+
+|503
+|Server temporarily unavailable. Retry the request. If the error persists, report it with: date and time of the failure, request identifier from response header X-RequestId, and client identifier from request header X-ClientTraceId.
+|===
+
+If an error occurs, the request returns a JSON error response. The error code is a 6-digit number combining the 3-digit HTTP status code followed by a 3-digit number to further categorize the error. Common error codes can be found on the v3 Translator reference page.
+
+== Deepl Translation Response Status Codes
+
+See link:https://www.deepl.com/docs-api/api-access/error-handling[Error Handling]:
+
+[quote, Deepl Error Handling]
+----
+Errors are indicated by standard HTTP status codes. It is important to make sure that your application handles errors in an appropriate way. To that end, please consult the list of expected status code results that is provided with each endpoint's documentation.
+Special care should be taken to ensure proper handling of:
+
+HTTP 429: too many requests. Your application should be configured to resend the request after some delay, rather than constantly resending the request.
+
+HTTP 456: quota exceeded. The translation limit of your account has been reached. Consider upgrading your subscription.
+
+HTTP 500 and higher: temporary errors in the DeepL service. Your application should be configured to resend the request after some delay, rather than constantly resending the request.
+
+If the error persists for a long time, please contact support@DeepL.com.
+When retrying failed requests, your application should implement an exponential-backoff strategy: increasing the delay time with each further failed request. All official DeepL client libraries implement this strategy, so they can be used as a reference.
+----
 
 == Guzzle Exceptions Overview 
 

@@ -136,7 +136,19 @@ class Database extends DbBase implements InserterInterface {
       $prim_key = $this->word_prim_keys[$word];
 
       foreach ($sentences_iter as $sentence)  {
-          
+
+           // Will this exceed the rate limit 
+          if ($this->$rate_limit($text) == false) {
+
+           $msg =  "Azure hourly character limit will be exceeded. Waiting...." . self::$rate_limit->wait_time() . "\n";
+
+           $this->log($msg);
+
+            echo $msg;
+
+            $this->rate_limit->wait(); // Do we want to wait?
+         }
+
          $trans = $translator->translate($sentence, 'en', 'de'); 
          
          $samplesTbl->insert($sentence, $trans, $prim_key);                  

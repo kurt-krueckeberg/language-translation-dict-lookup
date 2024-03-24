@@ -141,15 +141,6 @@ that implmentseither WordInterface/NounInterface/VerbInterface just like Systran
    {
        static $trans = array('method' => "POST", 'route' => "/translate", 'query' => ['api-version' => '3.0']);
 
-       // Will this exceed the rate limit 
-       if (self::$rate_limit($text) == false) {
-
-           //TODO: Echo a message of some sort
-
-           echo "Azure hourly character limit will be exceeded. Waiting...." . self::$rate_limit->wait_time() . "\n";
-           self::$rate_limit->wait(); // Do we want to wait?
-       }
-              
        $options = [];
        
        $options['query'] = ['from' => $source_lang, 'to' => $dest_lang, 'api-version' => '3.0'];

@@ -101,7 +101,6 @@ class Vocab {
           
           $results[] = $word_defined;
           
-           
           $this->insertdb_lookup_result($result, $log);          
       }
    
