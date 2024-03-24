@@ -48,8 +48,10 @@ class Vocab {
       $this->logFile = new File("results.log", "w");
 
       $this->log = new MessageLog($this->logFile);
+      
+      $config = $config->get_config(ProviderID::azure);
 
-      $this->rate_limit = new RateLimitGauge($config['config']['providers']['azure']['limit']);
+      $this->rate_limit = new RateLimitGauge($config['limit']);
    }
   
    function db_insert(array $words) : array
@@ -133,7 +135,7 @@ class Vocab {
       foreach ($sentences_iter as $sentence)  {
 
            // Will this exceed the rate limit 
-          if ($this->$rate_limit($text) == false) {
+          if (($this->rate_limit)($text) == false) {
 
            $msg =  "Azure hourly character limit will be exceeded. Waiting...." . self::$rate_limit->wait_time() . "\n";
 
@@ -144,7 +146,7 @@ class Vocab {
             $this->rate_limit->wait(); // Do we want to wait?
          }
 
-         $trans = $translator->translate($sentence, 'en', 'de'); 
+         $trans = $this->translator->translate($sentence, 'en', 'de'); 
          
          $this->db->save_sample($sentence, $trans, $prim_key);                  
       }
@@ -154,9 +156,9 @@ class Vocab {
 
    private function insertdb_samples(string $word, MessageLog $log) : bool
    { 
-      $sent_iter = $this->sentFetcher->fetch($word, $this->c->sentence_count());
+      $sentences_iter = $this->sentFetcher->fetch($word, $this->c->sentence_count());
       
-      if ($sent_iter == false) { 
+      if ($sentences_iter == false) { 
           
            $log->log("No sample sentences available for '$word'.");
            return false;
@@ -164,9 +166,9 @@ class Vocab {
 
       foreach ($sentences_iter as $sentence)  {
 
-        if ($this->$rate_limit($text) == false) {
+        if (($this->rate_limit)($sentence) == false) {
 
-           $msg =  "Azure hourly character limit will be exceeded. Waiting to translate sample sentences for $word...." . self::$rate_limit->wait_time() . "\n";
+           $msg =  "Azure hourly character limit will be exceeded. Waiting to translate sample sentences for $word...." . ($this->rate_limit)->wait_time() . "\n";
 
            $log($msg);
 
@@ -175,7 +177,7 @@ class Vocab {
            $this->rate_limit->wait(); 
         }
 
-        $translation = $translator->translate($sentence, 'en', 'de'); 
+        $translation = $this->translator->translate($sentence, 'en', 'de'); 
 
         $this->db->save_sample($word, $sentence, $translation);  
 

@@ -19,8 +19,6 @@ class RateLimitGauge  {
      $this->hourly_limit = $limit;
 
      $this->time_start = \time();
-
-     $this->wait = $wait;
   }
 
   function reset() : void

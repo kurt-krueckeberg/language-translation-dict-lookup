@@ -24,16 +24,6 @@ class AzureTranslator extends RestApi implements TranslateInterface {
       parent::__construct($c, ProviderID::azure);        
 
       $this->collator = $c->getCollator(); 
-
-      if (!isset(self::$charCounter)) {
-
-          self::$rate_limit = new RateLimitGauge(self::$s1_hourly_limit;
-      }
-   }
-
-   function limitReached() : bool
-   {
-
    }
 
    // If no source language is given, it will be auto-detected.

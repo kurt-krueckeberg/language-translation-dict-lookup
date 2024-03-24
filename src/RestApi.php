@@ -17,11 +17,11 @@ class RestApi {
    {      
        $this->http_errors = $http_errors;
 
-       $params = $c->get_config($id);
+       $config = $c->get_config($id);
        
-       $this->client = new Client( ['base_uri' => $params['base_uri']]);
-
-       $this->headers =  $params['headers'];
+       $this->client = new Client( ['base_uri' => $config['endpoint']]);
+       
+       $this->headers =  $config['header'];
    }
 
    protected function request(string $method, string $route, array $options = array()) : string

@@ -1,0 +1,67 @@
+There are no results for ankommen.
+'Ansehung' is the word we want to define. It was of POS: noun. The actual 'lemma' returned was: Ansehung
+'kommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: kommen
+'ankommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: ankommen
+'aufkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: aufkommen
+'auskommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: auskommen
+'daherkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: daherkommen
+'davonkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: davonkommen
+'dazukommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: dazukommen
+'durchkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: durchkommen
+'entgegenkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: entgegenkommen
+'herankommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: herankommen
+'herauskommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: herauskommen
+'hereinkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: hereinkommen
+'herkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: herkommen
+'herüberkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: herüber~kommen
+'herunterkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: herunterkommen
+'hervorkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: hervorkommen
+'hierherkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: hierher~kommen
+'hineinkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: hineinkommen
+'hinzukommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: hinzukommen
+'hochkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: hochkommen
+'klarkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: klar~kommen
+'mitkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: mitkommen
+'nachkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: nachkommen
+'rauskommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: raus~kommen
+'reinkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: rein~kommen
+'rüberkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: rüber~kommen
+'runterkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: runter~kommen
+'übereinkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: übereinkommen
+'umkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: umkommen
+'vorankommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: vorankommen
+'vorbeikommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: vorbeikommen
+'vorkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: vorkommen
+'wegkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: wegkommen
+'weiterkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: weiterkommen
+'wiederkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: wiederkommen
+'zugutekommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: zugute~kommen
+'zukommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: zukommen
+'zurechtkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: zurechtkommen
+'zurückkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: zurückkommen
+'zusammenkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: zusammenkommen
+'zuvorkommen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: zuvorkommen
+'sehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: sehen
+'absehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: absehen
+'ansehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: ansehen
+'aufsehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: auf~sehen
+'aussehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: aussehen
+'durchsehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: durch~sehen
+'einsehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: einsehen
+'entgegensehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: entgegen~sehen
+'fernsehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: fernsehen
+'herabsehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: herab~sehen
+'hinwegsehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: hinweg~sehen
+'nachsehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: nachsehen
+'sich ansehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: sich ansehen
+'sich gegenübersehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: sich gegenüber~sehen
+'sich sehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: sich sehen
+'sich wiedersehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: sich wiedersehen
+'umsehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: umsehen
+'voraussehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: voraus~sehen
+'voraussehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: voraussehen
+'vorhersehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: vorhersehen
+'vorsehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: vorsehen
+'wegsehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: weg~sehen
+'wiedersehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: wiedersehen
+'zusehen' is the word we want to define. It was of POS: verb. The actual 'lemma' returned was: zusehen

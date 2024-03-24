@@ -32,6 +32,11 @@ readonly class SystranWord implements WordInterface, VisitorInterface {
    {
       return Pos::from($this->match['source']['pos']);
    } 
+   
+   function get_lemma() : string
+   {
+       return $this->match['source']['lemma'];
+   }
 
    function word_defined() : string
    {

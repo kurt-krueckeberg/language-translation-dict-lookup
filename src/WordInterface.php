@@ -5,6 +5,8 @@ namespace Vocab;
 interface WordInterface extends \IteratorAggregate {
     
    function word_defined() : string;
+   
+   function get_lemma() : string;
 
    function  get_pos() : Pos;
 }
