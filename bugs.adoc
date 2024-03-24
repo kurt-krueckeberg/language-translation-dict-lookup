@@ -45,7 +45,10 @@ Limits for multi-service subscriptions are the same as the S1 tier.
 
 These limits are restricted to Microsoft's standard translation models. Custom translation models that use Custom Translator are limited to 3,600 characters per second, per model.
 
-This link discussses link:https://learn.microsoft.com/en-us/answers/questions/1434488/why-has-this-azure-ai-translate-request-exceeded-r[Requests Exceeded].
+See these links
+
+* link:https://learn.microsoft.com/en-us/answers/questions/1434488/why-has-this-azure-ai-translate-request-exceeded-r[Requests Exceeded].
+* link:https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling#error-code[Request Limits and Throttling]
 
 **TODO:** I need to determine how many characters I am requesting to be translated by the Text Translation REST API. There isn't an easy way to determine how fast to send requests. 
 So I will just throw an exception and log a "Character Count of XX per hour was exceeded for my tier of FXX. Try again in one hour. Your monthly quoted is XXX".
