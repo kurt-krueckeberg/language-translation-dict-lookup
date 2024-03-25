@@ -128,16 +128,16 @@ class Vocab {
        $this->insertdb_samples($word, $log);
 
        $this->pdo->commit();
-   }
+    }
 
    function save_samples(string $word, \Traversable $sentences_iter) : bool
    {
       foreach ($sentences_iter as $sentence)  {
 
            // Will this exceed the rate limit 
-          if (($this->rate_limit)($text) == false) {
+          if (($this->rate_limit)($text) === false) {
 
-           $msg =  "Azure hourly character limit will be exceeded. Waiting...." . self::$rate_limit->wait_time() . "\n";
+           $msg =  "Azure Text Translate hourly character limit will be exceeded. Waiting...." . self::$rate_limit->wait_time() . "\n";
 
            $this->log($msg);
 

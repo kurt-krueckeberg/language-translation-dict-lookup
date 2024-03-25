@@ -8,15 +8,11 @@ class SystranTranslator extends RestApi implements TranslateInterface, Dictionar
 
    private \Collator $collator;
    
-   private CreateSystranLookupResultsIterator $createLookupIterator;
-   
    public function __construct(Config $c)
    {
       parent::__construct($c, ProviderID::systran); 
 
       $this->collator = $c->getCollator(); 
-      
-      $this->createLookupIterator = new CreateSystranLookupResultsIterator();
    }
 
    public function getTranslationLanguages() : array
@@ -67,12 +63,8 @@ class SystranTranslator extends RestApi implements TranslateInterface, Dictionar
 
       $this->errorLog->fwrite($err);
    }
-   
-   /*
-      exact_match = true will not return prefix verb variants or noun forms of verbs, like Aussehen for aussehen.
-    */
-
-   final public function lookup(string $word, string $src, string $dest, bool $exact_match=false) : \Iterator 
+  
+   final public function lookup(string $word, string $src, string $dest) : \Iterator 
    {      
       static $lookup = array('method' => "POST", 'route' => "resources/dictionary/lookup");
 
@@ -89,57 +81,77 @@ class SystranTranslator extends RestApi implements TranslateInterface, Dictionar
        
       $r = json_decode($contents, true); // convert JSON string to \stdClass
 
-      $matches = $r['outputs'][0]['output']['matches']; 
-
-      return ($this->createLookupIterator)($word, $matches, $this->collator);
+      $matches = $r['outputs'][0]['output']['matches'];
+  
+      $matches = $this->merge_tilde_verbs($matches);           
+     
+      return SystranTranslator::LookupResultsGenerator($matches);
     }
-    
-     /*
-     * Examines $match->source
-     * 
-     * "source": {
-            "inflection": "(pl:Frauen)",
-            "info": "f",
-            "lemma": "Frau",
-            "phonetic": "",
-            "pos": "noun",
-            "term": "Frau"
-        }
-     * 
-     * and returns array with:
-     * 'word' => the word as it will b displayed, with plrual, if noun; with conjugation, if verb.
-     * 'pos' => the part of speech.
-     * 
-     */
-    
-    private function get_source_info(\stdClass $match) : array
-    {        
-       if ($match->source->pos == 'noun') {
-           /*         
-           if ($match->source->info == 'm')
-               $gender = 'der';
-           else if ($match->source->info == 'n')
-               $gender = 'das';
-           else  
-               $gender = 'die';
-                      
-           $word = $gender . ' ' . $match->source->lemma;
+     
+    public static function LookupResultsGenerator(array $arr) : \Iterator
+    {
+        foreach ($arr as $key => $current) {
            
-           if (strlen($match->source->inflection) !== 0) 
-               
-                $word .= ' ' . $match->source->inflection;
+           yield match($current['source']['pos']) {
 
-           else 
-               $word .= " (no plural)";
-            */
-                       
-                  
-        } else if ($match->source->pos == "verb") 
-            
-            $word = $match->source->lemma . ' ' . $match->source->inflection;
-        else 
-            $word  = $match->source->lemma;   
-                
-        return array('word' => $word, 'pos' => $match->source->pos, 'gender' => $match->source->info);
-   }   
+             'noun' => new SystranNoun($current),
+             'verb' => new SystranVerb($current, function() use($current) : string { 
+                    return $current['source']['inflection'];}
+               ),
+             default => new SystranWord($current)
+           };
+        }
+    }
+
+   /* 
+    * Merge the definitions for verbs returned in $matches[$i], for those $i, where
+      $matches[$i]['source'['lemma'] contains a tilde, as, for example, an~kommen
+    * We remove the version  an~kommen and merge it with ankommen
+
+    * Not all prefix verb version have a non-tilde version
+    */
+    private function merge_tilde_verbs($matches) : array
+    {
+       $results = [];
+       
+       for ($i = 0; $i < count($matches); ++$i) { 
+
+           // Look for tilde-separated verbs.
+           $pos = strpos($matches[$i]['source']['lemma'], "~");
+
+           // If none found, save the prefix verb in results[]. 
+           if ($pos === false || count($matches) == $i + 1) { 
+               
+               $results[] = $matches[$i];
+               continue;
+           }
+          
+           // Check if the next verb is a non-tild version?
+           $j = $i + 1;   
+           
+           // Is the next verb a non-tilde version
+           $cmp = strcmp(substr($matches[$i]['source']['lemma'], 0, $pos), substr($matches[$j]['source']['lemma'], 0, $pos));
+                   
+           if (0 != $cmp) {
+               
+               $results[] = $matches[$i];
+
+           } else {
+
+              // Create a new array with the merged definitions that adds any tilde-verb defintions not in the non-tilde version.
+              $combined_definitions = $this->combine_definitions($matches[$j]['targets'], $matches[$i]['targets']);
+              
+              // Overwrite the non-tilde array of definitions (in ['targets']
+              $matches[$j]['targets'] = $combined_definitions;
+              
+              // Save the non-tilde verb now with the merged definitions in results[]
+              $results[] = $matches[$j]; 
+              
+              // Adjust $i, so we skip the non-tilde version
+              $i = $j;
+           }           
+       }       
+
+       return $results;
+    }
 }

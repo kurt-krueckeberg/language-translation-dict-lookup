@@ -4,7 +4,7 @@ namespace Vocab;
 
 class FetchConjugation  {  
    
-   private static $sql_select =  "select vc.conj_id from words as w inner join verbs_conjs as vc on w.id=vc.word_id where w.word=:word";
+   private static $sql_select =  "select verb_conjs.id from words as w inner join verb_conjs on w.id=verb_conjs.word_id where w.word=:word";
 
    private  static $stmts;
                                            

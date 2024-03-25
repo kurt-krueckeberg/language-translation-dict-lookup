@@ -2,7 +2,7 @@
 declare(strict_types=1);
 use \SplFileObject as File;
 
-use Vocab\{FileReader, Config, Vocab, SystranTranslator};
+use Vocab\{FileReader, Config, Vocab};
 use GuzzleHttp\{Psr7, Exception\ClientException};
 
 include 'vendor/autoload.php';
@@ -14,30 +14,80 @@ if (!file_exists($c->lookup_file())) {
     die($c->lookup_file() . " not found.\n");
 }
 
- //$words = ['ankommen', 'ansehen', 'kommen', 'sehen', 'kam', 'kamen', 'sah', 'sahen']; 
- $words = ['sah', 'sahen']; 
+ $fac = new Vocab($c);
 
-   $dict = new SystranTranslator($c);
+ $words = $c->fetch_words();
 
-   foreach ($words as $word) {
+ try {
 
-      $results = $dict->lookup($word, 'de', 'en');
+ /*
+  RestApi now thwrows 400 and 500 http errors. Its request() method will print the meaning of these exceptions to stderr.
+  Based on what gets thrown, I can decide if I really have a coding error or I need a differenet Azure payment plan.
+  */
 
-     if ($results->valid() === false) {
+ $words_inserted = [ 'sich begeben',
+'begeben',
+'beheizen',
+'belasten',
+'aufbewahren',
+'aufbewahren',
+'bewahren',
+'Ehre',
+'ehren',
+'Eintrag',
+'Einweisung',
+'Empörung',
+'Macht',
+'aufmachen',
+'ausmachen',
+'durchmachen',
+'festmachen',
+'freimachen',
+'gleichmachen',
+'klarmachen',
+'machen',
+'sich machen',
+'mitmachen',
+'nachmachen',
+'weitermachen',
+'wettmachen',
+'abfahren',
+'anfahren',
+'ausfahren',
+'einfahren',
+'einfahren',
+'fahren',
+'festfahren',
+'fortfahren',
+'fortfahren',
+'herausfahren',
+'hinausfahren',
+'hinunterfahren',
+'hinfahren',
+'mitfahren',
+'vorbeifahren',
+'weiterfahren',
+'wiedereinfahren',
+'zurückfahren'
+];
 
-        echo "There are no results for $word.\n";
+ $fac->create_html($words_inserted, 'output');
+ 
+ file_put_contents("words-inserted.txt", implode("\n", $words_inserted));
 
-     }  else {
+ } catch (ClientException $e) {
 
-        foreach($results as $result) {
-            
-           $pos =  $result->get_pos()->value;
-           
-           $word = $result->word_defined();
-           
-           $lemma =  $result->get_lemma();
-           
-           echo "'" . $word . "' is the word we want to define. It was of POS: ". $pos . ". The actual 'lemma' returned was: " . $lemma . "\n";  
-        }
-     }
-   }
+      echo "Guzzle request encountered a 400 or 500 http error response.\n";
+
+      echo Psr7\Message::toString($e->getRequest());
+
+      echo Psr7\Message::toString($e->getResponse());
+
+ } catch (\Exception $e) {
+
+      echo $e->getMessage();
+  
+      echo "-----\ngetting Trace as String: \n";
+
+      echo $e->getTraceAsString();
+ }

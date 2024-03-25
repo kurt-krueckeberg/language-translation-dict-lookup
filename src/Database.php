@@ -12,8 +12,6 @@ class Database extends DbBase implements InserterInterface {
 
    private $word_prim_keys = []; // maps words to primary keys
    
-   //--private $conjugations_prim_keys = []; // maps words to primary keys
-   
    public function __construct(\PDO $pdo, string $locale)
    {
      $this->pdo = $pdo;
@@ -44,34 +42,7 @@ class Database extends DbBase implements InserterInterface {
 
      $conj_id = $conjsTbl->insert($wrface, $word_id);
      
-     $conjugatedVerbsTbl = $this->get_table('VerbsConjugationsTable');
-
-     $conjugatedVerbsTbl->insert($conj_id, $word_id);
-     
      return $word_id;
-   }
-
-   public function insert_related_verb(WordInterface $wrface) : int
-   {
-      $word_id = $this->insert_word($wrface);
-
-      $conjugatedVerbsTbl = $this->get_table('VerbsConjugationsTable');
-
-      /*
-       The code in FetchConjugation is used to get conj_id of the main verb, which is obtained from this SQL: 
-      
-         select vc.conj_id  from words as w inner join verbs_conjs as vc on w.id=vc.word_id inner join conjs on conjs.id=vc.conj_id where w.word='rechnen';
-      */
-      
-      $fetch = $this->get_table('FetchConjugation');
-
-      $row = $fetch($wrface->main_verb()); 
-
-      $conj_id = $row['conj_id'];
-      
-      $conjugatedVerbsTbl->insert($conj_id, $word_id);
-      
-      return $conj_id;
    }
 
    public function insert_word(WordInterface $wrface) : int

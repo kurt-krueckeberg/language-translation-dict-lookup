@@ -10,31 +10,12 @@ join
     nouns_data as n on w.id=n.word_id
 where w.id=:word_id";
 
-    protected static $sql_verb = "select w.id as word_id, w.pos as pos, w.word as word, tenses.conjugation as conjugation from
+    protected static $sql_verb = "select w.id as word_id, w.pos as pos, w.word as word, verb_conjs.conjugation as conjugation from
      words as w
 join 
-    verbs_conjs as v  on w.id=v.word_id
-join
-    conjs as tenses on tenses.id=v.conj_id
+    verb_conjs  on w.id=verb_conjs.word_id
 where w.id=:word_id";
 
-    protected static $sql_verb_family = "select word_id, word, pos, conjugation FROM
-(select vc.conj_id as outer_conj_id, vc.word_id as outer_word_id from verbs_conjs as vc where vc.word_id=:word_id) as Y
-inner join
-(select w.id as word_id,
-     w.word as word,
-     w.pos as pos,
-     conjs.conjugation as conjugation,
-     vc.conj_id as inner_conj_id     
- from words as w
- inner join
-  verbs_conjs as vc ON vc.word_id=w.id
- inner join
-  conjs ON conjs.id=vc.conj_id
-) as X
-on Y.outer_conj_id=X.inner_conj_id
-order by word_id ASC";
-    
     static private $stmts = array();
     
     private $rows = array();
@@ -52,7 +33,7 @@ order by word_id ASC";
        $this->iter = match(Pos::from($row['pos'])) {
 
            Pos::noun => $this->get_noun_iterator($pdo, $row),
-           Pos::verb => CreateDBWordResultIterator::VerbGenerator($pdo, $this->fetchRows($pdo, 'sql_verb_family', $row['word_id'])),
+           Pos::verb => CreateDBWordResultIterator::VerbGenerator($pdo, $this->fetchRows($pdo, 'sql_verb', $row['word_id'])),
            default => CreateDBWordResultIterator::SingleResultGenerator(new DBWord($pdo, $row))
        };
     }
