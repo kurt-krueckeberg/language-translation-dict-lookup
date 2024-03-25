@@ -73,9 +73,11 @@ class CreateSystranLookupResultsIterator {
            });
            
            
-           //TODO: check if $main_verb_index is FALSE!
-           
            /*
+              --> Missing the check 
+
+                if ($main_verb_index === false) 
+           
              Next, determine whether we have a prefix-verbs family result or individual results.
             */
            $this->is_verb_family = $this->isPrefixVerbFamily($matches, $main_verb_index, $word_lookedup);
@@ -126,7 +128,7 @@ class CreateSystranLookupResultsIterator {
        return $result; 
    }
       
-   
+/*   
     public function __invoke_prior(string $word_lookedup, array $matches, \Collator $collator) 
     {
        $this->is_verb_family = false; // We start by assuming it is false.
@@ -149,9 +151,7 @@ class CreateSystranLookupResultsIterator {
                return $collator->compare($left['source']['lemma'], $key);
            });
            
-           /*
-             Next, determine whether we have a prefix-verbs family result or individual results.
-            */
+           //  Next, determine whether we have a prefix-verbs family result or individual results.
            $this->is_verb_family = $this->isPrefixVerbFamily($matches, $main_verb_index, $word_lookedup);
            
            if ($this->is_verb_family) {       
@@ -176,6 +176,7 @@ class CreateSystranLookupResultsIterator {
 
        return $result; 
    }
+*/
        
     /*
      Determine if the verb looked up, whose index in $matches is $this->lookedup_index, has other related verbs:
