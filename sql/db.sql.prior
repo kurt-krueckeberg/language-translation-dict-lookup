@@ -1,4 +1,3 @@
-drop database if exists vocab;
 create database if not exists vocab;
 
 use vocab; 
@@ -23,10 +22,12 @@ create table if not exists nouns_data (
   unique(word_id),
   foreign key(word_id) references words(id) on delete cascade
 );
+
 # -- The actual verb conjs are in this table
 # -- prefix and reflexive verbs share the conjuation of the 
 # -- main verb. Thus, the conjugation of ankommen is kommen's
 # -- conjugation.
+# -- 
 create table if not exists conjs (
   id int not null auto_increment primary key,
   conjugation varchar(75) not null
