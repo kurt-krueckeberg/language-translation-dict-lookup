@@ -154,4 +154,37 @@ class SystranTranslator extends RestApi implements TranslateInterface, Dictionar
 
        return $results;
     }
+ /*
+     * Adds any definitions in $tilde['targets'] to the $nontilde['targets'] that are not present.
+     */   
+    private function combine_definitions(array $defns_nontilde, array $defns_tilde) : array
+    {
+       $cmp = function(array $left, array $right) : int { return strcmp($left['lemma'], $right['lemma']); };         
+ 
+       usort($defns_tilde, $cmp); // sort by 'lemma' value
+ 
+       usort($defns_nontilde, $cmp); // sort by 'lemma' value
+ 
+       $bs = new binary_search();
+ 
+       $additional_defns = [];
+ 
+       for ($i = 0; $i < count($defns_tilde); ++$i) {
+ 
+           $rc = $bs($defns_nontilde, $defns_tilde[$i]['lemma'], function(array $target, string $key) : int {
+               
+                 $rc = strcmp($target['lemma'], $key);
+                 
+                 return $rc;
+                 });
+ 
+           if ($rc === -1)
+              $additional_defns[] = $defns_tilde[$i];
+       }
+       
+       // Append the targets -- the definitions -- in the tilde array not found in the non-tilde array
+       $all_definitions = array_merge($defns_nontilde, $additional_defns);
+       
+       return $all_definitions; 
+   }
 }
