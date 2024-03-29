@@ -1,8 +1,7 @@
 <?php
 declare(strict_types=1);
-use \SplFileObject as File;
 
-use Vocab\{FileReader, Config, Vocab};
+use Vocab\{Config, Vocab};
 use GuzzleHttp\{Psr7, Exception\ClientException};
 
 include 'vendor/autoload.php';
