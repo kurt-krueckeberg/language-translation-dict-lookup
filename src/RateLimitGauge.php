@@ -4,9 +4,9 @@ namespace Vocab;
 
 class RateLimitGauge  {
 
-  private int $char_cnt; // Number of characters per hour.
+  private int $char_cnt; // Number of characters translated so far in the current hour.
 
-  private int $hourly_limit; 
+  private int $hourly_limit;  // Number of characters permitted in a hour?
 
   private static $hour_seconds = 3600;
 

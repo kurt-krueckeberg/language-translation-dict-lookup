@@ -19,9 +19,9 @@ class RestApi {
 
        $config = $c->get_config($id);
        
-       $this->client = new Client( ['base_uri' => $config['base_uri']]);
+       $this->client = new Client( ['base_uri' => $config['endpoint']]);
        
-       $this->headers =  $config['headers'];
+       $this->headers =  $config['header'];
    }
 
    protected function request(string $method, string $route, array $options = array()) : string
