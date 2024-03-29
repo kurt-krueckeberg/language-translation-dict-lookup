@@ -25,9 +25,7 @@ class Vocab {
 
    private MessageLog $log;
 
-   private RateLimitGauge $rate_limit;
-
-   private $s1_hourly_limit = 2000000; // This should go in Config.php
+   private RateLimitGauge $rate_limit;   
 
    function __construct(Config $config)
    {
