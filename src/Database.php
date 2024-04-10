@@ -72,8 +72,11 @@ class Database extends DbBase implements InserterInterface {
 
    public function save_lookup(WordInterface $wdResultFace)   
    {
-      // Pass the inserter to the word, noun or verb object, which will then
-      // pass itself (this) to the appropriate Database insertion method.
+      /*
+       *  Pass the Inserter to WordInterface, which will then itself (this)
+       *  to the appropriate Database insertion method: either
+       *  insert_word, insert_noun or insert_verb.
+       */
       $wdResultFace->accept($this->inserter); 
 
       return true;
@@ -104,6 +107,10 @@ class Database extends DbBase implements InserterInterface {
    {
       $samplesTbl = $this->get_table('SamplesTable'); 
    
+      /*
+       * Get the word's primary key, its `words.id`, saved by: 
+       *   insert_word(WordInterface).
+       */
       $prim_key = $this->word_prim_keys[$word];
 
       $samplesTbl->insert($sentence, $translation, $prim_key);                  
