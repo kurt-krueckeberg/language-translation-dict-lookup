@@ -16,14 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `vocab`
---
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `vocab` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
-
-USE `vocab`;
-
---
 -- Table structure for table `confidence`
 --
 
@@ -63,7 +55,7 @@ CREATE TABLE `defns` (
   PRIMARY KEY (`id`),
   KEY `word_id` (`word_id`),
   CONSTRAINT `defns_ibfk_1` FOREIGN KEY (`word_id`) REFERENCES `words` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2825 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2869 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2893,7 +2885,51 @@ INSERT INTO `defns` VALUES
 (2821,'to root',764),
 (2822,'to grub',765),
 (2823,'to root',765),
-(2824,'to scrabble',765);
+(2824,'to scrabble',765),
+(2825,'underpass',766),
+(2826,'to doze',767),
+(2827,'to slumber',767),
+(2828,'to snooze',767),
+(2829,'to nap',767),
+(2830,'to drowse',767),
+(2831,'gay',768),
+(2832,'homosexual',768),
+(2833,'gay',769),
+(2834,'box',770),
+(2835,'crate',770),
+(2836,'to betray',771),
+(2837,'to reveal',771),
+(2838,'to sell out',771),
+(2839,'to divulge',771),
+(2840,'to give away',771),
+(2841,'to pack',772),
+(2842,'to package',772),
+(2843,'to tackle',773),
+(2844,'to address',773),
+(2845,'to handle',773),
+(2846,'to get',773),
+(2847,'to unwrap',774),
+(2848,'to unpack',774),
+(2849,'to wrap',775),
+(2850,'to pack',775),
+(2851,'to wrap up',775),
+(2852,'to pack',776),
+(2853,'to grab',776),
+(2854,'to tackle',776),
+(2855,'to go',776),
+(2856,'to cram',776),
+(2857,'to repackage',777),
+(2858,'to repack',777),
+(2859,'to wrap up',778),
+(2860,'saliva',779),
+(2861,'sputum',779),
+(2862,'spittle',779),
+(2863,'to descend',780),
+(2864,'to come',781),
+(2865,'to originate',781),
+(2866,'to derive',781),
+(2867,'to hail',781),
+(2868,'to dates back',781);
 /*!40000 ALTER TABLE `defns` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2912,7 +2948,7 @@ CREATE TABLE `exprs` (
   PRIMARY KEY (`id`),
   KEY `defn_id` (`defn_id`),
   CONSTRAINT `exprs_ibfk_1` FOREIGN KEY (`defn_id`) REFERENCES `defns` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1065 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1074 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3985,7 +4021,16 @@ INSERT INTO `exprs` VALUES
 (1061,'an Sanktionen sich halten','to adhere to the sanctions',2763),
 (1062,'an Gemeinschaftsrecht sich halten','to adhere to Community law',2763),
 (1063,'an die Regeln sich halten','to abide by the rules',2765),
-(1064,'mit diesem Tier mitzuhalten','to keep up with that animal',2780);
+(1064,'mit diesem Tier mitzuhalten','to keep up with that animal',2780),
+(1065,'kleine Kiste','little box',2834),
+(1066,'echte Kiste','real box',2834),
+(1067,'stammen aus einem Land','to come from a country',2864),
+(1068,'aus einem Betrieb stammen','to come from a holding',2864),
+(1069,'aus einem Zuchtbetrieb stammen','to come from a farm',2864),
+(1070,'aus dem Ozean stammen','to come from the ocean',2864),
+(1071,'aus diesen Ländern stammen','to originate in those countries',2865),
+(1072,'von Tieren stammen','to originate from animals',2865),
+(1073,'aus Drittländern stammen','to originate in third countries',2865);
 /*!40000 ALTER TABLE `exprs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4004,7 +4049,7 @@ CREATE TABLE `nouns_data` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `word_id` (`word_id`),
   CONSTRAINT `nouns_data_ibfk_1` FOREIGN KEY (`word_id`) REFERENCES `words` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4065,7 +4110,11 @@ INSERT INTO `nouns_data` VALUES
 (49,'m','Zugänge',722),
 (50,'m','Zünder',723),
 (51,'f','Referenzen',728),
-(52,'m','Ausschläge',729);
+(52,'m','Ausschläge',729),
+(53,'u','',766),
+(54,'f','Schwulen',768),
+(55,'f','Kisten',770),
+(56,'m','Speichel',779);
 /*!40000 ALTER TABLE `nouns_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4084,7 +4133,7 @@ CREATE TABLE `samples` (
   PRIMARY KEY (`id`),
   KEY `word_id` (`word_id`),
   CONSTRAINT `samples_ibfk_1` FOREIGN KEY (`word_id`) REFERENCES `words` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3055 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3118 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7146,7 +7195,70 @@ INSERT INTO `samples` VALUES
 (3051,'Menschen lungern auf den Straßen herum, wühlen im Mist, bitten um Geld.','People are loitering on the streets, digging in the crap, asking for money.',765),
 (3052,'\"Die Bilder und Berichte aus Syrien wühlen mich genauso auf wie wahrscheinlich die meisten Bürger\", sagte sie der Passauer Neue Presse.','The pictures and reports from Syria warm me up just as much as probably most of the citizens,\" she told the Passauer Neue Presse.',765),
 (3053,'Merkel: \"Die Bilder und Berichte wühlen mich auf\"','Merkel: \\\"The pictures and reports woke me up\\',765),
-(3054,'Er liebt es, wenn sie den Haarknoten löst und er in ihrem Haar wühlen kann.','He loves it when she unties the bun and he can feel in her hair.',765);
+(3054,'Er liebt es, wenn sie den Haarknoten löst und er in ihrem Haar wühlen kann.','He loves it when she unties the bun and he can feel in her hair.',765),
+(3055,'Aber das gilt für Unterführung und Brücke gleichermaßen.','But that applies equally to undercarriage and bridging.',766),
+(3056,'Bis Freitag gestalten sie nun die Unterführung mit verschiedenen Zeichnungen.','Until Friday, they are now designing the undercarriage with various drawings.',766),
+(3057,'Eine Frau ertrank in ihrem Auto in einer Unterführung, in der das Wasser auf drei Meter Höhe anstieg.','A woman drowned in her car in an undercarriage where the water rose to a height of three meters.',766),
+(3058,'Dabei werden sie angewiesen, die Unterführung zu benutzen.','In doing so, they are instructed to use the undercarriage.',766),
+(3059,'Es gibt eine weitere Unterführung.','There\'s another undercarriage.',766),
+(3060,'Nicht auszuschließen, dass dies Frau von der Leyen mittlerweile selbst zu dämmern beginnt.','It cannot be ruled out that Ms. von der Leyen is now beginning to dampen this herself.',767),
+(3061,'Kritiker, die in Stadler gerne einen wenig autoaffinen Technokraten sehen, sehen bereits das Ende seiner Karriere dämmern.','Critics who like to see Stadler as a technocrat with little affinity for cars already see the end of his career dampening.',767),
+(3062,'Sie kritisieren vor allem die öffentliche Unterstützung des Superstars für Schwule und Lesben.','Above all, they criticize the \\u00f6public support of the superstar\\u00fcr for gays and lesbians.',768),
+(3063,'Er könne nicht verstehen, wieso Schwule so darauf bestehen, Kinder zu adoptieren.','He can\\u00f6nne not understand why gays are so insistent on adopting children.',768),
+(3064,'Der US-Präsident hatte sich dafür ausgesprochen, dass Schwule und Lesben in Amerika heiraten dürfen.','The U.S. president had spoken out in favor of gays and lesbians being allowed to marry in America.',768),
+(3065,'Viel Applaus erhielt sie für ihr Versprechen, sich für Rechte und Gesetze einzusetzen, mit denen Lesben und Schwule nicht diskriminiert werden.','She received much applause for her pledge to stand up for rights and laws that do not discriminate against lesbians and gays.',768),
+(3066,'Aber der Lehrer bekennt auch, dass selbst im Schmelztiegel von Manhattan, Schwule immer noch Diskriminierungen erfahren.','But the teacher also admits that even in the melting pot of Manhattan, gays still experience discrimination.',768),
+(3067,'Wobei, Sie selbst sagen schwul, oder?','Although, you say gay yourself, don\'t you?',769),
+(3068,'Nein, ich bin nicht schwul!','No, I\'m not gay!',769),
+(3069,'Das Berufungsgericht wies zudem die Behauptung von Gegnern der Homo-Ehe zurück, Walker sei voreingenommen gewesen, weil er schwul sei.','The Court of Appeals also rejected claims by opponents of gay marriage that Walker was biased because he was gay.',769),
+(3070,'“ Die Aussagen gehen sogar noch weiter, einige Freunde glauben, Breivik sei in Wirklichkeit schwul gewesen, aber habe Angst vor einem Outing gehabt.','\\u201c The statements go even further, some friends believe that Breivik was actually gay but was afraid of coming out.',769),
+(3071,'Während der Schulzeit wurde er einst fast totgeprügelt, weil ihn seine Angreifer fälschlicherweise für schwul hielten.','During his school years, he was almost beaten to death because his attackers thought he was gay.',769),
+(3072,'Die Militärpolizei stellte die Kiste sicher und eröffnete eine Untersuchung.','The military police seized the crate and opened an investigation.',770),
+(3073,'Dieser Taucher wurde von seinem Retter in einer schmutzigen Kiste gebracht.','This diver was brought by his rescuer in a dirty box.',770),
+(3074,'In einem der wenigen Länder weltweit darf auf deutschen Autobahnen gerast werden, was die Kiste hergibt.','In one of the few countries in the world, you can race on German motorways as much as you can.',770),
+(3075,'Angeblich ging es dabei um eine Wette, der Wetteinsatz soll eine Kiste Bier gewesen sein.','Allegedly, it was a bet, the bet is said to have been a crate of beer.',770),
+(3076,'Eigentlich harmlos, aber ter Stegen steht zu weit vor der Kiste und zeigt kaum Reaktion.','Actually harmless, but ter Stegen is too far in front of the box and shows hardly any reaction.',770),
+(3077,'Wann sich der Rennstall mit der Situation des Australiers befasst, wollte Mateschitz nicht verraten.','When the racing team will deal with the Australian\'s situation, Mateschitz did not want to reveal.',771),
+(3078,'Bisher weigert sich Samsung, ein Datum zu verraten.','So far, Samsung refuses to reveal a date.',771),
+(3079,'Weitere Details wollte Morhaime dazu aber noch nicht verraten.','However, Morhaime did not want to reveal further details yet.',771),
+(3080,'Ob Menschen bereitwillig ihre Freunde verraten, wenn eine Software sie dazu auffordert?','Are people willing to betray their friends when software asks them to do so?',771),
+(3081,'Maradona hat inzwischen auch verraten, worin sich die beiden kleinen Argentinier so sehr ähneln.','In the meantime, Maradona has also revealed what the two little Argentines \\u00e4 resemble so much.',771),
+(3082,'Nur anpacken müsste man es endlich.','All you have to do is get to it.',773),
+(3083,'Drei Dinge muss die neue Regierung sofort anpacken, sagt der Verbandschef im Gespräch mit manager magazin online.','The new government must tackle three things immediately, says the head of the association in an interview with manager magazin online.',773),
+(3084,'Im Urteil der fünf Wirtschaftsweisen sollte die deutsche Regierung mehr Reformen im Inland anpacken.','In the opinion of the five economic experts, the German government should tackle more domestic reforms.',773),
+(3085,'Es glänzt also nicht immer alles und überall golden, was deutsche Unternehmen in virtuellen Welten anpacken.','So it is not always everything that German companies tackle in virtual worlds that shines golden.',773),
+(3086,'Doch die politischen Führer beider Parteien in Washington wollen im Wahljahr dieses heiße Eisen nicht anpacken.','But the political leaders of both parties in Washington do not want to tackle this hot iron in an election year.',773),
+(3087,'Ich hatte herausgefunden, der junge Mann, den ich Abdul nennen möchte, wolle auspacken.','I had found out that the young man I wanted to call Abdul wanted to unpack.',774),
+(3088,'Kann sie einen ähnlichen Lauf wieder auspacken?','Can she unpack a \\u00e4like run again?',774),
+(3089,'Aber die große Bazooka kann die EZB ohnehin nicht auspacken, weil ihr dazu das Mandat fehlt, ist sich Feld sicher.','But the ECB can\'t unpack the big bazooka anyway because it lacks the mandate to do so, Feld is sure.',774),
+(3090,'In den Filmen dokumentieren meist männliche Verbraucher, wie sie neue technische Geräte auspacken und erstmals in den Händen halten.','In the films, mostly male consumers document how they unpack new technical devices and hold them in their hands for the first time.',774),
+(3091,'Wenn sie auspacken würden, wäre das ihr Todesurteil, wurde von Beobachtern angemerkt.','If they were to unpack, it would be their death sentence, observers noted.',774),
+(3092,'Die Kanzlerin kann ihre ganzen Rettungspakete und ihren Fiskalpakt einpacken.','The chancellor can pack up all her bailout packages and her fiscal pact.',775),
+(3093,'Jetzt endlich durfte der reiche Beifall die Freude über das Gehörte so deutlich ausdrücken, dass der Chor erst nach zwei Zugaben die Instrumente einpacken durfte.','Now, finally, the rich applause was allowed to express the joy \\u00fccâr\\u00f6r\\u00f6r\\u00f6r\\u00fcr\\u00f0f\\u00f0f\\u00f0f\\u00f0f\\u00f\\u00f6r\\u00f6r\\u00f6r\\u00f6r\\u00f6r\\u00f6r\\u00f6r\\u00f6r\\u00f6r\\u00f6r\\u00f6r\\u00',775),
+(3094,'Die Badehose kann man ja ruhig schon mal einpacken.','You can pack your swimming trunks.',775),
+(3095,'Kinder nicht zu dick einpacken: Viele Eltern packen ihr Kind zum Spaziergang so dick ein, dass sie sich kaum noch bewegen können.','Don\'t wrap up children too thickly: Many parents wrap their child so thickly for a walk that they can hardly move.',775),
+(3096,'Wem es beim Sonnenbaden auf dem Balkon oder im Schwimmbad schnell langweilig wird, der sollte außer der Sonnencreme auch ein Buch einpacken.','If you get bored quickly while sunbathing on the balcony or in the swimming pool, you should also pack a book in addition to the sunscreen.',775),
+(3097,'Menschen wie ich wollen auf Reisen solche Momente festhalten, einstecken, in ihre Koffer packen.','People like me want to capture moments like this when they travel, put them in their pockets, put them in their suitcases.',776),
+(3098,'Angenommen, er müsste seinen Koffer für die letzte Reise packen.','Suppose he had to pack his suitcase for the last trip.',776),
+(3099,'Die San Antonio Spurs sind vor eigenem Publikum einfach nicht zu packen.','The San Antonio Spurs just can\'t be grabbed in front of their own crowd.',776),
+(3100,'Die Lenkung ist präzise und die Bremsen packen gewohnt kraftvoll zu.','The steering is precise and the brakes are as powerful as ever.',776),
+(3101,'Der erste Trainer, der in der neuen Saison seine Sachen packen muss, ist Gerd Dais.','The first coach who has to pack his bags in the new season is Gerd Dais.',776),
+(3102,'Oder ob er gegebenenfalls umpacken muss.','Or if he has to repack if necessary.',777),
+(3103,'Beim Heruntersteigen der Gangway beschleicht den Ankömmling der Gedanke, dass gleich, wenn die Maschine zum Rückflug gestartet ist, jeder hier seine sieben Sachen zusammenpacken, das Licht ausschalten und die Tür abschließen wird.','As they descend the gangway, the thought creeps up on the arrivals that as soon as the plane has taken off for the return flight, everyone here will pack up their belongings, turn off the lights and lock the door.',778),
+(3104,'Die beiden Schweizer Routiniers können ihre Siebensachen nach dem ersten Lauf zusammenpacken.','The two Swiss veterans will be able to pack up their belongings after the first run.',778),
+(3105,'Um möglichst alle Tiere zu identifizieren, wird weiterhin Material wie Kot, Speichel oder Haare für genetische Untersuchungen gesammelt.','In order to identify as many animals as possible, material such as faeces, saliva or hair will continue to be collected for genetic testing.',779),
+(3106,'Offenbar verändert der Speichel der Raupe die Zusammensetzung der vom Kohl ausgesendeten Duftstoffe, wie Poelman schreibt.','Apparently, the caterpillar\\u00e4 saliva changes the composition of the scents emitted by the cabbage, as Poelman writes.',779),
+(3107,'Er huste oft, zudem müsse ihm regelmäßig der Speichel aus seinem Gesicht gewischt werden.','He coughs often, and he regularly needs to have his saliva wiped off his face.',779),
+(3108,'Das Testverfahren ist simpel: Man nimmt das weisse Teststäbchen in den Mund und befeuchtet es mit Speichel.','The test procedure is simple: you put the white test stick in your mouth and moisten it with saliva.',779),
+(3109,'Jennifer Lerner und ihre Mitarbeiter von der Harvard-Universität untersuchten den Speichel von 148 Menschen in höheren Positionen bei US-Regierung und Militär sowie 65 einfachen Angestellten verschiedener Berufe auf die Menge des Stresshormons Cortisol.','Jennifer Lerner and her collaborators from Harvard University examined the saliva of 148\\u2005people in senior positions in the U.S. government and military, as well as 65 rank-and-file employees of various occupations, for the amount of the stress hormone cortisol.',779),
+(3110,'Um ihrem Ursprung auf die Schliche zu kommen, analysierten Atkinson und seine Kollegen einzelne Wörter aus verschiedenen Sprachen, die vom gleichen Ursprungswort abstammen.','To get to the bottom of their origin, Atkinson and his colleagues analysed individual words from different languages that are derived from the same original word.',780),
+(3111,'Eine Untersuchung fand demnach neun Weibchen, drei Männchen und fünf Jungtiere auf der Insel Isabela, die genetisch zum Teil in erster Generation von der Unterart der Insel Pinta abstammen, der \"Lonesome George\" angehörte.','A study found nine females, three males and five juveniles on Isabela Island, some of which are genetically descended in the first generation from the subspecies of Pinta Island, to which \"Lonesome George\" belonged.',780),
+(3112,'Auf die Spur des Gens kam das Forscherteam unter Leitung von Professor Ruthild Weber bei der Untersuchung von Zellen, die von bösartigen Hirntumoren abstammen - von sogenannten Glioblastomen.','The research team, led by Professor Ruthild Weber, discovered the gene while studying cells derived from b\\u00f6s-like brain tumors - so-called glioblastomas.',780),
+(3113,'Sämtliche Impressionen stammen aus der Kampagne, die kooperativ mit Freunden bestritten werden kann.','All impressions come from the campaign, which can be done cooperatively with friends.',781),
+(3114,'Benannt wurden Persönlichkeiten, die aus Deutschland stammen und noch leben.','Personalities were named who come from Germany and are still alive.',781),
+(3115,'Woher die Benutzernamen und Passwörter stammen, ist nicht bekannt.','It is not known where the usernames and passwords came from.',781),
+(3116,'Die Musiker, mit denen sich Prophet hier umgibt, stammen überwiegend aus der heutigen Musikszene von San Francisco.','The musicians Prophet surrounds himself with here are mostly from today\'s San Francisco music scene.',781),
+(3117,'Sie stammen von mehrere Privatpersonen und richten sich gegen alle Hauptakteure der Affäre.','They come from several private individuals and are directed against all the main actors of the aff\\u00e4re.',781);
 /*!40000 ALTER TABLE `samples` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -7854,7 +7966,18 @@ INSERT INTO `verb_conjs` VALUES
 (761,'schreit,schrie,geschrien'),
 (763,''),
 (764,''),
-(765,'');
+(765,''),
+(767,''),
+(771,'verrät,verriet,verraten'),
+(772,''),
+(773,''),
+(774,''),
+(775,''),
+(776,'packt,packte,gepackt'),
+(777,''),
+(778,''),
+(780,'abstammt,abstammte,abgestammt'),
+(781,'stammt,stammte,gestammt');
 /*!40000 ALTER TABLE `verb_conjs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -7871,7 +7994,7 @@ CREATE TABLE `words` (
   `pos` varchar(10) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `word` (`word`)
-) ENGINE=InnoDB AUTO_INCREMENT=766 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=782 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8644,7 +8767,23 @@ INSERT INTO `words` VALUES
 (762,'hingegen','adv'),
 (763,'aufwühlen','verb'),
 (764,'herumwühlen','verb'),
-(765,'wühlen','verb');
+(765,'wühlen','verb'),
+(766,'Unterführung','noun'),
+(767,'dämmern','verb'),
+(768,'Schwule','noun'),
+(769,'schwul','adj'),
+(770,'Kiste','noun'),
+(771,'verraten','verb'),
+(772,'abpacken','verb'),
+(773,'anpacken','verb'),
+(774,'auspacken','verb'),
+(775,'einpacken','verb'),
+(776,'packen','verb'),
+(777,'umpacken','verb'),
+(778,'zusammenpacken','verb'),
+(779,'Speichel','noun'),
+(780,'abstammen','verb'),
+(781,'stammen','verb');
 /*!40000 ALTER TABLE `words` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -8657,4 +8796,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-10 14:43:44
+-- Dump completed on 2024-04-16 21:31:03
