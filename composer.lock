@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "deeplcom/deepl-php",
-            "version": "v1.7.1",
+            "version": "v1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DeepLcom/deepl-php.git",
-                "reference": "85670d6622cb68f76170afde7c0713ac2e3ef61f"
+                "reference": "bb52c54794d2d6caf1136f5a579ff96fd1db78b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DeepLcom/deepl-php/zipball/85670d6622cb68f76170afde7c0713ac2e3ef61f",
-                "reference": "85670d6622cb68f76170afde7c0713ac2e3ef61f",
+                "url": "https://api.github.com/repos/DeepLcom/deepl-php/zipball/bb52c54794d2d6caf1136f5a579ff96fd1db78b3",
+                "reference": "bb52c54794d2d6caf1136f5a579ff96fd1db78b3",
                 "shasum": ""
             },
             "require": {
@@ -65,9 +65,9 @@
             ],
             "support": {
                 "issues": "https://github.com/DeepLcom/deepl-php/issues",
-                "source": "https://github.com/DeepLcom/deepl-php/tree/v1.7.1"
+                "source": "https://github.com/DeepLcom/deepl-php/tree/v1.7.2"
             },
-            "time": "2024-02-28T13:35:58+00:00"
+            "time": "2024-04-24T09:24:26+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

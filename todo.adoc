@@ -1,3 +1,0 @@
-= Todo
-
-Add words in vocab.txt and vocab.txt.backup that are not aleady in the vocab database, not in the 'words' table, and other tables.
