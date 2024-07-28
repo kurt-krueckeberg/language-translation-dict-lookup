@@ -1,5 +1,5 @@
 = Design
-:stylesheet: adoc-foundation.css
+:stylesheet: dark.css
 :stylesdir: /home/kurt/asciidoctor-skins/css
 
 == Azure Translation Overview
@@ -150,6 +150,7 @@ documentation:
 
 The following tree view describes the Guzzle Exceptions hierachy:
 
+[,bash]
 ----
 . \RuntimeException
 └── TransferException (implements GuzzleException)
@@ -170,7 +171,8 @@ Guzzle throws exceptions for errors that occur during a transfer.
 `GuzzleHttp\Exception\BadResponseException` and `GuzzleHttp\Exception\BadResponseException` extends
 from `GuzzleHttp\Exception\RequestException`. +
 
-```php
+[,php]
+----
 use GuzzleHttp\{Psr7, Exception\ClientException};
 
 try {
@@ -186,7 +188,8 @@ try {
 
     echo "The response code is: " . $response->getStatusCode() . "\n";
 }
-```
+----
+
 
 * A `GuzzleHttp\Exception\ServerException` is thrown for **500** level errors if the http_errors
 * request option is set to true. This exception extends from
