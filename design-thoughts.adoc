@@ -1,6 +1,8 @@
 = Design
 :stylesheet: dark.css
 :stylesdir: /home/kurt/asciidoctor-skins/css
+:docinfodir: ./
+:docinfo: shared
 
 == Azure Translation Overview
 
@@ -171,7 +173,7 @@ Guzzle throws exceptions for errors that occur during a transfer.
 `GuzzleHttp\Exception\BadResponseException` and `GuzzleHttp\Exception\BadResponseException` extends
 from `GuzzleHttp\Exception\RequestException`. +
 
-[,php]
+[source,php]
 ----
 use GuzzleHttp\{Psr7, Exception\ClientException};
 
@@ -189,7 +191,6 @@ try {
     echo "The response code is: " . $response->getStatusCode() . "\n";
 }
 ----
-
 
 * A `GuzzleHttp\Exception\ServerException` is thrown for **500** level errors if the http_errors
 * request option is set to true. This exception extends from

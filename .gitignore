@@ -5,7 +5,6 @@ results.log
 log.txt
 config.xml
 vendor/
-*.html
 .vscode
 /nbproject
 src/Config.php
