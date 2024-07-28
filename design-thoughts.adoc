@@ -1,23 +1,31 @@
 = Design
+:stylesheet: dark.css
+:stylesdir: /home/kurt/asciidoctor-skins/css
 
 == Azure Translation Overview
 
-My **kurt-text-translation** service is the pay-as-you-go **S1 Standard**. It cost (see link:https://azure.microsoft.com/en-us/pricing/details/cognitive-services/translator/[Azure AI Translator Pricing])
+My **kurt-text-translation** service is the pay-as-you-go **S1 Standard**. It cost (see
+link:https://azure.microsoft.com/en-us/pricing/details/cognitive-services/translator/[Azure AI
+Translator Pricing])
 $10 per million chars of standard translation.
 
 In addtion to text translation, Document translation is supported, but it uses a different endpoint. 
 
 === Azure Hourly Translation Request Limits
 
-There is an limit on how many **characters can be translated per hour**. This hourly limit is based on your translation tier. For my **S1 pay-as-you-go** tier. The character limit oer
+There is an limit on how many **characters can be translated per hour**. This hourly limit is based
+on your translation tier. For my **S1 pay-as-you-go** tier. The character limit oer
 hour is 40 million charactes.
 
 Azure Text Translate
-ink:https://learn.microsoft.com/en-us/azure/ai-services/translator/service-limits[Rate Limits] explains how often you can request text translation:
+link:https://learn.microsoft.com/en-us/azure/ai-services/translator/service-limits[Rate Limits]
+explains how often you can request text translation:
 
 Your character limit per hour is based on your Translator subscription tier.
 
-The hourly quota should be consumed evenly throughout the hour. For example, at the F0 tier limit of 2 million characters per hour, characters should be consumed no faster than roughly 33,300 characters per minute. The sliding window range is 2 million characters divided by 60 minutes.
+The hourly quota should be consumed evenly throughout the hour. For example, at the F0 tier limit of
+2 million characters per hour, characters should be consumed no faster than roughly 33,300
+characters per minute. The sliding window range is 2 million characters divided by 60 minutes.
 
 You're likely to receive an out-of-quota response under the following circumstances:
 
@@ -26,6 +34,8 @@ You're likely to receive an out-of-quota response under the following circumstan
 
 There are no limits on concurrent requests.
 
+[%header,width=40%,cols="1,4",frame="none",grid="rows"]
+.Azure Text Translate Tier Quotas
 |===
 |Tier|	Character limit
 
@@ -47,7 +57,8 @@ There are no limits on concurrent requests.
 
 Limits for multi-service subscriptions are the same as the S1 tier.
 
-These limits are restricted to Microsoft's standard translation models. Custom translation models that use Custom Translator are limited to 3,600 characters per second, per model.
+These limits are restricted to Microsoft's standard translation models. Custom translation models
+that use Custom Translator are limited to 3,600 characters per second, per model.
 
 See these links
 
@@ -56,12 +67,15 @@ See these links
 
 ===  Azure Text Translation Response Status Codes
 
-See link:https://learn.microsoft.com/en-us/azure/ai-services/translator/reference/v3-0-translate#response-status-codes[Response Status Codes]
+See
+link:https://learn.microsoft.com/en-us/azure/ai-services/translator/reference/v3-0-translate#response-status-codes[Response
+Status Codes]
 
 The following are the possible HTTP status codes that a request returns.
 
 [caption="Azure"]
 .Status codes
+[%header,width=65%,cols="1,7",frame="none",grid="rows"]
 |===
 |Code|Description
 
@@ -75,7 +89,8 @@ The following are the possible HTTP status codes that a request returns.
 |The request couldn't be authenticated. Check that credentials are specified and valid.
 
 |403
-|The request isn't authorized. Check the details error message. This status code often indicates that you used all the free translations provided with a trial subscription.
+|The request isn't authorized. Check the details error message. This status code often indicates
+that you used all the free translations provided with a trial subscription.
 
 |408
 |The request couldn't be fulfilled because a resource is missing. Check the details error message. When the request includes a custom category, this status code often indicates that the custom translation system isn't yet available to serve requests. The request should be retried after a waiting period (for example, 1 minute).
@@ -87,7 +102,9 @@ The following are the possible HTTP status codes that a request returns.
 |An unexpected error occurred. If the error persists, report it with: date and time of the failure, request identifier from response header X-RequestId, and client identifier from request header X-ClientTraceId.
 
 |503
-|Server temporarily unavailable. Retry the request. If the error persists, report it with: date and time of the failure, request identifier from response header X-RequestId, and client identifier from request header X-ClientTraceId.
+|Server temporarily unavailable. Retry the request. If the error persists, report it with: date and
+time of the failure, request identifier from response header X-RequestId, and client identifier from
+request header X-ClientTraceId.
 |===
 
 If an error occurs, the request returns a JSON error response. The error code is a 6-digit number combining the 3-digit HTTP status code followed by a 3-digit number to further categorize the error. Common error codes can be found on the v3 Translator reference page.
@@ -96,28 +113,40 @@ If an error occurs, the request returns a JSON error response. The error code is
 
 See link:https://www.deepl.com/docs-api/api-access/error-handling[Error Handling]:
 
-[quote, Deepl Error Handling]
-----
-Errors are indicated by standard HTTP status codes. It is important to make sure that your application handles errors in an appropriate way. To that end, please consult the list of expected status code results that is provided with each endpoint's documentation.
+[quote,Deepl Error Handling]
+____
+Errors are indicated by standard HTTP status codes. It is important to make sure that your
+application handles errors in an appropriate way. To that end, please consult the list of expected
+status code results that is provided with each endpoint's documentation.
 Special care should be taken to ensure proper handling of:
 
-HTTP 429: too many requests. Your application should be configured to resend the request after some delay, rather than constantly resending the request.
+HTTP 429: too many requests. Your application should be configured to resend the request after some
+delay, rather than constantly resending the request.
 
-HTTP 456: quota exceeded. The translation limit of your account has been reached. Consider upgrading your subscription.
+HTTP 456: quota exceeded. The translation limit of your account has been reached. Consider upgrading
+your subscription.
 
-HTTP 500 and higher: temporary errors in the DeepL service. Your application should be configured to resend the request after some delay, rather than constantly resending the request.
+HTTP 500 and higher: temporary errors in the DeepL service. Your application should be configured to
+resend the request after some delay, rather than constantly resending the request.
 
 If the error persists for a long time, please contact support@DeepL.com.
-When retrying failed requests, your application should implement an exponential-backoff strategy: increasing the delay time with each further failed request. All official DeepL client libraries implement this strategy, so they can be used as a reference.
-----
+When retrying failed requests, your application should implement an exponential-backoff strategy:
+increasing the delay time with each further failed request. All official DeepL client libraries
+implement this strategy, so they can be used as a reference.
+____
 
 == Guzzle Exceptions Overview 
 
-* The `AzureTranslator::lookup()`, the dictionary word look up, does not return the expected result; howerver, I am using Systran instead. Azure
-should return a result(s) similiar to `SystranTranslator::lookup()`, namely, a `WordInterface` of either `SystranNoun-`, `-Verb`, or `RelatedVerb`. 
+* The `AzureTranslator::lookup()`, the dictionary word look up, does not return the expected result;
+* howerver, I am using Systran instead. Azure
+should return a result(s) similiar to `SystranTranslator::lookup()`, namely, a `WordInterface` of
+either `SystranNoun-`, `-Verb`, or `RelatedVerb`. 
+
 == Guzzle Exceptions Design
 
-According to the Guzzle link:https://docs.guzzlephp.org/en/stable/quickstart.html?highlight=ClientException#exceptions[Exceptions] documentation:
+According to the Guzzle
+link:https://docs.guzzlephp.org/en/stable/quickstart.html?highlight=ClientException#exceptions[Exceptions]
+documentation:
 
 The following tree view describes the Guzzle Exceptions hierachy:
 
@@ -127,16 +156,19 @@ The following tree view describes the Guzzle Exceptions hierachy:
     ├── ConnectException (implements NetworkExceptionInterface)
     └── RequestException
         ├── BadResponseException
-        │   ├── ServerException
+	│   ├── ServerException
         │   └── ClientException
-        └── TooManyRedirectsException
+	└── TooManyRedirectsException
 ----
 
 Guzzle throws exceptions for errors that occur during a transfer.
 
-* A `GuzzleHttp\Exception\ConnectException` exception is thrown in the event of a networking error. This exception extends from `GuzzleHttp\Exception\TransferException`.
-* A `GuzzleHttp\Exception\ClientException` is thrown for **400** level errors if the `http_errors` request option is set to `true`. This exception extends from 
-`GuzzleHttp\Exception\BadResponseException` and `GuzzleHttp\Exception\BadResponseException` extends from `GuzzleHttp\Exception\RequestException`. +
+* A `GuzzleHttp\Exception\ConnectException` exception is thrown in the event of a networking error.
+* This exception extends from `GuzzleHttp\Exception\TransferException`.
+* A `GuzzleHttp\Exception\ClientException` is thrown for **400** level errors if the `http_errors`
+* request option is set to `true`. This exception extends from 
+`GuzzleHttp\Exception\BadResponseException` and `GuzzleHttp\Exception\BadResponseException` extends
+from `GuzzleHttp\Exception\RequestException`. +
 
 ```php
 use GuzzleHttp\{Psr7, Exception\ClientException};
@@ -156,8 +188,11 @@ try {
 }
 ```
 
-* A `GuzzleHttp\Exception\ServerException` is thrown for **500** level errors if the http_errors request option is set to true. This exception extends from `GuzzleHttp\Exception\BadResponseException`.
-* A `GuzzleHttp\Exception\TooManyRedirectsException` is thrown when too many redirects are followed. This exception extends from `GuzzleHttp\Exception\RequestException`.
+* A `GuzzleHttp\Exception\ServerException` is thrown for **500** level errors if the http_errors
+* request option is set to true. This exception extends from
+* `GuzzleHttp\Exception\BadResponseException`.
+* A `GuzzleHttp\Exception\TooManyRedirectsException` is thrown when too many redirects are followed.
+* This exception extends from `GuzzleHttp\Exception\RequestException`.
 
 All of the above exceptions extend from `GuzzleHttp\Exception\TransferException`.
 

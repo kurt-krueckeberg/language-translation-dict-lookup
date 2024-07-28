@@ -49,7 +49,7 @@ that is provided with each endpoint's documentation.
 
             $statusCode = $response->getStatusCode();
 
-            $errorMessage = $response->get????();
+            $errorMessage = $response->getMessage();
 
             if (self::$http_429_too_many_requests == $statusCode) {
 
