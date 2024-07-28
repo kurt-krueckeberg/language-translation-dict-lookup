@@ -1,5 +1,5 @@
 = Design
-:stylesheet: dark.css
+:stylesheet: adoc-foundation.css
 :stylesdir: /home/kurt/asciidoctor-skins/css
 
 == Azure Translation Overview
