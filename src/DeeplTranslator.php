@@ -4,6 +4,9 @@ namespace Vocab;
 
 class DeeplTranslator implements TranslateInterface {
 
+    const http_429_too_many_requests = 429;
+    const http_456_quote_exceeded = 456;
+
     private \DeepL\Translator $translator;
 
     function __construct(Config $c)
@@ -37,6 +40,7 @@ that is provided with each endpoint's documentation.
        }
            
        $dest = \strtoupper($dest);
+
        $src = \strtoupper($src);
   
        try {
@@ -49,37 +53,32 @@ that is provided with each endpoint's documentation.
 
             $statusCode = $response->getStatusCode();
 
-            $errorMessage = $response->getMessage();
+            $errorMessage = $response->getMessage(); 
 
-            if (self::$http_429_too_many_requests == $statusCode) {
+            if (http_429_too_many_requests == $statusCode) {
 
-               // Use dekay and resend the translation request. Recurse? Better to have client do this!
-               // I need to design an exception catch-strategy.
-               
+               // Delay for a period of time and, then, resend the translation request.
+               throw new DelayRetryException("Too many requests. Delay and retry.");
 
-            } elseif (self::$http_456_quote_exceeded == $statusCode) {
+            } /* elseif (http_456_quote_exceeded == $statusCode) {
 
                 // print out message
                 // rethrow exception
-            }
-
-            match ($statusCode) {
-
-                self::$too_many_requests =>  self:: ,
-                self::$quote_exceeded =>     ,
-                self::$tenp_deepl_error =>     ,
-                
-                echo Psr7\Message::toString($e->getResponse());
-                throw $e;
-
-            } else {
+            
+                match ($statusCode) {
+               
+                    echo Psr7\Message::toString($e->getResponse());
+                    throw $e;
+                };
+              */  
+            else {
 
                 throw $e;
             }
-       }
-     
- catch (
+            
+     }  catch (\Exception $e) {
 
-       return $result->text; 
-    }
+         return $result->text; 
+     }
+  } 
 }
