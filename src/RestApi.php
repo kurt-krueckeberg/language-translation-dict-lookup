@@ -13,13 +13,11 @@ class RestApi {
 
    private bool $http_errors;
 
-   public function __construct(Config $c, ProviderID $id, bool $http_errors=true)
+   public function __construct(Config $c, string $provider_key, bool $http_errors=true)
    {      
        $this->http_errors = $http_errors;
 
-       $config = $c->get_config($id);
-       
-       $this->client = new Client( ['base_uri' => $config['endpoint']]);
+       $this->client = new Client( ['base_uri' => $c->config[$provider_key]['endpoint']]);
        
        $this->headers =  $config['header'];
    }

@@ -11,9 +11,9 @@ class DeeplTranslator implements TranslateInterface {
 
     function __construct(Config $c)
     {
-        $apikey = $c->config['providers']['deepl']['apikey'];
+       $apikey = $c->config['providers']['deepl']['apikey'];
 
-        $this->translator = new \DeepL\Translator($apikey);
+       $this->translator = new \DeepL\Translator($apikey);
     }
 
 /*

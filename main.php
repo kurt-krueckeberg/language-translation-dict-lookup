@@ -8,12 +8,12 @@ include 'vendor/autoload.php';
   
 $c = new Config();
          
-if (!file_exists($c->lookup_file())) {
-     
-    die($c->lookup_file() . " not found.\n");
+if (!file_exists($c->config['lookup_file'])) {
+
+   die($c->config['lookup_file'] . " not found.\n");
 }
 
- $fac = new Vocab($c);
+ $fac = new Vocab($c->config);
 
  $words = $c->fetch_words();
 

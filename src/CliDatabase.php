@@ -14,13 +14,13 @@ class CliDatabase {
 
    private string $word;
       
-   public function __construct(Config $config)
+   public function __construct(array $config)
    {
-      $cred = $config->get_db_credentials();
+      $cred = $config['database'];
      
       $this->pdo = new \PDO($cred["dsn"], $cred["user"], $cred["password"]); 
        
-      $this->locale = $config->get_locale();
+      $this->locale = $config['language']['locale'];
 
       $this->word_exists_stmt = $pdo->prepare(self::$sql_word_fetch); 
       

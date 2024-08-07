@@ -21,7 +21,7 @@ class AzureTranslator extends RestApi implements TranslateInterface {
  
    public function __construct(Config $c)
    {
-      parent::__construct($c, ProviderID::azure);        
+      parent::__construct($c, 'azure');        
 
       $this->collator = $c->getCollator(); 
    }

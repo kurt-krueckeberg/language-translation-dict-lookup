@@ -27,29 +27,33 @@ class Vocab {
 
    private RateLimitGauge $rate_limit;   
 
-   function __construct(Config $config)
+   function __construct(array $config)
    {
-      $this->dictionary = new SystranTranslator($config);
-
-      $this->translator = new AzureTranslator($config);
-
-      $cred = $config->get_db_credentials();
+      $this->c = $config;
+      
+      $translationClass = $config['translator'];
+      
+      $dictionaryClass = $config['dictionary'];
+      
+      $this->translator = new $translationClass($config);
+      
+      $this->dictionary = new $dictionaryClass($config);
      
-      $this->pdo = new \PDO($cred["dsn"], $cred["user"], $cred["password"]); 
+      $this->pdo = new \PDO($config['database']["dsn"], $config['database']["user"], $config['database']["password"]); 
      
-      $this->db = new Database($this->pdo, $config->get_locale()); 
+      $this->db = new Database($this->pdo, $config['language']['locale']); 
   
       $this->sentFetcher = new LeipzigSentenceFetcher($config);
 
-      $this->c = $config; 
+      $provider_name = ProviderID::azure->name;
       
+      return $this->config['providers'][$provider_name];
+
+      $this->rate_limit = new RateLimitGauge($config[$provider_name]['limit']);
+            
       $this->logFile = new File("results.log", "w");
 
       $this->log = new MessageLog($this->logFile);
-      
-      $config = $config->get_config(ProviderID::azure);
-
-      $this->rate_limit = new RateLimitGauge($config['limit']);
    }
   
    function db_insert(array $words) : array
@@ -159,7 +163,7 @@ class Vocab {
 
    private function insertdb_samples(string $word, MessageLog $log) : bool
    { 
-      $sentences_iter = $this->sentFetcher->fetch($word, $this->c->sentence_count());
+      $sentences_iter = $this->sentFetcher->fetch($word, $this->c['samples_count']);
       
       if ($sentences_iter == false) { 
           
