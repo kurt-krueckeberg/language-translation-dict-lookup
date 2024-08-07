@@ -4,13 +4,13 @@ namespace Vocab;
 
 class Config {
 
-   private static string $yml_config = './language_translation_config.yml';
+   private static string $yml_config = "lang_translation_config.yml";
 
    public readonly string $namespace;
 
    public function __construct() 
    {
-      $this->config = \yaml_parse_file(self::$yml_config);
+   $this->config = \yaml_parse_file(__DIR__ . '/' . self::$yml_config);
 
       $this->namespace = "Vocab";
 /*
