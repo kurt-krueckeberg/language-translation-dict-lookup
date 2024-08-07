@@ -19,10 +19,9 @@
 -- Table structure for table `confidence`
 --
 
-DROP TABLE IF EXISTS `confidence`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `confidence` (
+create table if not exists `confidence` (
   `id` int NOT NULL AUTO_INCREMENT,
   `rating` int DEFAULT NULL,
   `word_id` int NOT NULL,
@@ -45,10 +44,9 @@ UNLOCK TABLES;
 -- Table structure for table `defns`
 --
 
-DROP TABLE IF EXISTS `defns`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `defns` (
+create table if not exists `defns` (
   `id` int NOT NULL AUTO_INCREMENT,
   `defn` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
   `word_id` int NOT NULL,
@@ -72,10 +70,9 @@ UNLOCK TABLES;
 -- Table structure for table `exprs`
 --
 
-DROP TABLE IF EXISTS `exprs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `exprs` (
+create table if not exists `exprs` (
   `id` int NOT NULL AUTO_INCREMENT,
   `source` varchar(85) COLLATE utf8mb4_general_ci NOT NULL,
   `target` varchar(85) COLLATE utf8mb4_general_ci NOT NULL,
@@ -100,10 +97,9 @@ UNLOCK TABLES;
 -- Table structure for table `nouns_data`
 --
 
-DROP TABLE IF EXISTS `nouns_data`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `nouns_data` (
+create table if not exists `nouns_data` (
   `id` int NOT NULL AUTO_INCREMENT,
   `gender` enum('m','f','n','u') COLLATE utf8mb4_general_ci NOT NULL,
   `plural` varchar(25) COLLATE utf8mb4_general_ci NOT NULL,
@@ -128,10 +124,9 @@ UNLOCK TABLES;
 -- Table structure for table `samples`
 --
 
-DROP TABLE IF EXISTS `samples`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `samples` (
+create table if not exists `samples` (
   `id` int NOT NULL AUTO_INCREMENT,
   `sample` text COLLATE utf8mb4_general_ci NOT NULL,
   `trans` text COLLATE utf8mb4_general_ci NOT NULL,
@@ -156,10 +151,9 @@ UNLOCK TABLES;
 -- Table structure for table `verb_conjs`
 --
 
-DROP TABLE IF EXISTS `verb_conjs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `verb_conjs` (
+create table if not exists `verb_conjs` (
   `word_id` int NOT NULL,
   `conjugation` varchar(70) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`word_id`),
@@ -181,10 +175,9 @@ UNLOCK TABLES;
 -- Table structure for table `words`
 --
 
-DROP TABLE IF EXISTS `words`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `words` (
+create table if not exists `words` (
   `id` int NOT NULL AUTO_INCREMENT,
   `word` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `pos` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
