@@ -5,22 +5,35 @@ use Vocab\{Config, Vocab};
 use GuzzleHttp\{Psr7, Exception\ClientException};
 
 include 'vendor/autoload.php';
-  
-$c = new Config();
-         
-if (!file_exists($c->config['lookup_file'])) {
 
-   die($c->config['lookup_file'] . " not found.\n");
+$fetch_words = function (string $wordfile) : array {
+    
+    $file = new \SplFileObject($wordfile, "r");
+    
+    $words = [];
+    
+    foreach ($file as $word) {
+       $words[] = $word;    
+    }
+    
+    return $words;
+};
+
+$c = (new Config())->config;
+         
+if (!file_exists($config['lookup_file'])) {
+
+   die($config['lookup_file'] . " not found.\n");
 }
 
- $fac = new Vocab($c->config);
+ $fac = new Vocab($config);
 
- $words = $c->fetch_words();
+ $words = $fetch_words($config['lookup_file']);
 
  try {
 
  /*
-  * RestApi now thwrows 400 and 500 http errors. Its request() method will print the meaning of these exceptions to stderr.
+  * RestApi now throws 400 and 500 http errors. Its request() method will print the meaning of these exceptions to stderr.
   * Based on what gets thrown, I can decide if I really have a coding error or I need a differenet Azure payment plan.
   */
  $words_inserted = $fac->db_insert($words); 

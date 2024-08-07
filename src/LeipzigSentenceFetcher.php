@@ -9,9 +9,9 @@ class LeipzigSentenceFetcher extends RestApi implements SentenceFetchInterface {
 
    static int $bad_request = 404;
  
-   public function __construct(Config $c)
+   public function __construct(array $config)
    {       
-      parent::__construct($c, ProviderID::leipzig_de);    
+      parent::__construct($config, 'leipzig_de');    
    }
 
    static public function SentencesGenerator(array $sentences) : \Iterator

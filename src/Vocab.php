@@ -17,7 +17,7 @@ class Vocab {
 
    private LeipzigSentenceFetcher $sentFetcher;
 
-   private Config $c;
+   private array $c;
 
    private File $logFile;
 
@@ -31,9 +31,9 @@ class Vocab {
    {
       $this->c = $config;
       
-      $translationClass = $config['translator'];
+      $translationClass = $config['namespace'] . '\\' . $config['translator'];
       
-      $dictionaryClass = $config['dictionary'];
+      $dictionaryClass = $config['namespace'] . '\\' . $config['dictionary'];
       
       $this->translator = new $translationClass($config);
       
@@ -45,11 +45,9 @@ class Vocab {
   
       $this->sentFetcher = new LeipzigSentenceFetcher($config);
 
-      $provider_name = ProviderID::azure->name;
+      $provider_name = ProviderID::azure->name; // TODO: Correct. This is hardcoded!!!!!!!!
       
-      return $this->config['providers'][$provider_name];
-
-      $this->rate_limit = new RateLimitGauge($config[$provider_name]['limit']);
+      $this->rate_limit = new RateLimitGauge($config['providers'][$provider_name]['limit']);
             
       $this->logFile = new File("results.log", "w");
 

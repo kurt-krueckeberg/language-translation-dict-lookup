@@ -8,11 +8,11 @@ class SystranTranslator extends RestApi implements TranslateInterface, Dictionar
 
    private \Collator $collator;
    
-   public function __construct(Config $c)
+   public function __construct(array $config)
    {
-      parent::__construct($c, 'systran'); 
+      parent::__construct($config, 'systran'); 
 
-      $this->collator = $c->getCollator(); 
+      $this->collator = new \Collator($config['language']['locale']); 
    }
 
    public function getTranslationLanguages() : array

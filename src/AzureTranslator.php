@@ -19,11 +19,11 @@ class AzureTranslator extends RestApi implements TranslateInterface {
 
    private \Collator $collator;
  
-   public function __construct(Config $c)
+   public function __construct(array $config)
    {
-      parent::__construct($c, 'azure');        
+      parent::__construct($config, 'azure');        
 
-      $this->collator = $c->getCollator(); 
+      $this->collator = new \Collator($config['language']['locale']); 
    }
 
    // If no source language is given, it will be auto-detected.

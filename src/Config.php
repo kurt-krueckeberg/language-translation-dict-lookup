@@ -5,16 +5,12 @@ namespace Vocab;
 class Config {
 
    private static string $yml_config = "lang_translation_config.yml";
-
-   public readonly string $namespace;
-   
+ 
    public readonly array $config;
 
    public function __construct() 
    {
       $this->config = \yaml_parse_file(__DIR__ . '/' . self::$yml_config);
-
-      $this->namespace = "Vocab";
    }
    
  /*
@@ -37,7 +33,7 @@ class Config {
    {
      $words = [];
 
-     $file = new FileReader($this->lookup_file(), "r");
+     $file = new FileReader($this->config['lookup_file'], "r");
     
       foreach ($file as $word) {
           
