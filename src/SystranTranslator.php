@@ -105,10 +105,10 @@ class SystranTranslator extends RestApi implements TranslateInterface, Dictionar
 
    /* 
     * Merge the definitions for verbs returned in $matches[$i], for those $i, where
-      $matches[$i]['source'['lemma'] contains a tilde, as, for example, an~kommen
-    * We remove the version  an~kommen and merge it with ankommen
-
-    * Not all prefix verb version have a non-tilde version
+    * $matches[$i]['source'['lemma'] contains a tilde, as, for example, an~kommen
+    * We remove the version 'an~kommen' and merge it with 'ankommen'.
+    *
+    * NOTE: Not all prefix verb version have a non-tilde version
     */
     private function merge_tilde_verbs($matches) : array
     {
@@ -154,9 +154,10 @@ class SystranTranslator extends RestApi implements TranslateInterface, Dictionar
 
        return $results;
     }
- /*
-     * Adds any definitions in $tilde['targets'] to the $nontilde['targets'] that are not present.
-     */   
+
+   /*
+    * Adds any definitions in $tilde['targets'] to the $nontilde['targets'] that are not present.
+    */   
     private function combine_definitions(array $defns_nontilde, array $defns_tilde) : array
     {
        $cmp = function(array $left, array $right) : int { return strcmp($left['lemma'], $right['lemma']); };         
