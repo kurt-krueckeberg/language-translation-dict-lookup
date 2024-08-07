@@ -55,6 +55,8 @@ class Vocab {
    function db_insert(array $words) : array
    {
       $results = [];
+
+      $this->pdo->beginTransaction();
       
       try {
       
@@ -76,6 +78,9 @@ class Vocab {
       }
 
       echo "Results of words inserted is in: results.log.\n";      
+
+      $this->pdo->commit();
+
       return $results;             
    }
    
