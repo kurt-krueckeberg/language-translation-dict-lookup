@@ -10,6 +10,8 @@ $fetch_words = function (string $wordfile) : array {
     
     $file = new \SplFileObject($wordfile, "r");
     
+    $file->setFlags(SplFileObject::DROP_NEW_LINE | SplFileObject::READ_AHEAD |  SplFileObject::SKIP_EMPTY);
+    
     $words = [];
     
     foreach ($file as $word) {
@@ -19,7 +21,7 @@ $fetch_words = function (string $wordfile) : array {
     return $words;
 };
 
-$c = (new Config())->config;
+$config = (new Config())->config;
          
 if (!file_exists($config['lookup_file'])) {
 
