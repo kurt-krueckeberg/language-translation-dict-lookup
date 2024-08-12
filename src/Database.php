@@ -81,6 +81,10 @@ class Database extends DbBase implements InserterInterface {
 
       return true;
    } 
+   
+   /*
+    * Returns an Iterator that returns the word, its defns and associated expressions.
+    */
 
    function fetch_db_word($word) : \Iterator | false
    {

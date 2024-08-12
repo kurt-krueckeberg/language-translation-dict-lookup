@@ -37,12 +37,15 @@ if (!file_exists($config['lookup_file'])) {
  /*
   * RestApi now throws 400 and 500 http errors. Its request() method will print the meaning of these exceptions to stderr.
   * Based on what gets thrown, I can decide if I really have a coding error or I need a differenet Azure payment plan.
+  * 
+  * NOTE: I believe the iterator returns a DBWord, DBNoun or DBVerb. All derived from DBWordBase that
+  * that has get_word_id()
   */
-$fac->db_insert($words); 
+ $fac->db_insert($words); 
  
  $word_in_db = $fac->fetch_db_words($words);
  
- $fac->create_html($words_in_db, 'output');
+ $fac->create_html($words_in_db, 'output'); // todo: Do I need a method for adding samples as well.
  
  $fac->display_log(); 
  

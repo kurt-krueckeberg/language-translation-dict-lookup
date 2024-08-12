@@ -33,7 +33,9 @@ where w.id=:word_id";
        $this->iter = match(Pos::from($row['pos'])) {
 
            Pos::noun => $this->get_noun_iterator($pdo, $row),
+           
            Pos::verb => CreateDBWordResultIterator::VerbGenerator($pdo, $this->fetchRows($pdo, 'sql_verb', $row['word_id'])),
+           
            default => CreateDBWordResultIterator::SingleResultGenerator(new DBWord($pdo, $row))
        };
     }
@@ -71,7 +73,7 @@ where w.id=:word_id";
      */
     public static function VerbGenerator(\PDO $pdo, array $rows) : \Iterator 
     {
-       foreach($rows as $index => $current) {
+       foreach($rows as $current) {
             
           yield new DBVerb($pdo, $current); 
        }
