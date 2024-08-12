@@ -9,8 +9,6 @@ class BuildHtml {
 
      private File  $out;
      private bool $b_saved;       
-     private string $src;       
-     private string $dest;      
      private HtmlBuilderInterface $html_builder;      
 
 static private string $out_start = <<<html_eos
@@ -31,14 +29,10 @@ static private string $out_end = <<<html_end
 </html>
 html_end;
 
-    public function __construct(string $html_filename, string $src, string $dest)
+    public function __construct(string $html_filename)
     { 
        $this->b_saved = false;
        
-       $this->src = $src;
-       
-       $this->dest = $dest;
-
        $this->out = new File($html_filename . ".html", "w"); 
 
        $this->html_builder = new HtmlBuilder();
