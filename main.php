@@ -39,7 +39,7 @@ if (!file_exists($config['lookup_file'])) {
   * Based on what gets thrown, I can decide if I really have a coding error or I need a differenet Azure payment plan.
   */
  $words_inserted = $fac->db_insert($words); 
-
+ 
  $fac->create_html($words_inserted, 'output');
  
  file_put_contents("words-inserted.txt", implode("\n", $words_inserted));

@@ -1,1 +1,15 @@
+Possible Bug:
+
 It seems that translated text with a special character like an apostrophe is not escaped before database insertion.
+
+That Vocab code is confusing: it inserts words into the database: `insert_db(array $words)` and then
+returns an array of words that either were already in the database plus those that weren't and got inserted.
+
+It seems the word that gets inserted is not always identical to the word in "words.txt". I think a word like, say,
+'liest' may be found as 'lesen', which is what would get inserted. 
+
+Solution: 
+
+1. Change the code to emit a message that "word 'liest' not in dictionary, but 'lesen' was found".
+2. Don't save the word to the database.
+

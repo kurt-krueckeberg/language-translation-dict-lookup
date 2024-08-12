@@ -31,7 +31,7 @@ class SamplesTable  {
    {
       self::$sample = $sample;
 
-      self::$trans = $trans; // TODO: Is PDO failling to escape apostrophe?
+      self::$trans = $trans; 
       
       self::$word_id  = $word_id;
       

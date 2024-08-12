@@ -63,7 +63,13 @@ class Vocab {
       try {
       
         foreach($words as $word) {
-               
+
+           if ($this->db->word_exists($word)) {
+
+              $this->log->log("$word is already in database.");
+              continue;
+           }
+ 
            $r = $this->db_insert_word($word, $this->log);
 
            $results = \array_merge($results, $r);
@@ -90,7 +96,7 @@ class Vocab {
     * Returns list of words found in dictionary and inserted into database.
     */
    function db_insert_word(string $word, MessageLog $log) : array
-   {      
+   {   
       $iter = $this->dictionary->lookup($word, 'de', 'en');
  
       if (!$iter->valid()) {
@@ -105,6 +111,15 @@ class Vocab {
       foreach ($iter as $result)  {
            
           $word_defined = $result->word_defined();
+
+          if ($word_defined != $word) {
+              
+              echo "$word not in dictionary, but $word_defined was found. However, it will not be saved to that database.\n";
+
+              $this->log->log("$word not in dictionary, but $word_defined was found. However, it will not be saved to that database.");
+
+              continue;
+          }
           
           $results[] = $word_defined;
           
@@ -124,7 +139,7 @@ class Vocab {
            return;
        }
 
-       $this->pdo->beginTransaction();
+       //--$this->pdo->beginTransaction();
 
        $this->db->save_lookup($lookup_result);
 
@@ -132,7 +147,7 @@ class Vocab {
 
        $this->insertdb_samples($word, $log);
 
-       $this->pdo->commit();
+       //--$this->pdo->commit();
     }
 
    function save_samples(string $word, \Traversable $sentences_iter) : bool
