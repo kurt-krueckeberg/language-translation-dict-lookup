@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class HtmlBuilder {
+class HtmlBuilder implements HtmlBuilderInterace {
     
    public function __construct()
    { 

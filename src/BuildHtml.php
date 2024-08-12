@@ -11,7 +11,7 @@ class BuildHtml {
      private bool $b_saved;       
      private string $src;       
      private string $dest;      
-     private HtmlBuilder $html_builder;      
+     private HtmlBuilderInterface $html_builder;      
 
 static private string $out_start = <<<html_eos
 <!DOCTYPE html>
