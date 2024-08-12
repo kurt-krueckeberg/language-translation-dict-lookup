@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Vocab\{Config, Vocab, AzureTranslator, TranslateInterface, HtmlBuilderInterface};
+use Vocab\{Config, Vocab, AzureTranslator, TranslateInterface, HtmlBuilder, HtmlBuilderInterface};
 use GuzzleHttp\{Psr7, Exception\ClientException};
 
 include 'vendor/autoload.php';
@@ -15,7 +15,8 @@ class Tester {
         function __construct(array $config)
         {
             $this->trans = new AzureTranslator($config);
-            $this->builder = new Bu
+
+            $this->builder = new HtmlBuilder("output");
         }
  
 	function __invoke(string $text)

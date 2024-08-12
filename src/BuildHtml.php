@@ -9,6 +9,7 @@ class BuildHtml {
 
      private File  $out;
      private bool $b_saved;       
+
      private HtmlBuilderInterface $html_builder;      
 
 static private string $out_start = <<<html_eos

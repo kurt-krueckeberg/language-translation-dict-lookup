@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Vocab;
 
-class HtmlBuilder implements HtmlBuilderInterace {
+class HtmlBuilder implements HtmlBuilderInterface {
     
      private File  $out;
      private bool $b_saved;       
@@ -24,34 +24,32 @@ static private string $out_end = <<<html_end
     </body>
 </html>
 html_end;
- 
+
    public function __construct(string $html_filename)
    { 
       $this->b_saved = false;
       
       $this->out = new File($html_filename . ".html", "w"); 
- 
-      $this->html_builder = new HtmlBuilder();
- 
+
       $this->out->fwrite(self::$out_start);
-  }
-  
-  public function add_definitions(WordInterface $wrface) : void
-  {
-     $section = $this->html_builder->build_definitions_section($wrface);
+   }
  
-     $this->out->fwrite($section);
-  
-     return;
-  }
+   public function add_definitions(WordInterface $wrface) : void
+   {
+      $section = $this->build_definitions_section($wrface);
+
+      $this->out->fwrite($section);
  
-  public function add_samples(string $word, \Traversable $iter) : void 
-  {
-     $section = $this->html_builder->add_samples_section($word, $iter);
+      return;
+   }
 
-     $this->out->fwrite($section);
+   public function add_samples(string $word, \Traversable $iter) : void 
+   {
+      $section = $this->add_samples_section($word, $iter);
 
-     return;
+      $this->out->fwrite($section);
+
+      return;
   } 
 
   public function __destruct()

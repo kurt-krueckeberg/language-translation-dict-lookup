@@ -193,7 +193,8 @@ class Vocab {
 
    function create_html(array $words, string $filename) : void
    {
-      $this->html = new BuildHtml($filename);
+      //--$this->html = new BuildHtml($filename, "de", "en");
+      $this->html = new HtmlBuilder($filename, "de", "en");
 
       foreach($words as $word) {
 
