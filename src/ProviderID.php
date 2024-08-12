@@ -20,20 +20,13 @@ enum ProviderID {
    case  itranslate;
    case  lingua;
 
-    // Fulfills the interface contract.
-    public function color(): string
-    {
-        return match($this) {
-            Suit::Hearts, Suit::Diamonds => 'Red',
-            Suit::Clubs, Suit::Spades => 'Black',
-        };
-
-    }    // Fulfills the interface contract.
+     // Fulfills the interface contract.
     public function class(): string
     {
         return match($this) {
-            Provider::leipzig_de => 
-            Provider::Clubs, Suit::Spades => 'Black',
+            Provider::leipzig_de => 'LeipzigSentenceFetcher', 
+            Provider::systran => 'SystranTranslator', 
+            Provider::deepl => 'DeeplTranslator'
         };
     }
 
