@@ -6,21 +6,21 @@ use GuzzleHttp\{Psr7, Exception\ClientException};
 
 include 'vendor/autoload.php';
 
-$config = (new Config)->config;
-
 class Tester {
 
-        private TranslateInterface $translator;
+        private TranslateInterface $trans;
         
         private HtmlBuilderInterface $builder;
 
-        function __construct()
+        function __construct(array $config)
         {
+            $this->trans = new AzureTranslator($config);
+            $this->builder = new Bu
         }
  
-	function __invoke(string $texts)
+	function __invoke(string $text)
 	{
-	  $trans = $translator->translate($text, "en", "de");
+	  $trans = $this->trans->translate($text, "en", "de");
 		
 	  echo $trans . "\n";
 		
@@ -30,10 +30,11 @@ class Tester {
 
 try {
 
+$config = (new Config)->config;
+
+$test = new Tester($config);
 $texts = ['Wer nicht ganz so viel ausgeben will, kann eine kleine SSD nur für das Betriebssystem nutzen und Musik, Filme und Programme weiter auf einer herkömmlichen Festplatte aufbewahren.',
 'Deshalb wird sich die Fed ihr letztes Pulver noch aufbewahren, vor allem weil wir uns mitten im Wahlkampf befinden und man dort schnell auf viel politischen Wiederstand treffen könnte.'];
-
-$test = new Tester;
 
 foreach ($texts as $text) {
     
