@@ -17,7 +17,7 @@ class MessageLog {
    function log(string $msg)
    {
       $this->queue->enqueue($msg);
-     
+
       $this->file->fwrite($msg . "\n");
    }
 

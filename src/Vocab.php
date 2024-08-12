@@ -30,10 +30,10 @@ class Vocab {
    function __construct(array $config)
    {
       $this->c = $config;
+            
+      $translationClass = $config['namespace'] . '\\' . $config['providers'][ $config['implementors']['translator'] ]['class'];
       
-      $translationClass = $config['namespace'] . '\\' . $config['translator'];
-      
-      $dictionaryClass = $config['namespace'] . '\\' . $config['dictionary'];
+      $dictionaryClass = $config['namespace'] . '\\' . $config['providers'][ $config['implementors']['dictionary'] ]['class'];
       
       $this->translator = new $translationClass($config);
       
@@ -54,6 +54,11 @@ class Vocab {
       $this->log = new MessageLog($this->logFile);
    }
   
+   function display_log()
+   {
+       $this->log->report();
+   }
+   
    function db_insert(array $words) : array
    {
       $results = [];
@@ -114,7 +119,7 @@ class Vocab {
 
           if ($word_defined != $word) {
               
-              echo "$word not in dictionary, but $word_defined was found. However, it will not be saved to that database.\n";
+              //--echo "$word not in dictionary, but $word_defined was found. However, it will not be saved to that database.\n";
 
               $this->log->log("$word not in dictionary, but $word_defined was found. However, it will not be saved to that database.");
 

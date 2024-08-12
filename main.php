@@ -42,6 +42,8 @@ if (!file_exists($config['lookup_file'])) {
  
  $fac->create_html($words_inserted, 'output');
  
+ $fac->display_log(); 
+ 
  file_put_contents("words-inserted.txt", implode("\n", $words_inserted));
 
  } catch (ClientException $e) {
