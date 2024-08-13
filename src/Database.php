@@ -92,7 +92,8 @@ class Database extends DbBase implements InserterInterface {
       
       $row = $fetch($word); 
       
-      if ($row === false) return false; 
+      if ($row === false) 
+          return false; 
 
       $creator = new CreateDBWordResultIterator($this->pdo, $row);
 
