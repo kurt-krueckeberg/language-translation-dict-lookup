@@ -99,12 +99,12 @@ class Database extends DbBase implements InserterInterface {
       return $creator->getIterator(); 
    }
    
-   function fetch_samples(int $word_id) : \Traversable | false
+   function fetch_db_samples(int $word_id) : \Traversable | false
    {
        // Retrieve all the samples, if any, from the word definition in $wrface
-       $fetch = $this->get_table('FetchSamples');
+       $fetchSamples = $this->get_table('FetchSamples');
       
-       return $fetch($word_id);
+       return $fetchSamples($word_id);
    }
 
    function save_sample(string $word, string $sentence, string $translation) : bool
