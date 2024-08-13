@@ -30,7 +30,7 @@ if (!file_exists($config['lookup_file'])) {
 
  $fac = new Vocab($config);
 
- $words = $fetch_words($config['lookup_file']);
+ $input_words = $fetch_words($config['lookup_file']);
 
  try {
 
@@ -41,16 +41,19 @@ if (!file_exists($config['lookup_file'])) {
   * NOTE: I believe the iterator returns a DBWord, DBNoun or DBVerb. All derived from DBWordBase that
   * that has get_word_id()
   */
- $fac->db_insert($words); 
+$fac->db_insert($input_words); 
  
+ /*
  foreach($words as $word) {
+     
   $iter= $word_in_db = $fac->fetch_db_word($word);
   
   foreach($iter as $key => $value)
        var_dump($value);
  }
+ */
  
- $fac->create_html($words_in_db, 'output'); // todo: Do I need a method for adding samples as well.
+ $fac->create_html($words, 'output'); // todo: Do I need a method for adding samples as well.
  
  $fac->display_log(); 
  
