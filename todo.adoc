@@ -13,3 +13,22 @@ Solution:
 1. Change the code to emit a message that "word 'liest' not in dictionary, but 'lesen' was found".
 2. Don't save the word to the database.
 
+[,php]
+----
+foreach ($words as $word)
+
+$resultIter = $db->fetch_db_word($word);
+
+// Fetch db words, defns, exprs, and samples, and create html output
+foreach ($resultIter as $result) {
+
+   //...
+   $word_id =$result->get_word_id();
+   //...
+
+   $sampleIter = $db->fetch_db_samples($word_id);
+
+}   
+
+
+----

@@ -43,7 +43,12 @@ if (!file_exists($config['lookup_file'])) {
   */
  $fac->db_insert($words); 
  
- $word_in_db = $fac->fetch_db_words($words);
+ foreach($words as $word) {
+  $iter= $word_in_db = $fac->fetch_db_word($word);
+  
+  foreach($iter as $key => $value)
+       var_dump($value);
+ }
  
  $fac->create_html($words_in_db, 'output'); // todo: Do I need a method for adding samples as well.
  

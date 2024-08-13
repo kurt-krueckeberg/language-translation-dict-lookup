@@ -210,6 +210,11 @@ class Vocab {
 
       return true;
    }
+   
+   function fetch_db_word(string $word, bool $exact_match=false) : \Iterator | false
+   {
+       return $this->db->fetch_db_word($word);
+   }
 
    function create_html(array $words, string $filename) : void
    {

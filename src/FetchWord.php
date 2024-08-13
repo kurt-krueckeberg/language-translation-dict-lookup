@@ -6,7 +6,7 @@ class FetchWord  {
    
    private \PDOStatement $select_word; 
    
-   private static $sql_wordselect = "select word, id as word_id, pos from words as w where w.word LIKE '%:word%'";
+   private static $sql_wordselect = "select word, id as word_id, pos from words where :word LIKE '??'";
                                            
    private string $word = '';
    
@@ -19,15 +19,18 @@ class FetchWord  {
    public function __construct(\PDO $pdo)
    {
       $this->pdo = $pdo;
+      
+      $this->word = '';
 
       $this->select_word = $pdo->prepare(self::$sql_wordselect);
       
-      $this->select_word->bindParam(':word', $this->word, \PDO::PARAM_STR);     
+      //$this->select_word->bindParam(':word', self::$word, \PDO::PARAM_STR);     
+      $this->select_word->bindValue(':word', $this->word);
    }
 
    function __invoke(string $word) : array | false
    {
-      $this->word = $word;
+      $this->word = "'% . $word . %'";
       
       $rc = $this->select_word->execute();
       
