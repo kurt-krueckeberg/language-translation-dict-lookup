@@ -234,7 +234,7 @@ class Vocab {
             
           $cnt = $this->html->add_definitions($dbword); 
  
-          $sentIter = $this->db->fetch_samples($dbword->get_word_id()); 
+          $sentIter = $this->db->fetch_db_samples($dbword->get_word_id()); 
   
           $this->html->add_samples($word, $sentIter); 
         }

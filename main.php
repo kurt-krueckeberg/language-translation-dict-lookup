@@ -53,7 +53,7 @@ $fac->db_insert($input_words);
  }
  */
  
- $fac->create_html($words, 'output'); // todo: Do I need a method for adding samples as well.
+$words_inserted = $fac->create_html($input_words, 'output'); // todo: Do I need a method for adding samples as well.
  
  $fac->display_log(); 
  
