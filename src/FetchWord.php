@@ -20,20 +20,17 @@ class FetchWord  {
    {
       $this->pdo = $pdo;
       
-      self::$word = '';
+      self::$word = '%';
 
       $this->select_word = $pdo->prepare(self::$sql_wordselect);
       
       $this->select_word->bindParam(':word', self::$word, \PDO::PARAM_STR);     
-      //$this->select_word->bindValue(':word', $this->word);
    }
 
    function __invoke(string $input_word) : array | false
    {
-      self::$word = "'%$input_word%'";
-      
-      echo self::$word . "\n";
-      
+      self::$word = "%$input_word%";
+
       $rc = $this->select_word->execute();
       
       if ($rc == false) {
