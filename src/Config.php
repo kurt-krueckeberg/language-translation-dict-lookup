@@ -6,17 +6,17 @@ class Config {
 
    private static string $yml_config = "lang_translation_config.yml";
  
-   public readonly array $config;
+   public readonly array $settings;
 
    public function __construct() 
    {
-      $this->config = \yaml_parse_file(__DIR__ . '/' . self::$yml_config);
+      $this->settings = \yaml_parse_file(__DIR__ . '/' . self::$yml_config);
    }
    
  /*
    public function get_locale() : string
    {
-     return $this->config['language']['locale'];
+     return $this->settings['language']['locale'];
    }
 
    public function getCollator() : \Collator
@@ -26,14 +26,14 @@ class Config {
 
    function lookup_file() : string
    {
-     return $this->config['lookup_file'];
+     return $this->settings['lookup_file'];
    }
 */
    function fetch_words() : array
    {
      $words = [];
 
-     $file = new FileReader($this->config['lookup_file'], "r");
+     $file = new FileReader($this->settings['lookup_file'], "r");
     
       foreach ($file as $word) {
           
@@ -45,6 +45,6 @@ class Config {
  
    function sentence_count() : int
    {
-      return $this->config['samples_count'];
+      return $this->settings['samples_count'];
    }
 }

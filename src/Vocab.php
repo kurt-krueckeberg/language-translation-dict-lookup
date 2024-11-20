@@ -59,20 +59,18 @@ class Vocab {
        $this->log->report();
    }
    
-   function db_insert(array $words) : array
+   function db_insert(string $word) : void
    {
       $results = [];
 
       $this->pdo->beginTransaction();
       
       try {
-      
-        foreach($words as $word) {
 
            if ($this->db->word_exists($word)) {
 
               $this->log->log("$word is already in database.");
-              continue;
+              return;
            }
  
            $r = $this->db_insert_word($word, $this->log);
@@ -82,7 +80,6 @@ class Vocab {
            $this->log->report(); // Display all messages
             
            $this->log->reset();       
-        }
         
       } catch (\Exception $e) {
       
@@ -94,7 +91,7 @@ class Vocab {
 
       $this->pdo->commit();
 
-      return $results;             
+      return;
    }
    
    /*

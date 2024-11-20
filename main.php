@@ -6,22 +6,18 @@ use GuzzleHttp\{Psr7, Exception\ClientException};
 
 include 'vendor/autoload.php';
 
-$fetch_words = function (string $wordfile) : array {
-    
-    $file = new \SplFileObject($wordfile, "r");
-    
-    $file->setFlags(SplFileObject::DROP_NEW_LINE | SplFileObject::READ_AHEAD |  SplFileObject::SKIP_EMPTY);
-    
-    $words = [];
-    
-    foreach ($file as $word) {
-       $words[] = $word;    
-    }
-    
-    return $words;
-};
+function fetch_words(string $wordfile)
+{
+   $file = new \SplFileObject($wordfile, "r");
+   
+   $file->setFlags(SplFileObject::DROP_NEW_LINE | SplFileObject::READ_AHEAD |  SplFileObject::SKIP_EMPTY);
+   
+   foreach ($file as $word) {
+      yield $word; 
+   }
+}
 
-$config = (new Config())->config;
+$config = (new Config())->settings;
          
 if (!file_exists($config['lookup_file'])) {
 
@@ -30,7 +26,6 @@ if (!file_exists($config['lookup_file'])) {
 
  $fac = new Vocab($config);
 
- $input_words = $fetch_words($config['lookup_file']);
 
  try {
 
@@ -41,7 +36,11 @@ if (!file_exists($config['lookup_file'])) {
   * NOTE: I believe the iterator returns a DBWord, DBNoun or DBVerb. All derived from DBWordBase that
   * that has get_word_id()
   */
-$fac->db_insert($input_words); 
+
+ foreach (fetch_words($config['lookup_file']) as $word) {
+  
+    $fac->db_insert($word); 
+ } 
  
  /*
  foreach($words as $word) {
@@ -53,7 +52,7 @@ $fac->db_insert($input_words);
  }
  */
  
-$words_inserted = $fac->create_html($input_words, 'output'); // todo: Do I need a method for adding samples as well.
+ $words_inserted = $fac->create_html($input_words, 'output'); // todo: Do I need a method for adding samples as well.
  
  $fac->display_log(); 
  
