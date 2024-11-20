@@ -62,8 +62,6 @@ class Vocab {
    function db_insert(string $word) : void
    {
       $results = [];
-
-      $this->pdo->beginTransaction();
       
       try {
 
@@ -72,6 +70,9 @@ class Vocab {
               $this->log->log("$word is already in database.");
               return;
            }
+           
+
+           $this->pdo->beginTransaction();
  
            $r = $this->db_insert_word($word, $this->log);
 
@@ -116,9 +117,7 @@ class Vocab {
 
           if ($word_defined != $word) {
               
-              //--echo "$word not in dictionary, but $word_defined was found. However, it will not be saved to that database.\n";
-
-              $this->log->log("$word not in dictionary, but $word_defined was found. However, it will not be saved to that database.");
+              $this->log->log("$word not in dictionary, but $word_defined was found.");
 
               continue;
           }
@@ -141,15 +140,12 @@ class Vocab {
            return;
        }
 
-       //--$this->pdo->beginTransaction();
 
        $this->db->save_lookup($lookup_result);
 
        $log->log("$word saved to database.");
 
        $this->insertdb_samples($word, $log);
-
-       //--$this->pdo->commit();
     }
 
    function save_samples(string $word, \Traversable $sentences_iter) : bool

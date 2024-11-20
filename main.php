@@ -24,8 +24,7 @@ if (!file_exists($config['lookup_file'])) {
    die($config['lookup_file'] . " not found.\n");
 }
 
- $fac = new Vocab($config);
-
+ $vocab = new Vocab($config);
 
  try {
 
@@ -39,13 +38,13 @@ if (!file_exists($config['lookup_file'])) {
 
  foreach (fetch_words($config['lookup_file']) as $word) {
   
-    $fac->db_insert($word); 
+    $vocab->db_insert($word); 
  } 
  
  /*
  foreach($words as $word) {
      
-  $iter= $word_in_db = $fac->fetch_db_word($word);
+  $iter = $word_in_db = $fac->fetch_db_word($word);
   
   foreach($iter as $key => $value)
        var_dump($value);
