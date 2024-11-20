@@ -35,10 +35,13 @@ if (!file_exists($config['lookup_file'])) {
   * NOTE: I believe the iterator returns a DBWord, DBNoun or DBVerb. All derived from DBWordBase that
   * that has get_word_id()
   */
+$input_words = [];
 
  foreach (fetch_words($config['lookup_file']) as $word) {
-  
-    $vocab->db_insert($word); 
+     
+     $input_words[] = $word;
+     
+     $vocab->db_insert($word); 
  } 
  
  /*
@@ -51,9 +54,9 @@ if (!file_exists($config['lookup_file'])) {
  }
  */
  
- $words_inserted = $fac->create_html($input_words, 'output'); // todo: Do I need a method for adding samples as well.
+ $words_inserted = $vocab->create_html($input_words, 'output'); // todo: Do I need a method for adding samples as well.
  
- $fac->display_log(); 
+ $vocab->display_log(); 
  
  file_put_contents("words-inserted.txt", implode("\n", $words_inserted));
 

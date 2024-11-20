@@ -59,6 +59,7 @@ class Vocab {
        $this->log->report();
    }
    
+   
    function db_insert(string $word) : void
    {
       $results = [];
@@ -71,7 +72,6 @@ class Vocab {
               return;
            }
            
-
            $this->pdo->beginTransaction();
  
            $r = $this->db_insert_word($word, $this->log);
@@ -209,8 +209,10 @@ class Vocab {
        return $this->db->fetch_db_word($word);
    }
 
-   function create_html(array $words, string $filename) : void
+   function create_html(array $words, string $filename) : array
    {
+      $words_added = [];
+       
       $this->html = new HtmlBuilder($filename, "de", "en");
 
       foreach($words as $word) {
@@ -225,12 +227,16 @@ class Vocab {
        
         foreach($resultIter as $dbword) {
             
-          $cnt = $this->html->add_definitions($dbword); 
+          $words_added[] = $word;  
+          
+          $this->html->add_definitions($dbword); 
  
           $sentIter = $this->db->fetch_db_samples($dbword->get_word_id()); 
   
-          $this->html->add_samples($word, $sentIter); 
+          $this->html->add_samples($word, $sentIter);
+          
         }
      }
+     return $words_added;
    }
  }
