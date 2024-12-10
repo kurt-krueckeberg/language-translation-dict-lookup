@@ -9,7 +9,7 @@ use \SplFileObject as File;
  */
 class Vocab {
    
-   private SystranTranslator $dictiontary; // Used for definition lookup
+   private SystranTranslator $dictionary; // Used for definition lookup
 
    private TranslateInterface $translator;  // Used for translation of text
 

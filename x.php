@@ -6,27 +6,11 @@ use GuzzleHttp\{Psr7, Exception\ClientException};
 
 include 'vendor/autoload.php';
 
-function words_generator(string $wordfile)
-{
-   $file = new \SplFileObject($wordfile, "r");
-   
-   $file->setFlags(SplFileObject::DROP_NEW_LINE | SplFileObject::READ_AHEAD |  SplFileObject::SKIP_EMPTY);
-   
-   foreach ($file as $word) {
-      yield $word; 
-   }
-}
-
 $config = (new Config())->settings;
-         
-if (!file_exists($config['lookup_file'])) {
+    
+$vocab = new Vocab($config);
 
-   die($config['lookup_file'] . " not found.\n");
-}
-
- $vocab = new Vocab($config);
-
- try {
+try {
 
  /*
   * RestApi now throws 400 and 500 http errors. Its request() method will print the meaning of these exceptions to stderr.
@@ -35,14 +19,9 @@ if (!file_exists($config['lookup_file'])) {
   * NOTE: I believe the iterator returns a DBWord, DBNoun or DBVerb. All derived from DBWordBase that
   * that has get_word_id()
   */
- $input_words = [];
+ $input_words = ['bilden'];
 
- foreach (words_generator($config['lookup_file']) as $word) {
-     
-     $input_words[] = $word;
-     
-     $vocab->db_insert($word); 
- } 
+ $vocab->db_insert('bilden'); 
  
  /*
  foreach($words as $word) {
