@@ -20,7 +20,7 @@ create table if not exists nouns_data (
   plural varchar(25) not null,
   word_id int not null,
   unique(word_id),
-  foreign key(word_id) references words(id) on delete cascade
+  foreign key(word_id) references words(id) on delete cascade on update cascade
 );
 
 # -- This table locates the conjugation. Prefix and reflexive
@@ -28,7 +28,7 @@ create table if not exists nouns_data (
 create table if not exists verb_conjs (
   word_id int not null primary key,
   conjugation varchar(70) not null,
-  foreign key(word_id) references words(id) on delete cascade
+  foreign key(word_id) references words(id) on delete cascade on update cascade
 );
 
 # -- This is not returned even though it is desired
@@ -43,7 +43,7 @@ create table if not exists defns (
   id int not null auto_increment primary key,
   defn varchar(45) not null,
   word_id int not null,
-  foreign key(word_id) references words(id) on delete cascade
+  foreign key(word_id) references words(id) on delete cascade on update cascade
 );
 
 # -- Example expressions for a particular word
@@ -52,7 +52,7 @@ create table if not exists exprs (
   source varchar(85) not null,
   target varchar(85) not null,
   defn_id int not null,
-  foreign key(defn_id) references defns(id) on delete cascade
+  foreign key(defn_id) references defns(id) on delete cascade on update cascade
 );
 
 # -- Example sentences for a particular word
@@ -61,7 +61,7 @@ create table if not exists samples (
   sample text not null,
   trans text not null,
   word_id int not null,
-  foreign key(word_id) references words(id) on delete cascade
+  foreign key(word_id) references words(id) on delete cascade on update cascade
 );
 
 # -- My confidence in knowing the word
@@ -69,5 +69,5 @@ create table if not exists confidence (
   id int not null auto_increment primary key,
   rating int,
   word_id int not null,
-  foreign key(word_id) references words(id) on delete cascade
+  foreign key(word_id) references words(id) on delete cascade on update cascade
 );
