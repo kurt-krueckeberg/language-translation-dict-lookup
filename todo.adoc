@@ -1,4 +1,11 @@
-Possible Bug:
+= Bugs
+
+== Bug
+
+For verbs that have a reflexive form like 'bilden' or 'hinsetzen', their reflexive form is inserted 
+as 'se bilden', for example, instead of 'sich bilden'.
+
+== Possible Bug
 
 It seems that translated text with a special character like an apostrophe is not escaped before database insertion.
 
