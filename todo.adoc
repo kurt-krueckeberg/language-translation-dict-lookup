@@ -4,22 +4,31 @@
 
 Finish the `TextDictionary` class that will provide definitions contained in a comma- or ';'-delimeted file.
 
-== Bugs
+For each word, we need:
 
-=== Bug
+. the part of speech (POS)
+. for nouns, we need the gender and plural
+. for verbs, we need its conjugation
+. lastly, we need the definitions
 
-For verbs that have a reflexive form like 'bilden' or 'hinsetzen', their reflexive form is inserted 
-as 'se bilden', for example, instead of 'sich bilden'.
+For verbs that have a reflexive form like 'bilden' or 'hinsetzen', their
+reflexive form is inserted as 'se bilden', for example, instead of 'sich
+bilden'.
+
+NOTE: Collins German-English dictionary has sample sentences--sort of--and expressions.
 
 === Possible Bug
 
-It seems that translated text with a special character like an apostrophe is not escaped before database insertion.
+It seems that translated text with a special character like an apostrophe is
+not escaped before database insertion.
 
-That Vocab code is confusing: it inserts words into the database: `insert_db(array $words)` and then
-returns an array of words that either were already in the database plus those that weren't and got inserted.
+That Vocab code is confusing: it inserts words into the database:
+`insert_db(array $words)` and then returns an array of words that either were
+already in the database plus those that weren't and got inserted.
 
-It seems the word that gets inserted is not always identical to the word in "words.txt". I think a word like, say,
-'liest' may be found as 'lesen', which is what would get inserted. 
+It seems the word that gets inserted is not always identical to the word in
+"words.txt". I think a word like, say, 'liest' may be found as 'lesen', which
+is what would get inserted. 
 
 Solution: 
 

@@ -2,12 +2,31 @@
 declare(strict_types=1);
 namespace Vocab;
 
+/*
+ * For each word, we need the part of speech (POS); for nouns, the gender and plural; 
+ * for verbs, its conjucation; 
+ * File Format: new-word1:pos: defn1, defn2, defn3
+ * use a yml file?
+ */
+
 class TextDictionary implements DictionaryInterface {
 
    private \SplFileObject $errorLog;
 
-   public function __construct()
+   private array $defns; 
+
+   public function __construct(\SplFileObject $file)
    {
+      foreach ($file as $line) {
+         
+          $len = strchr($line, ':');
+
+          $word = substr($line, 0, $len);
+  
+          $defns = explode(',', substr($line, $len + 1));
+
+          $this->defns[$word] = $defns;
+       }
    }
 
    final public function getDictionaryLanguages() : array
@@ -24,8 +43,9 @@ class TextDictionary implements DictionaryInterface {
   
    final public function lookup(string $word, string $src, string $dest) : \Iterator 
    {      
-      // TODO: Finish     
-      return TextDictionary::LookupResultsGenerator($matches);
+      $array = $this->defns[$word];
+
+      return TextDictionary::LookupResultsGenerator($array);
     }
      
     public static function LookupResultsGenerator(array $arr) : \Iterator
